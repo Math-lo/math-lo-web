@@ -200,8 +200,8 @@
                 var r = e(this),
                     o = r.parents(".gfort-isotope-filter"),
                     a = r.attr("data-filter"),
-                    n = o.next(".gfort-isotope"),
-                    i = e("> .gfort-form-control", o);
+                    n = o.next(".gfort-isotope");
+                i = e("> .gfort-form-control", o);
                 e(n).length && (o.find(".active").removeClass("active"), r.addClass("active"), n.isotope({ filter: a })), e(i).length && i.val(r.attr("data-filter"))
             }), e(".gfort-isotope-filter-select").length && e(".gfort-isotope-filter").each(function() {
                 var t = e(this),

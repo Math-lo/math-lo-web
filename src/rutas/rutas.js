@@ -50,8 +50,8 @@ let upload = multer({ storage: storage })
 // Pagina principal 
 router.get('/web', (req, res) => {
     if (req.session.usuario == undefined) {
-        req.app.locals.layout = 'main';
-        res.render('sin-sesion/inicio');
+        req.app.locals.layout = 'landing';
+        res.render('sin-sesion/landing');
     } else {
         if (req.session.usuario.id_tus == 1) {
             req.getConnection((err, conn) => {
@@ -779,11 +779,10 @@ router.post('/web/eliminarGrupo', (req, res) => {
 router.post('/web/iniciar', (req, res) => {
     //aqui comprueba para inicar sesion
     if (!req.body.email_inicio || !req.body.contraseña_inicio) {
-        res.redirect('/web/#inicia');
+        res.redirect('/web');
     } else {
         let email = req.body.email_inicio;
         let password = req.body.contraseña_inicio;
-
         req.getConnection((err, conn) => {
             conn.query(`select * from musuario where cor_usu = '${email}' and pas_usu = '${cifrado.cifrar(password)}'`, (err, usuarioCorrecto) => {
                 if (usuarioCorrecto.length > 0) {

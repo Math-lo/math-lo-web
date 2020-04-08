@@ -22,6 +22,46 @@ function barraBusqueda(id_barra, id_tabla) {
     }
 }
 
+$(() => {
+    $("#agregarusuajax").on("submit", (e) => {
+        e.preventDefault();
+        let formData = new FormData(document.getElementById("agregarusuajax"));
+
+        //formData.append(f.attr("name"), $(this)[0].files[0]);
+        $.ajax({
+            url: `/web/registrar_ajax`,
+            method: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).done(function(res) {
+            M.toast({ html: res, classes: 'rounded' });
+            mostrarUsuarios();
+        });
+    }); //como desglosa el form data
+
+});
+
+function registroUsuarios2() {
+    $("#agregarusuajax").on('submit', (e) => {
+        e.preventDefault();
+        let formData = new FormData(document.getElementById('agregarusuajax'))
+        $.ajax({
+            url: `/web/registrar_ajax`,
+            method: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).done(function(res) {
+            M.toast({ html: res, classes: 'rounded' });
+            mostrarUsuarios();
+        }); //aqui se necesita el id_usu
+
+
+    });
+}
 
 function mostrarAlumnos(id_gru) {
     $.ajax({
@@ -35,6 +75,7 @@ function mostrarAlumnos(id_gru) {
             let n = 1;
             tbody.html('');
             alumnos.forEach(alumno => {
+                console.log(alumno);
                 tbody.append(`
                     <tr>
                         <td>${n}</td>
@@ -47,7 +88,6 @@ function mostrarAlumnos(id_gru) {
         }
     });
 }
-
 
 function eliminarAlumnoGrupo(id_ugr, id_gru, id_prof) {
     $.ajax({
@@ -92,36 +132,6 @@ function verGruposProfesor(id_prof) {
         }
     });
 }
-
-
-function verGruposProfesor(id_prof) {
-    $.ajax({
-        url: `/web/verGruposProfesor`,
-        method: 'POST',
-        data: {
-            id_prof: id_prof
-        },
-        success: (gruposFin) => {
-            let tbody = $('#tabla_grupos');
-            tbody.html('');
-            gruposFin.forEach(grupo => {
-                if (grupo.cla_gru == null) {
-                    grupo.cla_gru = '';
-                }
-                tbody.append(`
-                    <tr>
-                        <td>${grupo.nom_gru}</td>
-                        <td contenteditable="true" id="clave${grupo.id_gru}">${grupo.cla_gru}</td>
-                        <td>${grupo.num_alu}</td>
-                        <td><a href="javascript:void(0);" class="waves-effect waves-teal btn-flat">Modificar clave</a></td>
-                        <td><a href="javascript:void(0);" onclick="mostrarAlumnos(${grupo.id_gru});" class="waves-effect waves-teal btn-flat">Ver alumnado</a></td>
-                    </tr>
-                `);
-            });
-        }
-    });
-}
-
 
 function modificarClaveGrupo(id_gru, clave) {
     $.ajax({
@@ -198,7 +208,7 @@ function mostrarUsuarios(id_usu) {
                 if (usuario.id_tus == 1) {
                     valor = "Alumno";
                 } else if (usuario.id_tus == 2) {
-                    r = "Tutor";
+                    valor = "Tutor";
                 } else if (usuario.id_tus == 3) {
                     valor = "Profesor";
                 } else if (usuario.id_tus == 4) {
@@ -336,6 +346,7 @@ function obtenerAlumnos(id_gru) {
                 res[0].forEach(alumno => {
                     array.push([alumno.id_ugr, alumno.nom_usu]);
                     $('#alumnosSeleccionados').html('');
+                    $('#menu_temas_seleccionados').css('display', 'inline-block');
                     $('#cuestionarioSeleccionado').html('');
                     if (res[0].indexOf(alumno) == (res[0].length - 1)) {
                         crearSelectMaterialize(array, 'alumnosSeleccionados', 'Todos los alumnos');
@@ -343,6 +354,7 @@ function obtenerAlumnos(id_gru) {
                     }
                 });
             } else {
+                $('#menu_temas_seleccionados').css('display', 'none');
                 $('#cuestionarioSeleccionado').html('');
                 crearSelectMaterialize(res[1], 'cuestionarioSeleccionado', 'Todos los cuestionarios');
             }

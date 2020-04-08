@@ -63,13 +63,13 @@ function cargaGraficas() {
 
 function cargarGraficasGrupo(id_gru, nom_gru) {
     $('#menu_nav_reportes_alumnos').css('display', 'inline-block');
+    $('#menu_temas_seleccionados').css('display', 'inline-block');
     limpiaGraficas();
     $.ajax({
         url: `http://localhost:8000/gamma/generalColumnGroupTopic/${id_gru}/`,
         method: 'GET',
         success: (res) => {
-
-            drawChartBar(res, `Temas del grupo ${nom_gru}`, 'Correctos e incorrectos', 'grafica3');
+            drawChartBar(res, `Temas del grupo ${nom_gru}`, 'Correctos e incorrectos', 'grafica4');
         }
     });
 }
@@ -88,6 +88,15 @@ function filtrarGraficas() {
             }
         } else {
             cuestionaire(cuestionario);
+        }
+    }
+    if (alumno != -1) {
+        if (tema != -1) {
+            alumnoTema(alumno, tema);
+        }
+    } else {
+        if (tema != -1) {
+            M.toast({ html: "Se debe de seleccionar un alumno", classes: 'rounded' });
         }
     }
 }
@@ -118,16 +127,15 @@ function cuestionaire(id_cue) {
         url: `http://localhost:8000/gamma/generalQuestionnaire/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica1').html('');
-            drawChart(res, `Aprobados y reprobados del cuestionario general`, 'grafica1');
+            drawChart(res, `Aprobados y reprobados del cuestionario general`, 'grafica3');
         }
     })
     $.ajax({
         url: `http://localhost:8000/gamma/questionnaireGrades/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica2').html('');
-            drawChartBar(res, `Aciertos e incorrectos del cuestionario`, 'General', 'grafica2');
+            $('#grafica4').html('');
+            drawChartBar(res, `Aciertos e incorrectos del cuestionario`, 'General', 'grafica4');
         }
     })
 }
@@ -140,6 +148,18 @@ function alumnoCuestionario(id_alum, id_cues) {
         success: (res) => {
             $('#grafica1').html('');
             drawChart(res, `Correctas e incorrectas del cuestionario del alumno`, 'grafica1');
+        }
+    })
+}
+
+function alumnoTema(id_alu, id_tema) {
+    limpiaGraficas();
+    $.ajax({
+        url: `http://localhost:8000/gamma/questionnairesAlumnoTopic/${id_alu}/${id_tema}/`,
+        method: 'GET',
+        success: (res) => {
+            $('#grafica1').html('');
+            drawChart(res, `Correctas e incorrectas del alumno en el tema`, 'grafica1');
         }
     })
 }

@@ -231,7 +231,7 @@
 <div id="modal3" class="modal">
     <div class="modal-content">
         <h4>Registro</h4>
-        <form action="/registrarAdmin" method="POST" id="registro_usuario">
+    <form enctype="multipart/form-data" id="agregarusuajax" method="POST" name="agregarusuajax">
             <div class="row">
                 <div class="input-field col s6">
                     <input id="first_name" name="nombres_usuario" type="text" class="validate">
@@ -253,7 +253,9 @@
                     <label>Tipo de cuenta</label>
                 </div>
             </div>
-            
+             {{#each usuario}}
+                <input type="hidden" value="{{id_usu}}">
+            {{/each}} 
             <div class="row">
                 <div class="input-field col s12">
                     <input id="email" name="email_usuario" type="email" class="validate">
@@ -268,10 +270,21 @@
                     <span class="helper-text" data-error="invalido" data-success="valido"></span>
                 </div>
             </div>
-        </form>
+            <button class="add-file-btn btn btn-block
+                                    waves-effect waves-light mb-10 indigo
+                                    lighten-1" type="submit" onclick="registroUsuarios()">
+                                    <i class="material-icons">add</i>
+                                    <span>Registrar</span>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+              <button class="add-file-btn btn btn-block
+                                    waves-effect waves-light mb-10 indigo
+                                    lighten-1" type="submit">
+                                    <i class="material-icons">add</i>
+                                    <span>UnU</span>
+                                </button>
+        </form>        
         <div class="modal-footer">
-            <a onclick="document.getElementById('registro_usuario').submit()"
-                class="waves-effect waves-green btn-flat">Registrar</a>
+           
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
         </div>
     </div>

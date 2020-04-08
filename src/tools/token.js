@@ -1,3 +1,12 @@
+const token = {}
+token.generar = (callback) => {
+    generarToken(token => {
+        setTimeout(() => {
+            callback(token);
+        }, 0 | Math.random() * 100);
+    });
+};
+
 function generarToken(callback) {
     let abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     let l1 = abc[Math.floor(Math.random() * (50))];
@@ -47,3 +56,5 @@ function calcular_primo(num) {
         return calcular_primo(Math.floor(Math.random() * (10000 - 1000) + 1000));
     }
 }
+
+module.exports = token;

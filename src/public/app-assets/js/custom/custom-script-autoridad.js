@@ -251,4 +251,65 @@ $(() => {
 });
 /* Fin de la vista de apoyos */
 
-/* Inicio de la vista de grupos generales */
+/* Inicio de la vista de reportes generales */
+
+/**
+ * 
+ * @param {int} id_gru identificador del grupo para obtener alumnos 
+ */
+function obtenerAlumnos(id_gru) {
+    $.ajax({
+        url: '/web/getAlumnosGrupo',
+        method: 'POST',
+        data: {
+            id_gru
+        },
+        success: (res) => {
+            let array = [];
+            if (id_gru != -1) {
+                res[0].forEach(alumno => {
+                    array.push([alumno.id_ugr, alumno.nom_usu]);
+                    $('#alumnosSeleccionados').html('');
+                    $('#menu_temas_seleccionados').css('display', 'inline-block');
+                    $('#cuestionarioSeleccionado').html('');
+                    if (res[0].indexOf(alumno) == (res[0].length - 1)) {
+                        crearSelectMaterialize(array, 'alumnosSeleccionados', 'Todos los alumnos');
+                        crearSelectMaterialize(res[1], 'cuestionarioSeleccionado', 'Todos los cuestionarios');
+                    }
+                });
+            } else {
+                $('#menu_temas_seleccionados').css('display', 'none');
+                $('#cuestionarioSeleccionado').html('');
+                crearSelectMaterialize(res[1], 'cuestionarioSeleccionado', 'Todos los cuestionarios');
+            }
+        }
+    });
+}
+
+/* Fin de la vista de reportes generales */
+
+/* Inicio de funciones generales */
+/**
+ * 
+ * @param {array} arreglo arreglo con el que se van a crear los option 
+ * @param {int} id_select id del select donde debe ser colocado
+ * @param {string} general opcion general de los select
+ */
+function crearSelectMaterialize(arreglo, id_select, general) {
+    let select = document.getElementById(id_select);
+    let optionGeneral = document.createElement('option');
+    optionGeneral.value = -1;
+    optionGeneral.textContent = general;
+    select.appendChild(optionGeneral);
+    arreglo.forEach(elemento => {
+
+        let option = document.createElement('option');
+        option.value = elemento[0];
+        option.textContent = elemento[1];
+        select.appendChild(option);
+        if (arreglo.indexOf(elemento) == (arreglo.length - 1)) {
+            $(`#${id_select}`).formSelect();
+        }
+    });
+}
+/* Fin de funciones generales */

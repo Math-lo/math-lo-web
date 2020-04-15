@@ -69,7 +69,14 @@ function cargarGraficasGrupo(id_gru, nom_gru) {
         url: `http://localhost:8000/gamma/generalColumnGroupTopic/${id_gru}/`,
         method: 'GET',
         success: (res) => {
-            drawChartBar(res, `Temas del grupo ${nom_gru}`, 'Correctos e incorrectos', 'grafica4');
+            if (res.length <= 1) {
+                document.getElementById('grafica4').innerHTML = '<center><h2>Lo sentimos pero este grupo no cuenta con reportes</h2></center>'
+                $('#menu_nav_reportes_alumnos').css('display', 'none');
+                $('#menu_temas_seleccionados').css('display', 'none');
+            } else {
+                drawChartBar(res, `Temas del grupo ${nom_gru}`, 'Correctos e incorrectos', 'grafica4');
+            }
+
         }
     });
 }

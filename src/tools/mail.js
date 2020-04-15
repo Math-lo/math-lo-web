@@ -33,11 +33,10 @@ mail.enviaRecuperacion = (email, pass) => {
             pass: '$BTC$#1my00770p'
         },
         tls: {
-            // do not fail on invalid certs
             rejectUnauthorized: false
         }
     });
-    
+
     let mailOptions = {
         from: 'Anzus',
         to: `${email}`,
@@ -92,9 +91,9 @@ mail.enviaRecuperacion = (email, pass) => {
     }
 
     mailTransport.sendMail(mailOptions, (err, info) => {
-        if(err){
+        if (err) {
             console.log(err);
-        }else{
+        } else {
             console.log("Mensaje enviado: " + info.response);
         }
     });
@@ -113,7 +112,7 @@ mail.envia = (email, codigo) => {
             rejectUnauthorized: false
         }
     });
-    
+
     let mailOptions = {
         from: 'Anzus',
         to: `${email}`,
@@ -168,9 +167,9 @@ mail.envia = (email, codigo) => {
     }
 
     mailTransport.sendMail(mailOptions, (err, info) => {
-        if(err){
+        if (err) {
             console.log(err);
-        }else{
+        } else {
             console.log("Mensaje enviado: " + info.response);
         }
     });

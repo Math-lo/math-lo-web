@@ -23,11 +23,20 @@
                                 <form enctype="multipart/form-data" id="formuploadajax" method="POST">
                                 <input type="text" placeholder="URL" name="hipervinculo_apoyo" id="url_apoyo">
                                 <div class="file-field input-field">
+                                    {{#if sesionP}}
                                     <div class="btn indigo
                                     lighten-1">
                                         <span>PDF</span>
                                         <input type="file" id="archivo_apoyo" name="archivo_apoyo">
                                     </div>
+                                    {{else if sesionAd}}
+                                    <div class="btn green
+                                    lighten-1">
+                                        <span>PDF</span>
+                                        <input type="file" id="archivo_apoyo" name="archivo_apoyo">
+                                    </div>
+                                    {{/if}}
+
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">
                                     </div>
@@ -38,15 +47,35 @@
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
                                 </select>
+                                {{#if sesionP}}
                                 <button class="add-file-btn btn btn-block
                                     waves-effect waves-light mb-10 indigo
                                     lighten-1" type="submit">
                                     <i class="material-icons">add</i>
                                     <span>Añadir apoyo</span>
+                                    
                                 </button>
+                                {{else if sesionAd}}
+                                <button class="add-file-btn btn btn-block
+                                    waves-effect waves-dark mb-10 green
+                                    lighten-1" type="submit">
+                                    <i class="material-icons">add</i>
+                                    <span>Añadir apoyo</span>
+                                    
+                                </button>
+                                {{else if sesionA}}
+                                <button class="add-file-btn btn btn-block
+                                    waves-effect waves-dark mb-10 green
+                                    lighten-1" type="submit">
+                                    <i class="material-icons">add</i>
+                                    <span>Añadir apoyo</span>
+                                    
+                                </button>
+                                {{/if}}
                                 </form>
                                 
                             </div>
+                            
                             <div class="app-file-sidebar-content ps">
                                 <!-- App File Left Sidebar - Drive Content Starts -->
                                 <span class="app-file-label">Temas</span>
@@ -159,7 +188,7 @@
                                         </div>
                                         <div class="divider mt-5 mb-5"></div>
                                         <div class="pt-6">
-                                            <form enctype="multipart/form-data" id="modificar_apoyo_ventana">
+                                            <form enctype="multipart/form-data" id="modificar_apoyo_ventana" method="POST">
                                             <span class="app-file-label">Info</span>
                                             <div class="display-flex
                                                 justify-content-between
@@ -197,6 +226,7 @@
                                             <div class="display-flex
                                                 justify-content-between
                                                 align-items-center mt-6">
+                                            {{#if sesionP}}
                                                     <div class="file-field
                                                         input-field">
                                                     <div class="btn indigo
@@ -209,9 +239,42 @@
                                         
                                                     </div>
                                                     </div>
+                                            {{else if sesionAd}}
+                                            <div class="file-field
+                                                        input-field">
+                                                    <div class="btn green
+                                                     lighten-1">
+                                                    <span>modificar PDF</span>
+                                                    <input type="file" id="archivo_apoyo_modificar" name="archivo_apoyo_modificar">
+                                                    </div>
+                                                    <div class="file-path-wrapper">
+                                                        <input class="file-path validate" type="text">
+                                        
+                                                    </div>
+                                                    </div>
+                                            {{else if sesionA}}
+                                                    <div class="file-field
+                                                        input-field">
+                                                    <div class="btn green
+                                                     lighten-1">
+                                                    <span>modificar PDF</span>
+                                                    <input type="file" id="archivo_apoyo_modificar" name="archivo_apoyo_modificar">
+                                                    </div>
+                                                    <div class="file-path-wrapper">
+                                                        <input class="file-path validate" type="text">
+                                        
+                                                    </div>
+                                                    </div>
+                                            {{/if}}
                                                     
                                             </div>
-                                            <button type="submit" class="btn indigo lighten-1">Modificar</button>
+                                            {{#if sesionP}}
+                                            <button type="update" class="btn indigo lighten-1">Modificar</button>
+                                            {{else if sesionAd}}
+                                            <button type="update" class="btn green lighten-1">Modificar</button>
+                                            {{else if sesionA}}
+                                            <button type="update" class="btn green lighten-1">Modificar</button>
+                                            {{/if}}
                                             </form></div>
 
                                         </div>
@@ -230,6 +293,98 @@
                         <!-- App File sidebar - Right section Ends -->
                         <br><br><br><br><br>
                     </div>
+                    <!-- START RIGHT SIDEBAR NAV -->
+                    <aside id="right-sidebar-nav">
+                        <div id="slide-out-right" class="slide-out-right-sidenav
+                            sidenav
+                            rightside-navigation right-aligned">
+                            <div class="row">
+                                <div class="slide-out-right-title">
+                                    <div class="col s12 border-bottom-1 pb-0
+                                        pt-1">
+                                        <div class="row">
+                                            <div class="col s2 pr-0 center">
+                                                <i class="material-icons
+                                                    vertical-text-middle"><a
+                                                        href="#"
+                                                        class="sidenav-close">clear</a></i>
+                                            </div>
+                                            <div class="col s10 pl-0">
+                                                <ul class="tabs">
+                                                    <li class="tab col s4 p-0">
+                                                        <a href="#reportes"
+                                                            class="active">
+                                                            <span>Reportes</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="indicator"
+                                                        style="left:
+                                                        0px; right: 188px;"></li></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slide-out-right-body row pl-3 ps
+                                    ps--active-y">
+                                    <div id="reportes" class="col s12 pb-0
+                                        active">
+                                        <div class="collection border-none
+                                            mb-0">
+                                            <ul class="collection
+                                                right-sidebar-chat p-0
+                                                mb-0">
+                                                <a href="javascript:void(0);">
+                                                    <li class="collection-item
+                                                        right-sidebar-chat-item
+                                                        display-flex avatar
+                                                        pl-5 pb-0"
+                                                        data-target="slide-out-chat">
+                                                        <i
+                                                            class="material-icons">chrome_reader_mode</i>
+                                                    </span>
+                                                    <div class="user-content">
+                                                        <h6
+                                                            class="line-height-0">Reporte
+                                                            1IV2</h6>
+                                                    </div>
+                                                    <span
+                                                        class="secondary-content
+                                                        medium-small">29-02-20</span>
+                                                </li>
+                                            </a>
+                                            <a href="javascript:void(0);">
+                                                <li class="collection-item
+                                                    right-sidebar-chat-item
+                                                    sidenav-trigger display-flex
+                                                    avatar
+                                                    pl-5 pb-0"
+                                                    data-target="slide-out-chat">
+                                                    <i class="material-icons">chrome_reader_mode</i>
+                                                </span>
+                                                <div class="user-content">
+                                                    <h6 class="line-height-0">Reporte
+                                                        1IV3</h6>
+                                                </div>
+                                                <span class="secondary-content
+                                                    medium-small">28-02-20</span>
+                                            </li>
+                                        </a>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="ps__rail-x" style="left: 0px; bottom:
+                                0px;"><div class="ps__thumb-x" tabindex="0"
+                                    style="left: 0px; width: 0px;"></div></div><div
+                                class="ps__rail-y" style="top: 0px; height:
+                                624px; right: 0px;"><div class="ps__thumb-y"
+                                    tabindex="0" style="top: 0px; height:
+                                    308px;"></div></div></div>
+                    </div>
+                </div>
+
+            </aside>
+            <!-- END RIGHT SIDEBAR NAV -->
         </div>
         <div class="content-overlay"></div>
         

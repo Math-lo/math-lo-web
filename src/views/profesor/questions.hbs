@@ -64,7 +64,150 @@
           <h4 class="card-title">Insertar pregunta</h4>
           <form name="questions" id="questions"
                         method="POST" action="/web/Addquestion">
+                {{#if sesionAd}}
+                <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Pregunta: 
+                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-pregunta" type="text" name="pregunta" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
+                            mathField.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pm" onclick="mathField.cmd('\\pm');
+                            mathField.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_mp" onclick="mathField.cmd('\\mp');
+                            mathField.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_frac" onclick="mathField.cmd('\\frac');
+                            mathField.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField.cmd('^');
+                            mathField.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
+                            mathField.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+                
+            </div>
             <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción A: 
+                <span id='math-field-opcA' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcA" type="text" name="a" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField_opcA.cmd('\\sqrt');
+                            mathField_opcA.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pm" onclick="mathField_opcA.cmd('\\pm');
+                            mathField_opcA.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_mp" onclick="mathField_opcA.cmd('\\mp');
+                            mathField_opcA.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_frac" onclick="mathField_opcA.cmd('\\frac');
+                            mathField_opcA.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('^');
+                            mathField_opcA.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
+                            mathField_opcA.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción B: 
+                <span id='math-field-opcB' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcB" type="text" name="b" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField_opcB.cmd('\\sqrt');
+                            mathField_opcB.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pm" onclick="mathField_opcB.cmd('\\pm');
+                            mathField_opcB.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_mp" onclick="mathField_opcB.cmd('\\mp');
+                            mathField_opcB.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_frac" onclick="mathField_opcB.cmd('\\frac');
+                            mathField_opcB.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('^');
+                            mathField_opcB.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
+                            mathField_opcB.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción C: 
+                <span id='math-field-opcC' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcC" type="text" name="c" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField_opcC.cmd('\\sqrt');
+                            mathField_opcC.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pm" onclick="mathField_opcC.cmd('\\pm');
+                            mathField_opcC.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_mp" onclick="mathField_opcC.cmd('\\mp');
+                            mathField_opcC.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_frac" onclick="mathField_opcC.cmd('\\frac');
+                            mathField_opcC.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('^');
+                            mathField_opcC.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
+                            mathField_opcC.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción D: 
+                <span id='math-field-opcD' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcD" type="text" name="d" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField_opcD.cmd('\\sqrt');
+                            mathField_opcD.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pm" onclick="mathField_opcD.cmd('\\pm');
+                            mathField_opcD.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_mp" onclick="mathField_opcD.cmd('\\mp');
+                            mathField_opcD.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_frac" onclick="mathField_opcD.cmd('\\frac');
+                            mathField_opcD.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('^');
+                            mathField_opcD.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
+                            mathField_opcD.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+                {{else if sesionP}}
+                    <div class="row">
               <div class="input-field col s12" style="margin-bottom: 0px;">
                   <p>Pregunta: 
                 <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
@@ -205,6 +348,150 @@
                     </li>
                 </ul>
             </div>
+                {{else if sesionA}}
+                      <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Pregunta: 
+                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-pregunta" type="text" name="pregunta" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
+                            mathField.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField.cmd('\\pm');
+                            mathField.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField.cmd('\\mp');
+                            mathField.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField.cmd('\\frac');
+                            mathField.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('^');
+                            mathField.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
+                            mathField.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+                
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción A: 
+                <span id='math-field-opcA' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcA" type="text" name="a" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcA.cmd('\\sqrt');
+                            mathField_opcA.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcA.cmd('\\pm');
+                            mathField_opcA.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcA.cmd('\\mp');
+                            mathField_opcA.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcA.cmd('\\frac');
+                            mathField_opcA.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('^');
+                            mathField_opcA.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
+                            mathField_opcA.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción B: 
+                <span id='math-field-opcB' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcB" type="text" name="b" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcB.cmd('\\sqrt');
+                            mathField_opcB.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcB.cmd('\\pm');
+                            mathField_opcB.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcB.cmd('\\mp');
+                            mathField_opcB.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcB.cmd('\\frac');
+                            mathField_opcB.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('^');
+                            mathField_opcB.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
+                            mathField_opcB.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción C: 
+                <span id='math-field-opcC' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcC" type="text" name="c" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcC.cmd('\\sqrt');
+                            mathField_opcC.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcC.cmd('\\pm');
+                            mathField_opcC.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcC.cmd('\\mp');
+                            mathField_opcC.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcC.cmd('\\frac');
+                            mathField_opcC.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('^');
+                            mathField_opcC.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
+                            mathField_opcC.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p>Opción D: 
+                <span id='math-field-opcD' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div>
+              <div class="input-field col s12" style="margin-top: 0px;">
+                  <input id="latex-opcD" type="text" name="d" readonly>
+              </div>
+              <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+                        <div class="collapsible-body text-reset">
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcD.cmd('\\sqrt');
+                            mathField_opcD.focus();" style="width: 90px;">√</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcD.cmd('\\pm');
+                            mathField_opcD.focus();" style="width: 90px;">∓</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcD.cmd('\\mp');
+                            mathField_opcD.focus();" style="width: 90px;">±</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcD.cmd('\\frac');
+                            mathField_opcD.focus();" style="width: 90px;">x/x</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('^');
+                            mathField_opcD.focus();" style="width: 90px;">^</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
+                            mathField_opcD.focus();" style="width: 90px;">*</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+                {{/if}}
+           
             <div class="row">
               <div class="input-field col s12">
                 <select name="tema" id="tema">
@@ -223,11 +510,24 @@
                                 <option value="2">Normal</option>
                                 <option value="3">Díficil</option>
                 </select>
-             
-                         <button class="btn waves-effect waves-light indigo lighten-1"
+                {{#if sesionP}}
+                      <button class="btn waves-effect waves-light indigo lighten-1"
                                 type="submit" name="action">Agregar
                                 <i class="material-icons right">send</i>
-                            </button>
+                      </button>
+                {{else if sesionAd}}
+                      <button class="btn waves-effect waves-light green lighten-1"
+                                type="submit" name="action">Agregar
+                                <i class="material-icons right">send</i>
+                      </button>
+                {{else if sesionA}}
+                      <button class="btn waves-effect waves-light indigo lighten-1"
+                                type="submit" name="action">Agregar
+                                <i class="material-icons right">send</i>
+                       </button>
+                {{/if}}
+             
+                         
               </div>
               <div class="row">
                   <p id="avisos"></p>
@@ -285,8 +585,13 @@
                                 <option value="{{id_tem}}">{{nom_tem}}</option>
                             {{/each}}
                         </select>
-
+                {{#if sesionP}}
                         <button type="submit" class="btn waves-effect waves-light indigo lighten-1" href="javascript:void(0);" id="broswe">Buscar</button>
+                {{else if sesionAd}}
+                        <button type="submit" class="btn waves-effect waves-light green lighten-1" href="javascript:void(0);" id="broswe">Buscar</button>
+                {{else if sesionA}}
+                        <button type="submit" class="btn waves-effect waves-light indigo lighten-1" href="javascript:void(0);" id="broswe">Buscar</button>
+                {{/if}}
                     </form>    
                     <!--left sidebar of file manager start -->
                 </div>

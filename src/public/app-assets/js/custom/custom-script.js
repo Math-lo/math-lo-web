@@ -147,6 +147,7 @@ function modificarClaveGrupo(id_gru, clave) {
     });
 }
 
+
 function modificarUsuario(id_usu, nom_usu, cor_usu) {
     $.ajax({
         url: `/web/modificarUsuarioAjax`,
@@ -176,7 +177,6 @@ function ConsultarPregunta(id_tem, id_dif) {
     });
 }
 
-
 function eliminarUsuario(id_usu) {
     $.ajax({
         url: `/web/eliminarUsuarioAjax`,
@@ -187,6 +187,26 @@ function eliminarUsuario(id_usu) {
         success: (response) => {
             M.toast({ html: response, classes: 'rounded' });
             mostrarUsuarios(id_usu);
+        }
+    });
+}
+
+function AgregarUsuarioAjax(nom_usu, app_usu, id_tus, cor_usu, pas_usu) {
+    $.ajax({
+        url: `/web/registrar_ajax`,
+        method: 'POST',
+        data: {
+            nom_usu: nom_usu,
+            app_usu: app_usu,
+            id_tus: id_tus,
+            cor_usu: cor_usu,
+            pas_usu: pas_usu,
+            id_usu: 1
+        },
+        success: (response) => {
+            console.log(nom_usu);
+            M.toast({ html: response, classes: 'rounded' });
+            mostrarUsuarios(1);
         }
     });
 }
@@ -208,7 +228,7 @@ function mostrarUsuarios(id_usu) {
                 if (usuario.id_tus == 1) {
                     valor = "Alumno";
                 } else if (usuario.id_tus == 2) {
-                    valor = "Tutor";
+                    r = "Tutor";
                 } else if (usuario.id_tus == 3) {
                     valor = "Profesor";
                 } else if (usuario.id_tus == 4) {
@@ -220,13 +240,13 @@ function mostrarUsuarios(id_usu) {
                         <tr>
                        
                             <td contenteditable="true" id="nom_usu${usuario.id_usu}">${usuario.nom_usu}</td>
-                            <td contenteditable="true" id="clave${usuario.id_usu}">${usuario.cor_usu}</td>
+                            <td contenteditable="true" id="cor_usu${usuario.id_usu}">${usuario.cor_usu}</td>
                             <td>${valor}</td>
                             <td>
-                            <a href="javascript:void(0);" onclick="modificarUsuario({{id_usu}}, document.getElementById('nom_usu{{id_usu}}').innerText,document.getElementById('cor_usu{{id_usu}}').innerText);" class="waves-effect waves-teal btn-flat">Modificar</a>
+                            <a href="javascript:void(0);" onclick="modificarUsuario(${usuario.id_usu}, document.getElementById('nom_usu${usuario.id_usu}').innerText,document.getElementById('cor_usu${usuario.id_usu}').innerText);" class="waves-effect waves-teal btn-flat">Modificar</a>
                             </td>
                             <td>
-                            <a href="javascript:void(0);" onclick="eliminarUsuario({{id_usu}});" class="waves-effect waves-teal btn-flat">Eliminar</a>
+                            <a href="javascript:void(0);" onclick="eliminarUsuario(${usuario.id_usu});" class="waves-effect waves-teal btn-flat">Eliminar</a>
                             </td>
                         </tr>
                 `);
@@ -235,6 +255,11 @@ function mostrarUsuarios(id_usu) {
         }
     });
 }
+
+
+
+
+
 $(() => {
     $("#formuploadajax").on("submit", (e) => {
         e.preventDefault();

@@ -119,18 +119,11 @@ router.get('/web', (req, res) => {
         }
         if (req.session.usuario.id_tus == 5) {
             req.getConnection((err, conn) => {
-                conn.query('select * from MUsuario natural join CTipoUsuario where cor_usu != ? order by nom_usu asc', req.session.usuario.cor_usu, (err2, usuario) => {
-                    conn.query('select * from cgrupo  natural join musuario natural join eusuariosgrupo order by nom_gru asc', (err, grupos) => {
-                        //console.log(req.session.usuario.id_usu);
-                        //console.log('grupos:', grupos);
-                        retornaGrupos(grupos, conn, (ListaFinalGrupo) => {
-                            if (err2) console.log(err2);
-                            retornaUsuarios(usuario, conn, (ListaFinal) => {
-                                req.app.locals.layout = 'Administrador2';
-                                res.render('admin/prueba_admin', { usuariosRetorno: ListaFinal, grupos: ListaFinalGrupo, usuario: req.session.usuario, rows: usuario });
-                            });
-                        });
-
+                conn.query('select * from musuario natural join ctipousuario where cor_usu != ? order by nom_usu asc', req.session.usuario.cor_usu, (err2, usuario) => {
+                    if (err2) console.log(err2);
+                    retornaUsuarios(usuario, conn, (ListaFinal) => {
+                        req.app.locals.layout = 'Administrador2';
+                        res.render('admin/prueba_admin', { usuariosRetorno: ListaFinal, usuario: req.session.usuario, rows: usuario });
                     });
 
                 })
@@ -138,32 +131,70 @@ router.get('/web', (req, res) => {
         }
     }
 });
-
-router.get('/web/vergraficas', (req, res) => {
-    req.app.locals.layout = 'profesor';
+router.get('/web/gruposAd', (req, res) => {
     req.getConnection((err, conn) => {
-        conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu = ?', req.session.usuario.id_usu, (err, grupos) => {
-            conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
-                let array = [],
-                    cuestionariosGrupo = [],
-                    ultimosCuestionarios = [];
-                cuestionarios.forEach(cuestionario => {
-                    array = cuestionario.id_gru.split(',');
-                    array.forEach(id => {
-                        grupos.forEach(grupo => {
-                            if (id == grupo.id_gru && !cuestionariosGrupo.includes(cuestionario)) {
-                                cuestionariosGrupo.push(cuestionario);
-                            }
-                        });
-                    });
-                });
-                conn.query('select * from ctemas', (err, temas) => {
-                    res.render('profesor/testGraficas', { grupos, cuestionarios: cuestionariosGrupo, temas });
-                });
-
+        conn.query('select * from cgrupo  natural join musuario natural join eusuariosgrupo order by nom_gru asc', (err, grupos) => {
+            retornaGrupos(grupos, conn, (ListaFinalGrupo) => {
+                res.render('admin/grupos', { gruposRetorno: ListaFinalGrupo, usuario: req.session.usuario });
             });
         });
+
     });
+});
+
+router.get('/web/ver_reportes', (req, res) => {
+    if (req.session.usuario.id_tus == 3) {
+        req.app.locals.layout = 'profesor';
+        req.getConnection((err, conn) => {
+            conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu = ?', req.session.usuario.id_usu, (err, grupos) => {
+                conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
+                    let array = [],
+                        cuestionariosGrupo = [];
+                    cuestionarios.forEach(cuestionario => {
+                        array = cuestionario.id_gru.split(',');
+                        array.forEach(id => {
+                            grupos.forEach(grupo => {
+                                if (id == grupo.id_gru && !cuestionariosGrupo.includes(cuestionario)) {
+                                    cuestionariosGrupo.push(cuestionario);
+                                }
+                            });
+                        });
+                    });
+                    conn.query('select * from ctemas', (err, temas) => {
+                        res.render('profesor/testGraficas', { grupos, cuestionarios: cuestionariosGrupo, temas });
+                    });
+
+                });
+            });
+        });
+    } else if (req.session.usuario.id_tus == 4) {
+        req.app.locals.layout = 'autoridad';
+        req.getConnection((err, conn) => {
+            conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu = ?', req.session.usuario.id_usu, (err, grupos) => {
+                conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
+                    let array = [],
+                        cuestionariosGrupo = [];
+                    cuestionarios.forEach(cuestionario => {
+                        array = cuestionario.id_gru.split(',');
+                        array.forEach(id => {
+                            grupos.forEach(grupo => {
+                                if (id == grupo.id_gru && !cuestionariosGrupo.includes(cuestionario)) {
+                                    cuestionariosGrupo.push(cuestionario);
+                                }
+                            });
+                        });
+                    });
+                    conn.query('select * from ctemas', (err, temas) => {
+                        res.render('profesor/testGraficas', { grupos, cuestionarios: cuestionariosGrupo, temas });
+                    });
+
+                });
+            });
+        });
+    } else {
+        res.redirect('/web');
+    }
+
 
 });
 
@@ -175,21 +206,36 @@ router.get('/web/logout', (req, res) => {
 });
 
 router.get('/web/apoyos-a-alumnos', (req, res) => {
+    let sesionAd = false;
+    let sesionA = false;
+    let sesionP = false
     if (req.session.usuario.id_tus == 3) {
+        sesionP = true;
         req.app.locals.layout = 'profesor';
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
         });
     } else if (req.session.usuario.id_tus == 4) {
+        sesionA = true;
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                });
+            });
+        });
+    } else if (req.session.usuario.id_tus == 5) {
+        sesionAd = true;
+        req.app.locals.layout = 'Administrador2';
+        req.getConnection((err, conn) => {
+            conn.query('select * from ctemas', (err, temas) => {
+                conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
         });
@@ -201,24 +247,43 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
 });
 /*-------------------------------------------CUESTIONARIOS--------------------------------------*/
 router.get('/web/preguntas', (req, res) => {
+    let sesionAd = false;
+    let sesionA = false;
+    let sesionP = false;
     if (req.session.usuario.id_tus == 3) {
+        sesionP = true;
         req.app.locals.layout = 'profesor';
         req.getConnection((err, conn) => {
             conn.query("select * from ctemas", (err2, temas) => {
                 conn.query("select * from cdificultad", (err3, dif) => {
                     conn.query('select * from mbancopreguntas', (err, preguntas) => {
-                        res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas });
+                        res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                     });
                 })
             });
         });
     } else if (req.session.usuario.id_tus == 4) {
+        sesionA = true;
+
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             conn.query("select * from ctemas", (err2, temas) => {
                 conn.query("select * from cdificultad", (err3, dif) => {
                     conn.query('select * from mbancopreguntas', (err, preguntas) => {
-                        res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas });
+                        res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    });
+                })
+            });
+        });
+    } else if (req.session.usuario.id_tus == 5) {
+        sesionAd = true;
+
+        req.app.locals.layout = 'Administrador2';
+        req.getConnection((err, conn) => {
+            conn.query("select * from ctemas", (err2, temas) => {
+                conn.query("select * from cdificultad", (err3, dif) => {
+                    conn.query('select * from mbancopreguntas', (err, preguntas) => {
+                        res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                     });
                 })
             });
@@ -230,7 +295,11 @@ router.get('/web/preguntas', (req, res) => {
 });
 
 router.get('/web/cuestionarios', (req, res) => {
+    let sesionAd = false;
+    let sesionA = false;
+    let sesionP = false;
     if (req.session.usuario.id_tus == 3) {
+        sesionP = true;
         req.app.locals.layout = 'profesor';
         req.getConnection((err, conn) => {
             conn.query("select * from mbancopreguntas natural join ctemas natural join cdificultad", (err2, preguntas) => {
@@ -239,11 +308,12 @@ router.get('/web/cuestionarios', (req, res) => {
                     if (err3) console.log("ERROR 3: " + err2)
                     console.log(preguntas)
                     console.log(grupos)
-                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos });
+                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
         });
     } else if (req.session.usuario.id_tus == 4) {
+        sesionA = true;
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             conn.query("select * from mbancopreguntas natural join ctemas natural join cdificultad", (err2, preguntas) => {
@@ -252,7 +322,21 @@ router.get('/web/cuestionarios', (req, res) => {
                     if (err3) console.log("ERROR 3: " + err2)
                     console.log(preguntas)
                     console.log(grupos)
-                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos });
+                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                });
+            });
+        });
+    } else if (req.session.usuario.id_tus == 5) {
+        sesionAd = true;
+        req.app.locals.layout = 'Administrador2';
+        req.getConnection((err, conn) => {
+            conn.query("select * from mbancopreguntas natural join ctemas natural join cdificultad", (err2, preguntas) => {
+                conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
+                    if (err2) console.log("ERROR 2: " + err2)
+                    if (err3) console.log("ERROR 3: " + err2)
+                    console.log(preguntas)
+                    console.log(grupos)
+                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
         });
@@ -574,6 +658,7 @@ router.post('/web/registrar', (req, res) => {
             "pas_usu": pas,
             "id_tus": tip
         }
+        console.log(usuario);
 
         req.getConnection(async(err, conn) => {
             await conn.query(`select * from musuario where nom_usu = '${usuario.nom_usu}' or cor_usu = ' ${usuario.cor_usu}'`, (err, usuarioExistente) => {
@@ -601,12 +686,13 @@ router.get('/web/confirmacion_de_usuario', (req, res) => {
 
 router.post('/web/confirmacion', (req, res) => {
     if (!req.body.codigo_confirmacion) {
-        res.redirect('/web/#!');
+        res.redirect('/web/');
     } else {
         if (mail.generaCodigo(req.session.usuario_sin_verificar.cor_usu) == req.body.codigo_confirmacion) {
+            req.session.usuario = req.session.usuario_sin_verificar
             req.getConnection((err, conn) => {
-
                 conn.query(`insert into musuario set ?`, req.session.usuario_sin_verificar, (err, usuarioInsertado) => {
+                    generarToken(usuarioInsertado.insertedID);
                     req.session.usuario_sin_verificar = undefined;
                     res.redirect('/web');
                 });
@@ -712,27 +798,31 @@ router.post('/web/modificarTema', (req, res) => {
 // Registrar usuario en la bd
 router.post('/web/registrar_ajax', (req, res) => {
     console.log('me odio');
-    if (!req.body.nombres_usuario || !req.body.apellidos_usuario || !req.body.email_usuario ||
-        !req.body.curp_alumno || !req.body.contraseña_usuario || !req.body.tipo_usuario) {
-        res.json('No se pudo insertar el usuario satisfactoriamente ');
-    } else {
-        let nombre = req.body.apellidos_usuario + ' ' + req.body.nombres_usuario;
-        let cor = req.body.email_usuario.toLowerCase();
-        let pas = req.body.contraseña_usuario;
-        let tip = req.body.tipo_usuario;
-        let curp = req.body.curp_alumno.toUpperCase();
+    console.log(req.body);
+    let nombre = req.body.app_usu + ' ' + req.body.nom_usu;
+    let cor = req.body.cor_usu.toLowerCase();
+    let pas = req.body.pas_usu;
+    let tip = req.body.id_tus;
+    let curp = "-";
 
-        let usuario = {
-            "nom_usu": nombre,
-            "curp_usu": curp,
-            "cor_usu": cor,
-            "pas_usu": pas,
-            "id_tus": tip
-        }
+    let usuario = {
+        "nom_usu": nombre,
+        "curp_usu": curp,
+        "cor_usu": cor,
+        "pas_usu": pas,
+        "id_tus": tip
+    }
+    if (!req.body.nom_usu || !req.body.app_usu || !req.body.cor_usu || !req.body.pas_usu || !req.body.id_tus) {
+        res.json('No se pudo insertar el usuario satisfactoriamente ');
+        console.log(usuario)
+    } else {
+
+
         console.log(usuario);
 
         req.getConnection(async(err, conn) => {
             await conn.query('insert into musuario set ?', usuario, (err, usuariosC) => {
+
                 res.json('Se inserto Satisfactoriamente ');
             });
         });
@@ -1126,11 +1216,56 @@ router.get('/web/vergrupos', (req, res) => {
         res.redirect('/web');
     } else {
         req.getConnection((err, conn) => {
-            conn.query('select * from cgrupo order by nom_gru asc', (err, grupos) => {
+            retornaGruposAutoridad(conn, (grupos) => {
                 res.render('autoridad/grupos', { grupos, usuario: req.session.usuario });
             });
         });
     }
+});
+
+function retornaGruposAutoridad(conn, callback) {
+    let grupoFinal = [],
+        profesor = '';
+    conn.query('select * from cgrupo order by nom_gru asc', (err, grupos) => {
+        grupos.forEach(grupo => {
+            conn.query('select * from eusuariosgrupo natural join musuario where (id_gru = ? and (id_tus = 3 or id_tus = 4))', grupo.id_gru, (err, profesorGrupo) => {
+                if (profesorGrupo.length > 0) {
+                    profesor = profesorGrupo[0].nom_usu
+                } else {
+                    profesor = null;
+                }
+                let json = {
+                    'id_gru': grupo.id_gru,
+                    'nom_gru': grupo.nom_gru,
+                    'cla_gru': grupo.cla_gru,
+                    'prof_gru': profesor
+                }
+                grupoFinal.push(json);
+            });
+        });
+        setTimeout(() => {
+            callback(grupoFinal);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    });
+}
+
+router.get('/web/ver_reportes_general', (req, res) => {
+    if (req.session.usuario.id_tus == 4) {
+        req.app.locals.layout = 'autoridad';
+        req.getConnection((err, conn) => {
+            conn.query('select * from cgrupo order by nom_gru', (err, grupos) => {
+                conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
+                    conn.query('select * from ctemas order by nom_tem', (err, temas) => {
+                        res.render('autoridad/reportes', { grupos, cuestionarios, temas });
+                    });
+                });
+            });
+        });
+    } else {
+        res.redirect('/web');
+    }
+
+
 });
 
 /**
@@ -1142,7 +1277,7 @@ router.get('/web/generarToken:id_usuario', (req, res) => {
     req.app.locals.layout = 'autoridad';
     req.getConnection((err, conn) => {
         token.generar(tok => {
-            conn.query('update musuario set tok_usu = ? where id_usu = ?', [tok, id], (err, estado) => {
+            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id], (err, estado) => {
                 if (estado) res.json(estado);
             });
         });
@@ -1150,9 +1285,15 @@ router.get('/web/generarToken:id_usuario', (req, res) => {
     });
 });
 
-router.get('/web/landingpage', (req, res) => {
-    req.app.locals.layout = 'landing';
-    res.render('sin-sesion/landing');
-});
+function generarToken(id_usu) {
+    req.getConnection((err, conn) => {
+        token.generar(tok => {
+            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id_usu], (err, estado) => {
+                if (estado) console.log(estado);
+            });
+        });
+
+    });
+}
 
 module.exports = router;

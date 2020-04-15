@@ -1,28 +1,40 @@
 
 <div class="row">
-    <div class="container">
-        <div class="col s12" id="menu_nav_reportes" style="display: none;">
-            <a class="btn indigo lighten-1 waves-effect"
-                href="javascript:void(0);" onclick="cargaGraficas(); obtenerAlumnos(-1);
+    <div class="row">
+        <div class="container">
+            <div class="col s6" id="menu_nav_reportes" style="display: none;">
+            <select id="grupos_generales" onchange="
+            if(document.getElementById('grupos_generales').value == -1){
+                cargaGraficas(); obtenerAlumnos(-1);
                 document.getElementById('grupo_ver').value = -1;
                 document.getElementById('alumno_ver').value = -1;
                 document.getElementById('cuestionario_ver').value = -1;
                 document.getElementById('tema_ver').value = -1;
                 document.getElementById('temaSeleccionado').value = '-1';
-                $('#temaSeleccionado').formSelect();">General</a>
-            {{#each grupos}}
-            <a class="btn indigo lighten-1 waves-effect"
-                href="javascript:void(0);"
-                onclick="cargarGraficasGrupo({{id_gru}},'{{nom_gru}}');
-                obtenerAlumnos({{id_gru}}); 
-                document.getElementById('grupo_ver').value = {{id_gru}};
+                $('#temaSeleccionado').formSelect();
+            }else{
+                cargarGraficasGrupo(document.getElementById('grupos_generales').value, 
+                document.getElementById('grupos_generales').options[document.getElementById('grupos_generales').selectedIndex].text);
+                obtenerAlumnos(document.getElementById('grupos_generales').value); 
+                document.getElementById('grupo_ver').value = document.getElementById('grupos_generales').value;
                 document.getElementById('alumno_ver').value = -1;
                 document.getElementById('cuestionario_ver').value = -1;
                 document.getElementById('tema_ver').value = -1;
                 document.getElementById('temaSeleccionado').value = '-1';
-                $('#temaSeleccionado').formSelect();">{{nom_gru}}</a>
-            {{/each}}
-        </div><br><br>
+                $('#temaSeleccionado').formSelect();
+            }
+            ">
+                <option value="-1">Todos los grupos</option>
+                {{#each grupos}}
+                <option value="{{id_gru}}">{{nom_gru}}</option>
+                {{/each}}
+            </select>
+            
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        
         <div class="col s6 red-text" id="menu_nav_reportes_cuestionario"
             style="display:
             none;">

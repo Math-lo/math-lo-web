@@ -74,7 +74,7 @@ function mostrarAlumnos(id_gru) {
             let tbody = $('#tabla_alumnos');
             let n = 1;
             tbody.html('');
-            alumnos.forEach(alumno => {
+            alumnos[0].forEach(alumno => {
                 console.log(alumno);
                 tbody.append(`
                     <tr>
@@ -186,7 +186,7 @@ function eliminarUsuario(id_usu) {
         },
         success: (response) => {
             M.toast({ html: response, classes: 'rounded' });
-            mostrarUsuarios(id_usu);
+            mostrarUsuarios();
         }
     });
 }
@@ -206,7 +206,7 @@ function AgregarUsuarioAjax(nom_usu, app_usu, id_tus, cor_usu, pas_usu) {
         success: (response) => {
             console.log(nom_usu);
             M.toast({ html: response, classes: 'rounded' });
-            mostrarUsuarios(1);
+            mostrarUsuarios();
         }
     });
 }

@@ -114,16 +114,27 @@ function grupoCuestionario(id_gru, id_cue) {
         url: `http://localhost:8000/gamma/generalGroupQuestionnaire/${id_gru}/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica1').html('');
-            drawChart(res, `Aprobados y reprobados del cuestionario en el grupo`, 'grafica1');
+            if (res.length <= 1) {
+                $('#grafica1').html('');
+                document.getElementById('grafica1').innerHTML = '<center><h2>Lo sentimos pero este grupo con este cuestionario no cuenta con reportes</h2></center>'
+            } else {
+                $('#grafica1').html('');
+                drawChart(res, `Aprobados y reprobados del cuestionario en el grupo`, 'grafica1');
+            }
+
         }
     })
     $.ajax({
         url: `http://localhost:8000/gamma/questionnaireGradeGroup/${id_gru}/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica2').html('');
-            drawChartBar(res, `Correctas e incorrectas del cuestionario en el grupo`, `Por pregunta`, 'grafica2');
+            if (res.length <= 1) {
+                $('#grafica2').html('');
+            } else {
+                $('#grafica2').html('');
+                drawChartBar(res, `Correctas e incorrectas del cuestionario en el grupo`, `Por pregunta`, 'grafica2');
+            }
+
         }
     })
 }
@@ -134,15 +145,27 @@ function cuestionaire(id_cue) {
         url: `http://localhost:8000/gamma/generalQuestionnaire/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            drawChart(res, `Aprobados y reprobados del cuestionario general`, 'grafica3');
+            if (res.length <= 1) {
+                $('#grafica3').html('');
+                document.getElementById('grafica3').innerHTML = '<center><h2>Lo sentimos pero cuestionario no cuenta con reportes</h2></center>'
+            } else {
+                $('#grafica3').html('');
+                drawChart(res, `Aprobados y reprobados del cuestionario general`, 'grafica3');
+            }
+
         }
     })
     $.ajax({
         url: `http://localhost:8000/gamma/questionnaireGrades/${id_cue}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica4').html('');
-            drawChartBar(res, `Aciertos e incorrectos del cuestionario`, 'General', 'grafica4');
+            if (res.length <= 1) {
+                $('#grafica4').html('');
+            } else {
+                $('#grafica4').html('');
+                drawChartBar(res, `Aciertos e incorrectos del cuestionario`, 'General', 'grafica4');
+            }
+
         }
     })
 }
@@ -153,8 +176,14 @@ function alumnoCuestionario(id_alum, id_cues) {
         url: `http://localhost:8000/gamma/questionnaireAlumno/${id_alum}/${id_cues}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica1').html('');
-            drawChart(res, `Correctas e incorrectas del cuestionario del alumno`, 'grafica1');
+            if (res.length <= 1) {
+                $('#grafica1').html('');
+                document.getElementById('grafica1').innerHTML = '<center><h2>Lo sentimos pero este alumno con este cuestionario no cuenta con reportes</h2></center>'
+            } else {
+                $('#grafica1').html('');
+                drawChart(res, `Correctas e incorrectas del cuestionario del alumno`, 'grafica1');
+            }
+
         }
     })
 }
@@ -165,8 +194,14 @@ function alumnoTema(id_alu, id_tema) {
         url: `http://localhost:8000/gamma/questionnairesAlumnoTopic/${id_alu}/${id_tema}/`,
         method: 'GET',
         success: (res) => {
-            $('#grafica1').html('');
-            drawChart(res, `Correctas e incorrectas del alumno en el tema`, 'grafica1');
+            if (res.length <= 1) {
+                $('#grafica1').html('');
+                document.getElementById('grafica1').innerHTML = '<center><h2>Lo sentimos pero este alumno con este tema no cuenta con reportes</h2></center>'
+            } else {
+                $('#grafica1').html('');
+                drawChart(res, `Correctas e incorrectas del alumno en el tema`, 'grafica1');
+            }
+
         }
     })
 }

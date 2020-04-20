@@ -313,3 +313,78 @@ function crearSelectMaterialize(arreglo, id_select, general) {
     });
 }
 /* Fin de funciones generales */
+
+/* Inicio de vista grupos */
+
+/**Funcion para cambiar el profesor de un grupo
+ * 
+ * @param {int} id_prof identificador del profesor que se va a setear
+ * @param {int} id_gru identificador del grupo a modificar el profesor
+ */
+function cambiarProfesorGrupo(id_prof, id_gru) {
+    $.ajax({
+        url: '/web/updateTeacherGroup',
+        method: 'POST',
+        data: {
+            id_prof,
+            id_gru
+        },
+        success: (res) => {
+            M.toast({ html: res, classes: 'rounded' });
+            takeAutorityGroups();
+        }
+    });
+}
+
+/**Función para eliminar el profesor de un grupo
+ * 
+ * @param {int} id_gru identificador del grupo donde se eliminara el profesor
+ */
+function deleteTeacherGroup(id_gru) {
+    $.ajax({
+        url: '/web/deleteTeacherGroup',
+        method: 'POST',
+        data: {
+            id_gru
+        },
+        success: (res) => {
+            M.toast({ html: res, classes: 'rounded' });
+            takeAutorityGroups();
+        }
+    });
+}
+
+/**
+ * Función para actualizar los datos de la tabla de grupos
+ */
+function takeAutorityGroups() {
+    $.ajax({
+        url: '/web/takeAutorityGroup',
+        method: 'POST',
+        success: (res) => {
+            let html = '';
+            res.forEach(grupo => {
+                if (grupo.prof_gru == null) grupo.prof_gru = '';
+                if (grupo.cla_gru == null) grupo.cla_gru = '';
+                html += `
+                <tr>
+                <td>${grupo.nom_gru}</td>
+                <td contenteditable="true" id="clave${grupo.id_gru}">${grupo.cla_gru}</td>
+                <td>${grupo.prof_gru}</td>
+                <td>
+                    <a href="javascript:void(0);" onclick="modificarClaveGrupo(${grupo.id_gru}, document.getElementById('clave${grupo.id_gru}').innerText);" class="waves-effect waves-teal btn-flat">Modificar clave</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0);" onclick="deleteTeacherGroup(${grupo.id_gru});" class="waves-effect waves-teal btn-flat">Quitar profesor</a>
+                </td>
+                <td>
+                    <a href="#tabla_alumnos" onclick="mostrarAlumnos(${grupo.id_gru});" class="waves-effect waves-teal btn-flat">Ver alumnado</a>
+                </td>
+                </tr>
+                `
+            });
+            $('#tabla_grupos').html(html);
+        }
+    });
+}
+/* Fin de la vista grupos */

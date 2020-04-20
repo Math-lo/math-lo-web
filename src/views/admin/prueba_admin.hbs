@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="content-wrapper-before " style="background-color:#857703"></div>
+    <div class="content-wrapper-before gradient-45deg-green-teal gradient-shadow "></div>
     <div class="col s12">
         <div class="container">
             <!-- invoice list -->
@@ -7,11 +7,33 @@
                 <!-- create invoice button-->
                 <!-- Options and filter dropdown button-->
                 <!-- create invoice button-->
-                <button class="btn waves-effect waves-light" type="submit" name="action"
+                <div class="row">
+                    <div class="container">
+                        <div class="col s6">
+                             <button class="btn waves-effect waves-light deep-purple accent-1" name="action"
                                                     href="#modal3" id="send">
                                                     <i class="fas fa-edit"></i>
                                                     <a class="modal-trigger btn-flat" href="#modal3">Agregar</a>  
                                                     </button>
+                        </div>
+                        <div class="col s6 deep-purple accent-1 border-radius-10">
+                            <input type="text" id="correo_cambiar_tipo" placeholder="Correo electronico">
+                            <select id="modificar_tipo_usuario">
+                    <option value="" disabled selected>Cambiar tipo de usuario</option>
+                    <option value="1">Alumno</option>
+                    <option value="2">Tutor</option>
+                    <option value="3">Profesor</option>
+                    <option value="4">Autoridad</option>
+                </select>
+                            <button class="btn waves-effect waves-light deep-purple accent-2" onclick="cambiarTipoUsuario('correo_cambiar_tipo', 'modificar_tipo_usuario');">
+                    <i class="fas fa-edit"></i>
+                    <a class="white-text">Modificar</a>  
+                </button><br><br>
+                        </div>
+                    </div>
+                </div>
+                
+                
                 <h3>Usuarios</h3>
                 <div class="responsive-table">
                     <div class="dataTables_wrapper no-footer">
@@ -46,7 +68,7 @@
                                             <td  contenteditable="true" id="cor_usu{{id_usu}}">{{cor_usu}}</td>
                                             <td>{{cat_tus}}</td>
                                             <td>
-                                                <a href="javascript:void(0);" onclick="modificarUsuario({{id_usu}}, document.getElementById('nom_usu{{id_usu}}').innerText,document.getElementById('cor_usu{{id_usu}}').innerText);" class="waves-effect waves-teal btn-flat">Modificar clave</a>
+                                                <a href="javascript:void(0);" onclick="modificarUsuario({{id_usu}}, document.getElementById('nom_usu{{id_usu}}').innerText,document.getElementById('cor_usu{{id_usu}}').innerText);" class="waves-effect waves-teal btn-flat">Modificar usuario</a>
                                             </td>
                                             <td>
                                                 <a href="javascript:void(0);" onclick="eliminarUsuario({{id_usu}});" class="waves-effect waves-teal btn-flat">Eliminar</a>

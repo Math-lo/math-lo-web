@@ -294,6 +294,16 @@ router.get('/web/preguntas', (req, res) => {
 
 });
 
+router.post('/web/updateUserType', (req, res) => {
+    req.getConnection((err, conn) => {
+        conn.query('update musuario set id_tus = ? where cor_usu = ?', [req.body.val, req.body.cor], (err, state) => {
+            if (!err) res.json('Usuario modificado satisfactoriamente');
+            console.log(state);
+
+        });
+    });
+});
+
 router.get('/web/cuestionarios', (req, res) => {
     let sesionAd = false;
     let sesionA = false;
@@ -508,7 +518,6 @@ router.post('/web/modificarClaveGrupo', (req, res) => {
 
 });
 router.post('/web/getUsuariosAjax', (req, res) => {
-    const { id_usu } = req.body;
     req.getConnection((err, conn) => {
         conn.query('select * from musuario natural join ctipousuario ', (err, usuConsul) => {
             console.log('el error es: ', err);
@@ -1131,6 +1140,38 @@ router.get('/web/ModifyUsAd2.0', (req, res) => {
     res.render('admin/ModificarAd2');
 });
 
+router.post('/web/updateTeacherGroup', (req, res) => {
+    req.getConnection((err, conn) => {
+        let data = {
+            'id_usu': req.body.id_prof,
+            'id_gru': req.body.id_gru
+        }
+        conn.query('select * from eusuariosgrupo natural join musuario where (id_gru = ? and (id_tus = 3 or id_tus = 4))', data.id_gru, (err, encargados) => {
+            encargados.forEach(encargado => {
+                conn.query('delete from eusuariosgrupo where id_ugr = ?', encargado.id_ugr, (err, state) => {
+                    if (err) console.log(err);
+                });
+            });
+        });
+        conn.query('insert into eusuariosgrupo set ?', data, (err, state) => {
+            if (state) res.json('Profesor modificado satisfactoriamente');
+        });
+    });
+});
+
+router.post('/web/deleteTeacherGroup', (req, res) => {
+    req.getConnection((err, conn) => {
+        conn.query('select * from eusuariosgrupo natural join musuario where (id_gru = ? and (id_tus = 3 or id_tus = 4))', req.body.id_gru, (err, profesores) => {
+            profesores.forEach(profesor => {
+                conn.query('delete from eusuariosgrupo where id_ugr = ?', profesor.id_ugr, (err, state) => {
+                    if (err) console.log(err);
+                });
+            });
+            res.json('Profesor eliminado satisfactoriamente');
+        });
+    });
+});
+
 /*-----------------------------------------Fin Administrador---------------------------------------------------*/
 /*-----------------------------------------CUESTIONARIO---------------------------------------------------*/
 router.post('/web/Addquestions/:questions', (req, res) => {
@@ -1211,16 +1252,35 @@ router.post('/web/AddQuizz', (req, res) => {
  */
 
 router.get('/web/vergrupos', (req, res) => {
-    req.app.locals.layout = 'autoridad';
-    if (req.session.usuario.id_tus != 4) {
-        res.redirect('/web');
-    } else {
+    if (req.session.usuario.id_tus == 4) {
+        req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             retornaGruposAutoridad(conn, (grupos) => {
-                res.render('autoridad/grupos', { grupos, usuario: req.session.usuario });
+                conn.query('select * from musuario where id_tus = 3 or id_tus = 4', (err, profesores) => {
+                    res.render('autoridad/grupos', { grupos, usuario: req.session.usuario, profesores });
+                });
             });
         });
+    } else if (req.session.usuario.id_tus == 5) {
+        req.app.locals.layout = 'Administrador2';
+        req.getConnection((err, conn) => {
+            retornaGruposAutoridad(conn, (grupos) => {
+                conn.query('select * from musuario where id_tus = 3 or id_tus = 4', (err, profesores) => {
+                    res.render('admin/gruposGenerales', { grupos, usuario: req.session.usuario, profesores });
+                });
+            });
+        });
+    } else {
+        res.redirect('/web');
     }
+});
+
+router.post('/web/takeAutorityGroup', (req, res) => {
+    req.getConnection((err, conn) => {
+        retornaGruposAutoridad(conn, (grupos) => {
+            res.json(grupos);
+        });
+    });
 });
 
 function retornaGruposAutoridad(conn, callback) {
@@ -1252,6 +1312,17 @@ function retornaGruposAutoridad(conn, callback) {
 router.get('/web/ver_reportes_general', (req, res) => {
     if (req.session.usuario.id_tus == 4) {
         req.app.locals.layout = 'autoridad';
+        req.getConnection((err, conn) => {
+            conn.query('select * from cgrupo order by nom_gru', (err, grupos) => {
+                conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
+                    conn.query('select * from ctemas order by nom_tem', (err, temas) => {
+                        res.render('autoridad/reportes', { grupos, cuestionarios, temas });
+                    });
+                });
+            });
+        });
+    } else if (req.session.usuario.id_tus = 5) {
+        req.app.locals.layout = 'Administrador2';
         req.getConnection((err, conn) => {
             conn.query('select * from cgrupo order by nom_gru', (err, grupos) => {
                 conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {

@@ -74,7 +74,15 @@ router.get('/web', (req, res) => {
         }
         if (req.session.usuario.id_tus == 2) {
             req.app.locals.layout = 'tutor';
-            res.render('tutor/inicio', { usuario: req.session.usuario });
+            req.getConnection((err, conn) => {
+                conn.query('select * from musuario where id_usu = ?', req.session.usuario.id_usu, (err, usuario) => {
+                    callStudentsTutor(conn, usuario[0].curp_usu, estudiantes => {
+                        res.render('tutor/inicio', { estudiantes, usuario: req.session.usuario });
+                    });
+                });
+
+            });
+
         }
         if (req.session.usuario.id_tus == 3) {
             req.app.locals.layout = 'profesor';
@@ -90,25 +98,7 @@ router.get('/web', (req, res) => {
         if (req.session.usuario.id_tus == 4) {
             req.app.locals.layout = 'autoridad';
             req.getConnection((err, conn) => {
-                /*conn.query('select * from cunidadaprendizaje', (err, unidades_aprendizaje) => {
-                    conn.query('select * from ctemas natural join cunidadaprendizaje', (err, temas) => {
-                        conn.query('select * from mapoyos natural join ctemas order by nom_tem asc', (err, apoyos) => {
-                            conn.query('select * from cgrupo', (err, grupos) => {
-                                res.render('autoridad/inicio', {
-                                    usuario: req.session.usuario,
-                                    unidades_aprendizaje,
-                                    apoyos,
-                                    grupos,
-                                    temas
-                                });
-                            });
 
-
-                        });
-
-                    });
-
-                });*/
                 conn.query('select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu = ? order by nom_gru asc', req.session.usuario.id_usu, (err, grupos) => {
                     retornaGrupos(grupos, conn, (grupos) => {
                         res.render('autoridad/inicio', { grupos, usuario: req.session.usuario });
@@ -139,6 +129,107 @@ router.get('/web/gruposAd', (req, res) => {
             });
         });
 
+    });
+});
+
+function callStudentsTutor(conn, curps, callback) {
+    let curp = curps.split(',');
+    console.log(curps);
+    let grupos = [];
+    curp.forEach(curp_individual => {
+        conn.query('select * from eusuariosgrupo natural join musuario natural join cgrupo where (id_tus = 1 and curp_usu = ?)', curp_individual, (err, grupo) => {
+            grupo.forEach(g => {
+                if (!grupos.includes(g)) grupos.push(g);
+            });
+        });
+    });
+    setTimeout(() => {
+        callback(grupos);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+}
+
+router.post('/web/registerStudent', (req, res) => {
+    let id_usu = req.body.id_usu;
+    let curp = req.body.curp;
+    req.getConnection((err, conn) => {
+        conn.query('select * from musuario where (curp_usu = ? and id_tus = 1)', cifrado.cifrar(curp), (err, usuario1) => {
+            if (usuario1.length < 1) {
+                res.json('Alumno inexistente en el registro');
+            } else {
+                conn.query('select * from musuario where id_usu = ?', id_usu, (err, usuario) => {
+                    conn.query('update musuario set curp_usu = ? where id_usu = ?', [usuario[0].curp_usu + ',' + cifrado.cifrar(curp), id_usu], (err, state) => {
+                        if (!err) res.json('Alumno agregado satisfactoriamente');
+                    });
+                });
+            }
+        });
+
+    });
+});
+
+router.post('/web/deleteStudent', (req, res) => {
+    let curp = req.body.curp_usu;
+    let id = req.session.usuario.id_usu;
+    req.getConnection((err, conn) => {
+        conn.query('select * from musuario where id_usu = ?', id, (err, usuario) => {
+            let curps = usuario[0].curp_usu.split(',');
+            getFinalCurp(curps, curp, (str_curp) => {
+                conn.query('update musuario set curp_usu = ? where id_usu = ?', [str_curp, id], (err, state) => {
+                    if (!err) res.json('Alumno eliminado satisfactoriamente');
+                });
+            });
+        });
+    });
+});
+
+function getFinalCurp(curps, curp, callback) {
+    let curp_final = '';
+    curps.forEach(curp_individual => {
+        if (curp_individual != curp) {
+            curp_final += curp_individual + ','
+        }
+    });
+    setTimeout(() => {
+        callback(curp_final);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+}
+
+router.post('/web/resetTutor', (req, res) => {
+    req.getConnection((err, conn) => {
+        conn.query('select * from musuario where id_usu = ?', req.session.usuario.id_usu, (err, usuario) => {
+            callStudentsTutor(conn, usuario[0].curp_usu, estudiantes => {
+                res.json(estudiantes);
+            });
+        });
+
+    });
+});
+
+router.post('/web/seeReportsTutor', (req, res) => {
+    let grupo = req.body.id_grupo;
+    req.getConnection((err, conn) => {
+        conn.query('select * from ecuestionario order by fec_fin desc', (err, cuestionarios) => {
+            let array = [],
+                cuestionariosGrupo = [];
+            cuestionarios.forEach(cuestionario => {
+                array = cuestionario.id_gru.split(',');
+                array.forEach(id => {
+                    if (id == grupo && !cuestionariosGrupo.includes([cuestionario.id_cue, cuestionario.nom_cue])) {
+                        cuestionariosGrupo.push([cuestionario.id_cue, cuestionario.nom_cue]);
+                    }
+                });
+            });
+            conn.query('select * from ctemas', (err, temasCr) => {
+                let temas = [];
+                temasCr.forEach(tema => {
+                    temas.push([tema.id_tem, tema.nom_tem]);
+                    if (temasCr.indexOf(tema) == (temasCr.length - 1)) {
+                        res.json([cuestionariosGrupo, temas]);
+                    }
+                });
+
+            });
+        });
     });
 });
 
@@ -659,29 +750,30 @@ router.post('/web/registrar', (req, res) => {
         let pas = req.body.contraseña_usuario;
         let tip = req.body.tipo_usuario;
         let curp = req.body.curp_alumno.toUpperCase();
-
-        let usuario = {
-            "nom_usu": nombre,
-            "curp_usu": curp,
-            "cor_usu": cor,
-            "pas_usu": pas,
-            "id_tus": tip
-        }
-        console.log(usuario);
-
-        req.getConnection(async(err, conn) => {
-            await conn.query(`select * from musuario where nom_usu = '${usuario.nom_usu}' or cor_usu = ' ${usuario.cor_usu}'`, (err, usuarioExistente) => {
-                if (usuarioExistente.length < 1) {
-                    usuario.pas_usu = cifrado.cifrar(usuario.pas_usu);
-                    usuario.curp_usu = cifrado.cifrar(usuario.curp_usu);
-                    req.session.usuario_sin_verificar = usuario;
-                    mail.envia(usuario.cor_usu, mail.generaCodigo(usuario.cor_usu));
-                    res.redirect('/web/confirmacion_de_usuario');
-                } else {
-                    res.redirect('/web/#inicio');
-                }
+        token.generar(tok => {
+            let usuario = {
+                "nom_usu": nombre,
+                "curp_usu": curp,
+                "cor_usu": cor,
+                "pas_usu": pas,
+                "tok_usu": tok,
+                "id_tus": tip
+            }
+            req.getConnection(async(err, conn) => {
+                await conn.query(`select * from musuario where nom_usu = '${usuario.nom_usu}' or cor_usu = ' ${usuario.cor_usu}'`, (err, usuarioExistente) => {
+                    if (usuarioExistente.length < 1) {
+                        usuario.pas_usu = cifrado.cifrar(usuario.pas_usu);
+                        usuario.curp_usu = cifrado.cifrar(usuario.curp_usu);
+                        req.session.usuario_sin_verificar = usuario;
+                        mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
+                        res.redirect('/web/confirmacion_de_usuario');
+                    } else {
+                        res.redirect('/web');
+                    }
+                });
             });
         });
+
     }
 });
 
@@ -695,13 +787,12 @@ router.get('/web/confirmacion_de_usuario', (req, res) => {
 
 router.post('/web/confirmacion', (req, res) => {
     if (!req.body.codigo_confirmacion) {
-        res.redirect('/web/');
+        res.redirect('/web');
     } else {
-        if (mail.generaCodigo(req.session.usuario_sin_verificar.cor_usu) == req.body.codigo_confirmacion) {
-            req.session.usuario = req.session.usuario_sin_verificar
+        if (req.session.usuario_sin_verificar.tok_usu + mail.generaCodigo(req.session.usuario_sin_verificar.cor_usu) == req.body.codigo_confirmacion) {
+            req.session.usuario = req.session.usuario_sin_verificar;
             req.getConnection((err, conn) => {
                 conn.query(`insert into musuario set ?`, req.session.usuario_sin_verificar, (err, usuarioInsertado) => {
-                    generarToken(usuarioInsertado.insertedID);
                     req.session.usuario_sin_verificar = undefined;
                     res.redirect('/web');
                 });
@@ -896,8 +987,7 @@ router.post('/web/iniciar', (req, res) => {
                     req.session.usuario = usuario;
                     res.redirect('/web');
                 } else {
-                    req.app.locals.layout = 'main';
-                    res.redirect('/web/#inicia');
+                    res.json('Usuario inexistente con estas credenciales');
                 }
             });
         });
@@ -1343,16 +1433,27 @@ router.get('/web/ver_reportes_general', (req, res) => {
  * Fin de autoridad
  */
 
-router.get('/web/generarToken:id_usuario', (req, res) => {
+router.get('/web/curp_cifrar:id_usuario', (req, res) => {
     let id = req.params.id_usuario;
-    req.app.locals.layout = 'autoridad';
     req.getConnection((err, conn) => {
-        token.generar(tok => {
-            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id], (err, estado) => {
-                if (estado) res.json(estado);
-            });
+        conn.query('select * from musuario where id_usu = ?', id, (err, usuario) => {
+            if (usuario.length > 0) {
+                conn.query('update musuario set curp_usu = ? where id_usu = ?', [cifrado.cifrar(usuario[0].curp_usu), id], (err, state) => {
+                    res.json(state);
+                });
+            } else {
+                res.json(id);
+            }
         });
+    });
+});
 
+router.get('/web/obtenerCurp:id', (req, res) => {
+    let id = req.params.id;
+    req.getConnection((err, conn) => {
+        conn.query('select * from musuario where id_usu = ?', id, (err, usuario) => {
+            res.json(cifrado.desencriptar(usuario[0].curp_usu));
+        });
     });
 });
 

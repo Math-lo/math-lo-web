@@ -1,15 +1,95 @@
-<div class="parallax-container">
-    <div class="parallax"><img src="images_algebra/parallax12.png"></div>
-</div>
-<div class="section white z-depth-5">
-    <h2 class="header center-align">Bienvenido {{usuario.nom_usu}}</h2>
-    <div class="row container">
-        <h4 class="grey-text text-darken-3 lighten-3 center-align">
-            Bienvenido a una nueva experiencia para su hijo en las matematicas, aqui usted podra
-            visualizar el progreso, areas de mejoria y fortalezas de su hijo(a)
-        </h4>
+<div id="Container_students">
+{{#each estudiantes}}
+<div class="row">
+    <div class="container">
+        <div class="col s6">
+            <a href="javascript:void(0);" onclick="seeReports({{id_usu}},'{{nom_usu}}', {{id_gru}});"> 
+                <div class="card" style="padding: 30px 10px;">
+                    {{nom_usu}} {{nom_gru}}
+                    <a href="javascript:void(0);" onclick="deleteStudent('{{curp_usu}}');"
+                     class="btn btn-flat btn-light-deep-purple" style="float: right;">Eliminar</a>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
-<div class="parallax-container">
-    <div class="parallax"><img src="images_algebra/parallax12.png"></div>
+{{/each}}
 </div>
+<div class="row">
+    <div class="container">
+        <div class="col s6">
+            <div class="card">
+                <input type="text" placeholder="CURP" id="curp_student">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="container">
+        <div class="col s6">
+            <div class="card">
+                <a class="btn btn-flat btn-light-cyan" onclick="RegisterStudent('curp_student', {{usuario.id_usu}});" style="width: 100%;">Agregar alumno</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container">
+        <div class="col s12">
+            <p id="nombre_alumno"></p>
+        </div>
+        <div class="col s6" id="menu_nav_reportes_cuestionario"
+            style="display:none;">
+            <select id="cuestionarioSeleccionado" class="red-text" 
+            onchange="document.getElementById('cuestionario_ver').value = document.getElementById('cuestionarioSeleccionado').value">
+                
+            </select>
+            <input type="hidden" value= -1 id="grupo_ver">
+            <input type="hidden" value= -1 id="cuestionario_ver">
+            <input type="hidden" value= -1 id="tema_ver">
+            <input type="hidden" value= -1 id="alumno_ver">
+            <a class="btn btn-flat btn-light-blue" id="btn_filtro" onclick="filtrarGraficas();"
+                href="javascript:void(0);">Aceptar</a>
+        </div>
+        </div>
+        <div class="col s6" id="menu_temas_seleccionados" style="display: none;">
+            <select id="temaSeleccionado" onchange="document.getElementById('tema_ver').value = document.getElementById('temaSeleccionado').value">
+                
+            </select>
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s12">
+                            <div id="grafica1"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica2"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica3"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica4"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica5"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- GRAFICAS -->
+<script src="/app-assets/js/custom/graficas.js"></script>
+<!-- FIN GRAFICAS -->

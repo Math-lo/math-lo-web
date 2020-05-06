@@ -148,7 +148,7 @@ function callStudentsTutor(conn, curps, callback) {
     }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
 }
 
-router.post('/web/registerStudent', (req, res) => {
+router.post('/web/}', (req, res) => {
     let id_usu = req.body.id_usu;
     let curp = req.body.curp;
     req.getConnection((err, conn) => {
@@ -1321,10 +1321,13 @@ router.post('/web/Addquestion', (req, res) => {
 
 router.post('/web/AddQuizz', (req, res) => {
     req.app.locals.layout = 'profesor';
-    console.log(req.body, "VAYA");
     req.getConnection((err, conn) => {
+        let todaydate = new Date();
+        let today = todaydate.getFullYear() + "-" + (todaydate.getMonth() + 1) + "-" + todaydate.getDate();
         let elements = {
             "nom_cue": req.body.nombre,
+            "fec_ini": req.body.date,
+            "fec_fin": today,
             "id_bpr": req.body.element.toString(),
             "id_gru": req.body.group.toString()
         }

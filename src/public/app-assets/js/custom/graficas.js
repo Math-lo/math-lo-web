@@ -1,5 +1,7 @@
 google.charts.load('current', { 'packages': ['corechart'] });
 google.charts.load('current', { 'packages': ['bar'] });
+//const url = 'https://www.mychemistlab.com.mx/django/math.lo';
+const url = 'http://localhost:8000';
 
 function limpiaGraficas() {
     $('#grafica1').html('');
@@ -40,7 +42,7 @@ function cargaGraficas() {
     $('#menu_nav_reportes_alumnos').css('display', 'none');
     limpiaGraficas();
     $.ajax({
-        url: 'http://localhost:8000/gamma/generalGrades/',
+        url: `${url}/gamma/generalGrades/`,
         method: 'GET',
         success: (res) => {
             $('#btn_inicio').html('');
@@ -53,7 +55,7 @@ function cargaGraficas() {
         }
     });
     $.ajax({
-        url: 'http://localhost:8000/gamma/generalColumnTopic/',
+        url: `${url}/gamma/generalColumnTopic/`,
         method: 'GET',
         success: (res) => {
             drawChartBar(res, 'Temas', 'Puntaje por temas', 'grafica4');
@@ -66,7 +68,7 @@ function cargarGraficasGrupo(id_gru, nom_gru) {
     $('#menu_temas_seleccionados').css('display', 'inline-block');
     limpiaGraficas();
     $.ajax({
-        url: `http://localhost:8000/gamma/generalColumnGroupTopic/${id_gru}/`,
+        url: `${url}/gamma/generalColumnGroupTopic/${id_gru}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -111,7 +113,7 @@ function filtrarGraficas() {
 function grupoCuestionario(id_gru, id_cue) {
     limpiaGraficas();
     $.ajax({
-        url: `http://localhost:8000/gamma/generalGroupQuestionnaire/${id_gru}/${id_cue}/`,
+        url: `${url}/gamma/generalGroupQuestionnaire/${id_gru}/${id_cue}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -125,7 +127,7 @@ function grupoCuestionario(id_gru, id_cue) {
         }
     })
     $.ajax({
-        url: `http://localhost:8000/gamma/questionnaireGradeGroup/${id_gru}/${id_cue}/`,
+        url: `${url}/gamma/questionnaireGradeGroup/${id_gru}/${id_cue}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -142,7 +144,7 @@ function grupoCuestionario(id_gru, id_cue) {
 function cuestionaire(id_cue) {
     limpiaGraficas();
     $.ajax({
-        url: `http://localhost:8000/gamma/generalQuestionnaire/${id_cue}/`,
+        url: `${url}/gamma/generalQuestionnaire/${id_cue}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -156,7 +158,7 @@ function cuestionaire(id_cue) {
         }
     })
     $.ajax({
-        url: `http://localhost:8000/gamma/questionnaireGrades/${id_cue}/`,
+        url: `${url}/gamma/questionnaireGrades/${id_cue}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -173,7 +175,7 @@ function cuestionaire(id_cue) {
 function alumnoCuestionario(id_alum, id_cues) {
     limpiaGraficas();
     $.ajax({
-        url: `http://localhost:8000/gamma/questionnaireAlumno/${id_alum}/${id_cues}/`,
+        url: `${url}/gamma/questionnaireAlumno/${id_alum}/${id_cues}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {
@@ -191,7 +193,7 @@ function alumnoCuestionario(id_alum, id_cues) {
 function alumnoTema(id_alu, id_tema) {
     limpiaGraficas();
     $.ajax({
-        url: `http://localhost:8000/gamma/questionnairesAlumnoTopic/${id_alu}/${id_tema}/`,
+        url: `${url}/gamma/questionnairesAlumnoTopic/${id_alu}/${id_tema}/`,
         method: 'GET',
         success: (res) => {
             if (res.length <= 1) {

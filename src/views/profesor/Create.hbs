@@ -1,4 +1,20 @@
-<section id="main-container">
+<style>
+body{
+  margin: 0;
+  padding: 0;
+  min-height:100vh; 
+}
+.main-container,.second{
+width: 50%;
+}
+.second{
+  color: aquamarine;
+  background-color: black;
+
+}
+
+</style>
+<section id="main-container" class="main-container">
 	<div class="container">
 		<div clas="row">
 			<div class="col s10 push-s1">
@@ -10,6 +26,7 @@
 								<div id="quizz" class="quizz">
                 <h3>Creación de cuestionario</h3>
                 <h5>Selecciona los grupos</h5> 
+
       <ul class="collection">
         {{#each grupos}}
     <li class="collection-item avatar">
@@ -20,8 +37,34 @@
 </i></a>
     </li>
     {{/each}}
-  </ul>            
-                <h5>Selecciona las preguntas</h5> 
+  </ul>  
+
+
+  <h5>Selecciona las preguntas</h5> 
+    <form name="broswequestion" id="broswequestion" method="POST" action="/web/preguntasx">
+        <label>Dificultades:</label>
+       
+        <select id="broswdif">
+          <option value="0">Todas las dificultades</option>
+          <option value="1">Fácil</option>
+          <option value="2">Medio</option>   
+           <option value="3">Díficil</option>      
+        </select>
+        <br>
+        <label>Temas:</label>
+       
+        <select id="broswtem">
+          <option value="0">Todos los temas</option>
+          {{#each preguntas}}
+          <option value="{{id_bpr}}">{{con_pre}}</option>
+          {{/each}}
+        </select>
+      <button class="btn waves-effect waves-light"
+         type="submit" name="sendbrows">Buscar
+          <i class="material-icons right">send</i>
+     </button>
+</form>
+  <div cl ass="item">
     <ul class="collection">
         {{#each preguntas}}
     <li class="collection-item avatar">
@@ -32,7 +75,8 @@
     </li>
     {{/each}}
   </ul>  
-                       
+ </div>  
+
             
              <!-- Seleccione una pregunta: 
                 <div class="input-field col s12" id="selects">
@@ -49,27 +93,28 @@
             <form name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
                    Escriba un nombre para el cuestionario
                   <input type="text" id="nombre" name="nombre">
-                  {{#if sesionP}}
+                  Escriba la fecha límite del cuestionario
+                  <input type="date" id="date" name="date">
                    <button class="btn waves-effect waves-light indigo lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
-                  {{else if sesionAd}}
-                   <button class="btn waves-effect waves-light green lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
-                  {{else if sesionA}}
-                   <button class="btn waves-effect waves-light indigo lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
-                  {{/if}}
             </form>
 
 								
                                                                 <p id="avisos"></p>
 							</div>
+    
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+  
 
 </section>
-        
+ 
+<section id="second" class="second">
+ sdasdasd
+</div>          
             
 <script>
     
@@ -103,15 +148,39 @@
         if(att.innerText!="check_box"){
           att.innerText="check_box";
           att.value=true;
-          form.innerHTML+="<input id='group' type='hidden' value='"+id+"' readonly name='group'></input>";
+          form.innerHTML+="<input id='group"+id+"' type='hidden' value='"+id+"' readonly name='group'></input>";
         }else{
           att.innerText="check_box_outline_blank";
-          document.getElementById('element'+id).remove(); 
+          document.getElementById('group'+id).remove(); 
 
         }
     }
     
 </script>
+
+
+
 {{res_cor}}<br>
 {{nom_tem}}<br>
 {{cat_dif}}<br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $('#broswequestion').on('submit', function (e){
+	  e.preventDefault();
+        $.ajax({
+            url:'/web/preguntasx',
+		method:'POST',
+		data:{
+			id_tema:$('#broswtem').val(),
+			id_dif:$('#broswdif').val()
+			},
+      success:function(questions){
+        console.log(questions)
+
+      }
+        })
+    })
+});
+
+</script>

@@ -37,8 +37,7 @@ function calcular_primo(num) {
 
 let storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'uploads/')
-    },
+ cb(null, 'src/public/uploads/')    },   
     filename: function(req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
     }
@@ -56,22 +55,36 @@ router.get('/web', (req, res) => {
         if (req.session.usuario.id_tus == 1) {
             req.getConnection((err, conn) => {
                 conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu=?', req.session.usuario.id_usu, (errConsul, GrupoUsu) => {
-                    GrupoUsu.forEach(element => {
-                        if (element.id_usu == req.session.usuario.id_usu) {
-                            console.log('grupo asignado');
-                            let gru = 1;
-                            req.app.locals.layout = 'alumno';
-                            res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru });
-                        } else {
-                            console.log('grupo sin asignar');
-                            let gru = 0;
-                            req.app.locals.layout = 'alumno';
-                            res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru });
-                        }
-                    });
+                    if(GrupoUsu.length>0){  
+                        conn.query('select nom_usu,cat_tus,id_tus from cgrupo natural join musuario natural join ctipousuario where id_gru=? and id_tus!=5 and id_tus!=4 order by nom_usu asc', GrupoUsu[0].id_gru, (errConsulq, grupoF) => {
+                                if(errConsulq)console.log(errConsulq)
+                                console.log("HOLA ",req.session.usuario.id_tus)
+                        
+                            GrupoUsu.forEach(element => {
+                                if (element.id_usu == req.session.usuario.id_usu) {
+                                    console.log('grupo asignado');
+                                    let gru = 1;
+                                    req.app.locals.layout = 'alumno';
+                                    res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru,grupoF:grupoF});
+                                } else {
+                                    console.log('grupo sin asignar');
+                                    let gru = 0;
+                                    req.app.locals.layout = 'alumno';
+                                    res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru });
+                                }
+                            });
+
+                        });
+                }else{
+                            
+                    req.app.locals.layout = 'alumno';
+                    res.render('alumno/inicio2', { usuario: req.session.usuario });
+                    console.log("No entra")
+                }
+                   
                 });
             });
-        }
+        }else 
         if (req.session.usuario.id_tus == 2) {
             req.app.locals.layout = 'tutor';
             req.getConnection((err, conn) => {
@@ -83,18 +96,18 @@ router.get('/web', (req, res) => {
 
             });
 
-        }
+        }else
         if (req.session.usuario.id_tus == 3) {
             req.app.locals.layout = 'profesor';
             req.getConnection((err, conn) => {
-                conn.query('select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu = ? order by nom_gru asc', req.session.usuario.id_usu, (err, grupos) => {
+                conn.query('select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu = ? ', req.session.usuario.id_usu, (err, grupos) => {
                     retornaGrupos(grupos, conn, (ListaFinal) => {
-                        res.render('profesor/prueba-profesor', { grupos: ListaFinal, usuario: req.session.usuario });
+                        res.render('profesor/prueba-profesor', { grupos: ListaFinal, usuario: req.session.usuario });//si solo agrega la de otro uysuario y sha
                     });
                 });
             });
 
-        }
+        }else 
         if (req.session.usuario.id_tus == 4) {
             req.app.locals.layout = 'autoridad';
             req.getConnection((err, conn) => {
@@ -106,7 +119,7 @@ router.get('/web', (req, res) => {
                 });
             });
 
-        }
+        }else
         if (req.session.usuario.id_tus == 5) {
             req.getConnection((err, conn) => {
                 conn.query('select * from musuario natural join ctipousuario where cor_usu != ? order by nom_usu asc', req.session.usuario.cor_usu, (err2, usuario) => {
@@ -293,20 +306,22 @@ router.get('/web/ver_reportes', (req, res) => {
 // Cerrar sesion
 router.get('/web/logout', (req, res) => {
     req.session.usuario = undefined;
+    req.session = undefined;
     res.redirect('/web');
 });
 
 router.get('/web/apoyos-a-alumnos', (req, res) => {
     let sesionAd = false;
     let sesionA = false;
-    let sesionP = false
+    let sesionP = false;
+    let sesionAl=false;
     if (req.session.usuario.id_tus == 3) {
         sesionP = true;
         req.app.locals.layout = 'profesor';
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
                 });
             });
         });
@@ -316,7 +331,17 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
+                });
+            });
+        });
+    } else if (req.session.usuario.id_tus == 1) {
+        sesionAl = true;
+        req.app.locals.layout = 'alumno';
+        req.getConnection((err, conn) => {
+            conn.query('select * from ctemas', (err, temas) => {
+                conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
                 });
             });
         });
@@ -326,7 +351,7 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
                 });
             });
         });
@@ -348,6 +373,7 @@ router.get('/web/preguntas', (req, res) => {
             conn.query("select * from ctemas", (err2, temas) => {
                 conn.query("select * from cdificultad", (err3, dif) => {
                     conn.query('select * from mbancopreguntas', (err, preguntas) => {
+                        console.log(preguntas);
                         res.render('profesor/questions', { temas: temas, dif: dif, preguntas: preguntas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                     });
                 })
@@ -391,14 +417,45 @@ router.post('/web/updateUserType', (req, res) => {
             if (!err) res.json('Usuario modificado satisfactoriamente');
             console.log(state);
 
+        });//abre el localhost plox :c
+    });
+});
+router.post('/web/updatePre', (req, res) => {
+    let id=req.body.id_bpr;
+    let data={
+        "con_pre":req.body.con_pre,
+        "opc_a":req.body.opc_a,
+        "opc_b":req.body.opc_b,
+        "opc_c":req.body.opc_c,
+        "opc_d":req.body.opc_d,
+    }
+    console.log(data);
+    console.log('Este es el id a modificar',id);
+    req.getConnection((err, conn) => {
+        conn.query('update mbancopreguntas set ? where id_bpr = ?', [data,id], (err, state) => {
+            conn.query('select * from mbancopreguntas where id_bpr = ?', id, (err2, datos) => {
+                if(err) console.log('este es el error: ',err);
+                if(err2)console.log('este es el error2: ',err2);
+                datos.forEach(uwu => {
+                    res.json({
+                        'aviso': "pregunta modificada satisfactoriamente",
+                        'id_bpr': uwu.id_bpr,
+                        'con_pre': uwu.con_pre,
+                        'opc_a': uwu.opc_a,
+                        'opc_b': uwu.opc_b,
+                        'opc_c': uwu.opc_c,
+                        'opc_d': uwu.opc_d
+
+                    });
+                }); 
+            });
         });
     });
 });
-
 router.get('/web/cuestionarios', (req, res) => {
+    let sesionP = false;
     let sesionAd = false;
     let sesionA = false;
-    let sesionP = false;
     if (req.session.usuario.id_tus == 3) {
         sesionP = true;
         req.app.locals.layout = 'profesor';
@@ -407,8 +464,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                    console.log(preguntas)
-                    console.log(grupos)
+                    
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -421,8 +477,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                    console.log(preguntas)
-                    console.log(grupos)
+                    
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -435,8 +490,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                    console.log(preguntas)
-                    console.log(grupos)
+                 
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -457,6 +511,7 @@ router.post('/web/preguntasx', (req, res) => {
         if (idDif == "all" && idTema == "all") {
             conn.query('select * from mbancopreguntas natural join cdificultad 	natural join ctemas', (err, preguntas) => {
                 if (err) console.log("ERROR ", err)
+                console.log(preguntas);
                 res.json(preguntas);
             });
         } else if (idDif == "all" && idTema != "all") {
@@ -470,8 +525,9 @@ router.post('/web/preguntasx', (req, res) => {
                 res.json(preguntas);
             });
         } else {
-            conn.query('select * from mbancopreguntas natural join cdificultad 	natural join ctemas where id_tem=? and id_dif=?', [idTema, idDif], (err, preguntas) => {
+            conn.query('select * from mbancopreguntas natural join cdificultad natural join ctemas where id_tem=? and id_dif=?', [idTema, idDif], (err, preguntas) => {
                 if (err) console.log("ERROR ", err)
+
                 res.json(preguntas);
             });
         }
@@ -484,6 +540,25 @@ router.post('/web/preguntasx', (req, res) => {
 /*-----------------------------------------FIN CUESTIONARIOS--------------------------------------*/
 /* ------- Peticiones ajax ------------- */
 
+router.post('/web/getPreguntasAjax', (req, res) => {
+    let tema = req.body.id_tem;
+
+    req.getConnection((err, conn) => {
+        if (tema != -1) {
+            conn.query('select * from mbancopreguntas natural join ctemas where id_tem = ?', tema, (err, preguntas) => {
+                console.log(preguntas)
+                res.json(preguntas);
+            });
+        } else {
+            conn.query('select * from mbancopreguntas natural join ctemas', (err, preguntas) => {
+                console.log(preguntas)
+
+                res.json(preguntas);
+            });
+        }
+
+    });
+});
 router.post('/web/getApoyosAjax', (req, res) => {
     let tema = req.body.id_tem;
 
@@ -503,11 +578,17 @@ router.post('/web/getApoyosAjax', (req, res) => {
 
 router.post('/web/deleteApoyoAjax', (req, res) => {
     let id = req.body.id_apoyo;
+    let apo = req.body.pdf_apo;
+    
+        var filePath = './src/public/uploads/'+apo; 
+         fs.unlinkSync(filePath);  
+    
+    console.log('id',id);
 
+    console.log('apoyo',apo);
     req.getConnection((err, conn) => {
-        conn.query('delete from mapoyos where id_apo = ?', id, (err, exito) => {
+       conn.query('delete from mapoyos where id_apo = ?', id, (err, exito) => {
             console.log(err);
-
             res.json('Apoyo eliminado satisfactoriamente');
         });
     });
@@ -516,6 +597,9 @@ router.post('/web/deleteApoyoAjax', (req, res) => {
 router.post('/web/updateApoyoLinkAjax', (req, res) => {
     let id = req.body.id_apoyo;
     let link = req.body.link;
+    let uwu=req.body.apo_name;
+    console.log('vamos suicidate',uwu);
+
     req.getConnection((err, conn) => {
         conn.query('update mapoyos set vin_apo = ? where id_apo = ?', [link, id], (err, apoyoModificado) => {
             res.json('Link del apoyo modificado satisfactoriamente');
@@ -740,9 +824,26 @@ function retornaPreguntas(preguntas, conn, callback) {
 /* -------------- fin peticiones ajax ---------------*/
 
 // Registrar usuario en la bd
+
 router.post('/web/registrar', (req, res) => {
+    var reNom= /^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$/;
+    let reNomB= false;
+    let reAppB= false;
+    reNomB= reNom.test(req.body.nombres_usuario);
+    reAppB= reNom.test(req.body.apellidos_usuario);
+    let spaceNom = req.body.nombres_usuario.split(' ');
+    let spaceApp=req.body.apellidos_usuario.split(' ');
+
+    
     if (!req.body.nombres_usuario || !req.body.apellidos_usuario || !req.body.email_usuario ||
         !req.body.curp_alumno || !req.body.contraseña_usuario || !req.body.tipo_usuario) {
+        console.log('rellene todos los campos');
+        res.redirect('/web/#modal1');
+    }else if(reNomB==false || reAppB== false){
+        console.log('El nombre o apellidos contiene caracteres invalidos');
+        res.redirect('/web/#modal1');
+    }else if(spaceNom.length>2 || spaceApp.length!=2){
+        console.log('numero de espacios');
         res.redirect('/web/#modal1');
     } else {
         let nombre = req.body.apellidos_usuario + ' ' + req.body.nombres_usuario;
@@ -765,8 +866,12 @@ router.post('/web/registrar', (req, res) => {
                         usuario.pas_usu = cifrado.cifrar(usuario.pas_usu);
                         usuario.curp_usu = cifrado.cifrar(usuario.curp_usu);
                         req.session.usuario_sin_verificar = usuario;
-                        mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
-                        res.redirect('/web/confirmacion_de_usuario');
+                        conn.query(`insert into musuario set ?`, req.session.usuario_sin_verificar, (err, usuarioInsertado) => {
+                            req.session.usuario_sin_verificar = undefined;
+                            res.redirect('/web');
+                        });
+                       // mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
+                       // res.redirect('/web/confirmacion_de_usuario');
                     } else {
                         res.redirect('/web');
                     }
@@ -779,6 +884,8 @@ router.post('/web/registrar', (req, res) => {
 
 router.get('/web/confirmacion_de_usuario', (req, res) => {
     if (req.session.usuario_sin_verificar != undefined) {
+        req.app.locals.layout = undefined;
+
         res.render('sin-sesion/confirmar');
     } else {
         res.redirect('/web');
@@ -789,7 +896,10 @@ router.post('/web/confirmacion', (req, res) => {
     if (!req.body.codigo_confirmacion) {
         res.redirect('/web');
     } else {
+        console.log('hola');
+        console.log('prueba1', mail.generaCodigo(req.session.usuario_sin_verificar.cor_usu));
         if (req.session.usuario_sin_verificar.tok_usu + mail.generaCodigo(req.session.usuario_sin_verificar.cor_usu) == req.body.codigo_confirmacion) {
+
             req.session.usuario = req.session.usuario_sin_verificar;
             req.getConnection((err, conn) => {
                 conn.query(`insert into musuario set ?`, req.session.usuario_sin_verificar, (err, usuarioInsertado) => {
@@ -808,31 +918,35 @@ router.post('/web/confirmacion', (req, res) => {
 router.post('/web/alumnoIGrupo', (req, res) => {
     let cla_gru = req.body.codigo_grupo;
     req.getConnection((err, conn) => {
-        if (err);
-        console.log('el error es: ', err);
+        if (err) console.log('el error es: ', err);
+        
         conn.query('select * from cgrupo where cla_gru = ?', cla_gru, (errConsul, clave) => {
-            if (errConsul);
-            console.log('el error en la consulta es: ', errConsul);
-            clave.forEach(element => {
-                console.log(element.cla_gru);
-                console.log(element.id_gru);
-                if (element.cla_gru == cla_gru) {
-                    let insertData = {
-                        "id_usu": req.session.usuario.id_usu,
-                        "id_gru": cla_gru
-                    }
-                    conn.query('insert into eusuariosgrupo set ?', [insertData], (errInsert, row) => {
-                        if (errInsert);
-                        console.log('El error al insertar es: ', errInsert);
-                        console.log(req.session.usuario.id_usu);
-                        res.redirect('/web');
-                    });
+            if (errConsul) console.log('el error en la consulta es: ', errConsul);
+            console.log(clave)
+            if(clave.length>0){       
+                clave.forEach(element => {
+                    console.log(element.cla_gru);
+                    console.log(element.id_gru);
+                    if (element.cla_gru == cla_gru) {
+                        let insertData = {
+                            "id_usu": parseInt(req.session.usuario.id_usu),
+                            "id_gru": element.id_gru
+                        }
+                        conn.query('insert into eusuariosgrupo set ?', [insertData], (errInsert, row) => {
+                            if (errInsert) console.log('El error al insertar es: ', errInsert);
+                            console.log(req.session.usuario.id_usu);
+                            res.redirect('/web');//arcados no puedo abrir el localhost:,c
+                        });
 
-                } else {
-                    console.log('no furula');
-                    res.redirect('/web');
-                }
-            });
+                    } else {
+                        console.log('no furula');
+                        res.redirect('/web');
+                    }
+                });
+            }else{
+                console.log("No Existe el código de grupo"); 
+                res.redirect("/web")
+            }
         })
     });
 });
@@ -1006,7 +1120,7 @@ router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => 
     }
     if (req.body.hipervinculo_apoyo != undefined) {
         vinculo = req.body.hipervinculo_apoyo;
-    } else {
+    } else { 
         vinculo = null;
     }
     if (!req.body.apoyo_tema) {
@@ -1028,6 +1142,7 @@ router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => 
 
 router.post('/web/updateApoyo', upload.single('archivo_apoyo_modificar'), (req, res) => {
     let json = {};
+    
     if (req.file != undefined) {
         json.pdf_apo = req.file.filename;
         json.nom_pdf = req.file.originalname;
@@ -1042,6 +1157,8 @@ router.post('/web/updateApoyo', upload.single('archivo_apoyo_modificar'), (req, 
         conn.query('update mapoyos set ? where id_apo = ?', [json, req.body.id_apoyo_name], (err, apoyoModificado) => {
             conn.query('select * from mapoyos natural join ctemas where id_apo = ?', [req.body.id_apoyo_name], (err, apoyo) => {
                 console.log(apoyo);
+                console.log(apoyo[0].pdf_apo);
+              
                 res.json({
                     'aviso': "Apoyo modificado satisfactoriamente",
                     'id': apoyo[0].id_apo,
@@ -1273,7 +1390,6 @@ router.post('/web/Addquestions/:questions', (req, res) => {
         questions[i] = JSON.parse(questions[i]);
 
     }
-    console.log(questions)
     req.getConnection((err, conn) => {
         for (let i = 0; i < questions.length; i++) {
 
@@ -1287,6 +1403,7 @@ router.post('/web/Addquestions/:questions', (req, res) => {
     });
 });
 router.get('/web/questions', (req, res) => {
+    
     req.app.locals.layout = 'profesor';
     req.getConnection((err, conn) => {
         conn.query("select * from ctemas", (err2, temas) => {
@@ -1299,21 +1416,21 @@ router.get('/web/questions', (req, res) => {
 });
 router.post('/web/Addquestion', (req, res) => {
     req.app.locals.layout = 'profesor';
-    console.log(req.body)
     req.getConnection((err, conn) => {
         let valores = {
-            "con_pre": req.body.pregunta,
-            "res_cor": req.body.a,
-            "opc_a": req.body.a,
-            "opc_b": req.body.b,
-            "opc_c": req.body.c,
-            "opc_d": req.body.d,
-            "id_tem": parseInt(req.body.tema),
-            "id_dif": parseInt(req.body.dificultad)
+            "con_pre": req.body.con_pre,
+            "res_cor": req.body.res_cor,
+            "opc_a": req.body.opc_a,
+            "opc_b": req.body.opc_b,
+            "opc_c": req.body.opc_c,
+            "opc_d": req.body.opc_d,
+            "id_tem": req.body.id_tem,
+            "id_dif": req.body.id_dif
         }
-        conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => {
+        console.log('estos son los valore kawai: ',valores)
+        conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => {//no se por que aparece ese Send osea en html no lo tengo:c
             if (err2) console.log("ERROR 2 ", err2)
-            res.redirect('/web/CreateQuizz');
+            res.json('Se inserto la pregunta correctamente');
         }); //Error: Lock wait timeout exceeded; try restarting transaction es algo del maisicuel XD
         if (err) console.log("ERROR 1 ", err)
     });
@@ -1338,8 +1455,354 @@ router.post('/web/AddQuizz', (req, res) => {
         if (err) console.log("ERROR 1 ", err)
     });
 });
-/*-------------------------------------FIN DE CUESTIONARIO--------------------------------------------*/
+router.get('/web/viewQuestions', (req, res) => {
+    if(req.session.usuario){
+        const id_tus = req.session.usuario.id_tus;
+        if(id_tus === 3 || id_tus === 4 || id_tus === 5){
+            req.app.locals.layout = 'profesor';
+            req.getConnection((err, conn) => {
+                viewquestions(conn, (quizz) => {
+                        res.render('profesor/VerCuestionarios', { quizz: quizz })
+                    })
+        
+            });
+        }else{
+            res.redirect("/web"); 
+        }
+    }else{
+        res.redirect("/web");
+    }
+});
 
+function viewquestions(conn, callback) {
+    let quizzFinal = [];
+    let question;
+    conn.query('select * from ecuestionario', (err, quizz) => {
+        quizz.forEach(element => {
+            question = element.id_bpr.split(',');
+            let qf = []
+            qf = question
+            let cont = 0; 
+           for(let i = 0; i<question.length; i++){
+                for(let j = 0; j<question.length; j++){
+                    if(question[i] == question[j]){
+                        if(cont > 0){
+                            qf.splice(j,1)
+                        }
+                        cont++;
+                    } 
+                }
+
+                cont = 0;
+           }
+            returnQuestionasQuestionaire(conn, question, questions => {
+                let json = {
+                    "id_cue": element.id_cue,
+                    "nom_cue": element.nom_cue,
+                    "fec_ini": element.fec_ini,
+                    "fec_fin": element.fec_fin,
+                    "questions": questions
+                }
+                quizzFinal.push(json); 
+                questions = []; 
+            });
+
+        });
+        setTimeout(() => {
+            callback(quizzFinal);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    });
+}
+
+function returnQuestionasQuestionaire(conn, question, callback) {
+    let questions = [];
+   
+    for (let i = 0; i < question.length; i++) {
+        conn.query("select * from mbancopreguntas where id_bpr = ?", question[i], (err, preg) => {
+            if (err) console.log("ERRORR")
+            questions.push(preg[0]);
+        })
+    }
+    
+    setTimeout(() => {
+        callback(questions);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+}
+
+router.get("/web/Quizz", (req,res)=>{
+    req.session.quizz = undefined;
+    if(req.session.usuario){
+        if(req.session.usuario.id_tus === 1){
+            req.app.locals.layout = 'alumno';
+            req.getConnection((err, conn) => {
+                const id_us = req.session.usuario.id_usu;
+                conn.query("select * from eusuariosgrupo where id_usu = ?", id_us, (err, group) => {  
+                    returnQuestionAlumno(conn,id_us,group, (quizz) => {
+                        res.render('alumno/cuestionario', { quizz: quizz })
+                    })
+                })
+                
+            });
+        }else{
+            res.redirect("/web");
+        }
+    }else{
+        res.redirect("/web");
+    }
+});
+router.post("/web/Quizz", (req,res)=>{
+    if(req.session.usuario){
+        if(req.session.usuario.id_tus === 1){
+            req.app.locals.layout = 'alumno';
+              req.session.quizz = req.body.quizz
+              res.redirect("/web/Quizz/solve")
+        }else{
+            res.redirect("/web")
+        }
+    }else{
+        res.redirect("/web")
+    }
+}); 
+router.get("/web/Quizz/solve", (req,res)=>{
+    const id_cue = req.session.quizz
+    if(req.session.usuario){
+        if(req.session.usuario.id_tus == 1){
+            if(id_cue){
+                req.app.locals.layout = 'alumno';
+                req.getConnection((err, conn)=>{
+                    conn.query("select * from ecuestionario where id_cue = ?", id_cue, (err2, quizz)=>{
+                        if(err2) console.log("ERROR AL ARROJAR QUiZZ ",err2)
+                        returnQuizzAlumno(conn ,quizz[0], (quiz)=>{
+                            req.session.questions = quiz[0].questions;             
+                        res.render("alumno/ContestarQuizz", {quizz:quiz, id_cue:id_cue})
+                        });
+                    });
+                });
+            }else{
+                res.redirect("/web");
+            }
+        }else{
+            res.redirect("/web"); 
+        }
+    }else{
+        res.redirect("/web");
+    }
+}); 
+function returnQuizzAlumno(conn, quizz,  callback){
+    let quizzFinal=[]
+    let cont = 0; 
+    id_bpr = quizz.id_bpr.split(','); 
+    let qf = [];
+    qf = id_bpr;
+    for(let i = 0; i<id_bpr.length; i++){
+        for(let j = 0; j < id_bpr.length; j++){
+            if(id_bpr[i] == id_bpr[j]){
+                    if(cont > 0){
+                        qf.splice(j,1)
+                    }
+             cont++;
+        }  
+    }
+    cont = 0;
+    }
+    returnQuestionasQuestionaire(conn,qf, (preguntas)=>{
+        let json = {
+            "id_cue": quizz.id_cue,
+            "nom_cue": quizz.nom_cue,
+            "fec_ini": quizz.fec_ini,
+            "fec_fin": quizz.fec_fin,
+            "questions": preguntas
+        }
+        quizzFinal.push(json); 
+    })
+
+    setTimeout(() => {
+        callback(quizzFinal);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+
+}
+
+function returnQuestionAlumno(conn,id_us,group,callback){
+    let id_bpr; 
+    let qs =[]; 
+    conn.query("select * from ecuestionario", (err,ques)=>{
+        ques.forEach(element=>{
+           cuestionarioContestado(conn,element.id_cue,id_us,(bool)=>{
+               console.log("Contestado ", bool)
+               if(bool){
+                id_bpr = element.id_gru.split(',');
+                    for(let i = 0; i < id_bpr.length; i++){
+                        if(id_bpr[i] == group[0].id_gru){ 
+                            qs.push(element); 
+                            break; 
+                        }
+                    }
+                }
+           })
+           
+        }); 
+
+    setTimeout(() => {
+        callback(qs);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    })
+}
+function cuestionarioContestado(conn, id_cue,id_us, callback){
+    let bool = false; 
+    conn.query("select * from dpuntajealumnocuestionario where id_cue = ? and id_usu = ?",[id_cue,id_us],(err,rows)=>{
+        if(err)console.log("Error de dpuntaje ",err);
+        if(rows.length<1){
+            bool = true
+        }
+        
+        setTimeout(() => {
+            callback(bool);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    });
+}
+
+router.post("/web/resultadosQuizz", (req,res)=>{
+    const respuestas = req.body; 
+    const id_cue = req.session.quizz;  
+    const questions = req.session.questions;
+    console.log("QUESTIONS ",questions)
+    if(id_cue){
+        let res_cor = []; 
+        let res_incor =[];
+        let cont = 0; 
+        req.app.locals.layout = 'alumno';
+        for(k in respuestas){
+            if(respuestas[k] == questions[cont].res_cor){ 
+                res_cor.push(questions[cont].id_bpr); 
+            }else{
+                res_incor.push(questions[cont].id_bpr); 
+            } 
+            cont += 1;
+        }
+    
+        req.getConnection((err, conn)=>{
+            let json = {
+                "id_usu" : req.session.usuario.id_usu,
+                "id_cue" : req.session.quizz,
+                "id_pco" : res_cor.toString(),
+                "id_pin" : res_incor.toString()
+            } 
+            conn.query("insert into dpuntajealumnocuestionario set ? ",json , (err, ban)=>{
+                if(err) console.log('el error al insertar las respuestas:',err)
+                res.redirect("/web/Quizz/puntaje"); 
+            }); 
+        });
+    }else{
+        res.redirect("/web")
+    }
+
+}); 
+
+router.get('/web/Quizz/puntaje', (req,res)=>{
+    const id_cue = req.session.quizz; 
+    const id_usu = req.session.usuario.id_usu; 
+    const questions = req.session.questions;
+    if(req.session.usuario.id_tus == 1){
+        req.app.locals.layout = 'alumno';
+        if(id_cue){ 
+            req.getConnection((err,conn)=>{
+                conn.query("select * from dpuntajealumnocuestionario  natural join ecuestionario where id_cue = ? and id_usu = ?", 
+                [id_cue, id_usu], (err,puntaje)=>{
+                    if(err) console.log(err)
+                    req.session.quizz = undefined;
+                    req.session.questions = undefined;
+                    compararquizz(questions, puntaje[0], (qf)=>{
+                        res.render("alumno/puntajecuestionario", {qf:qf})
+                    })
+
+                }); 
+            })
+        }else{
+            res.redirect("/web")
+        }
+    }else{
+        res.redirect("/web")
+    }
+}); 
+
+function compararquizz(questions, puntaje, callback){
+    let qf = questions; 
+    res_cor = puntaje.id_pco.split(',');
+    res_incor = puntaje.id_pin.split(',');
+    let cont = 0; 
+    questions.forEach(element=>{
+        for(let i = 0; i<res_cor.length; i++){
+            if(element.id_bpr == res_cor[i]){
+                qf[cont].correct = true; 
+            }
+        }
+        for(let i = 0; i<res_incor.length; i++){
+            if(element.id_bpr == res_incor[i]){
+                qf[cont].correct = false; 
+            }
+        }
+        cont++; 
+
+    });  
+    setTimeout(() => {
+        callback(qf);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+}
+
+
+/*-------------------------------------FIN DE CUESTIONARIO--------------------------------------------*/
+/*--------------------------------------CALIFICACIONES------------------------------------------------*/
+router.get('/web/calificacionesgrupo', (req,res)=>{
+    if(req.session.usuario.id_tus == 3){
+        req.app.locals.layout = 'profesor' 
+        req.getConnection((err, conn)=>{
+            conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario", (err2, puntajes)=>{
+                calificacionesxgrupo(conn, puntajes,req.session.usuario.id_usu, (puntajesF)=>{
+                    console.log("PUNTAJES ",puntajesF)
+                    res.render("profesor/calificacionesxgrupo", {puntajesF:puntajesF})
+                })
+
+            }); 
+        });
+    }else{
+        res.redirect("/web")
+    }
+}); 
+function calificacionesxgrupo(conn, puntajes, usuario, callback){
+    conn.query("select * from eusuariosgrupo where id_usu = ?",usuario,(err,groups)=>{
+        let puntajesF = [];
+        let bool = false; 
+        groups.forEach(grupo=>{
+            puntajes.forEach(element=>{
+                let grupos = element.id_gru.split(','); 
+                    if(puntajesF.length>0){
+                        for(let j=0; j<puntajesF.length; j++){
+                            if(puntajesF[j] == element){
+                                bool = true; 
+                                break; 
+                            }else{
+                                bool =false;
+                            }
+                        }
+                    }
+                    if(!bool){
+                        for(let i = 0; i<grupos.length; i++){
+                            if(grupos[i] == grupo.id_gru){
+                                puntajesF.push(element)
+                                break;
+                            }
+                        }
+                    }
+            }); 
+        }); 
+       // console.log("PUNTAJE FINAL ", puntajesF.length, "\n", puntajesF)
+        setTimeout(() => {
+            callback(puntajesF);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    });
+}
+
+/*------------------------------------FIN DE CALIFICACIONES-------------------------------------------*/
 /* 
  * Inicio de autoridad
  */
@@ -1403,7 +1866,7 @@ function retornaGruposAutoridad(conn, callback) {
 }
 
 router.get('/web/ver_reportes_general', (req, res) => {
-    if (req.session.usuario.id_tus == 4) {
+    if (req.session.usuario.id_tus === 4) {
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             conn.query('select * from cgrupo order by nom_gru', (err, grupos) => {
@@ -1414,7 +1877,7 @@ router.get('/web/ver_reportes_general', (req, res) => {
                 });
             });
         });
-    } else if (req.session.usuario.id_tus = 5) {
+    } else if (req.session.usuario.id_tus === 5) {
         req.app.locals.layout = 'Administrador2';
         req.getConnection((err, conn) => {
             conn.query('select * from cgrupo order by nom_gru', (err, grupos) => {
@@ -1432,9 +1895,7 @@ router.get('/web/ver_reportes_general', (req, res) => {
 
 });
 
-/**
- * Fin de autoridad
- */
+/*------------------------------------Fin de autoridad-------------------------------------------------*/
 
 router.get('/web/curp_cifrar:id_usuario', (req, res) => {
     let id = req.params.id_usuario;
@@ -1447,7 +1908,7 @@ router.get('/web/curp_cifrar:id_usuario', (req, res) => {
             } else {
                 res.json(id);
             }
-        });
+        }); 
     });
 });
 
@@ -1463,12 +1924,12 @@ router.get('/web/obtenerCurp:id', (req, res) => {
 function generarToken(id_usu) {
     req.getConnection((err, conn) => {
         token.generar(tok => {
-            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id_usu], (err, estado) => {
+            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id_usu], (err, estado) => {//ya funciona??8
                 if (estado) console.log(estado);
             });
         });
 
     });
 }
-
+//SET FOREIGN_KEY_CHECKS = 0;
 module.exports = router;

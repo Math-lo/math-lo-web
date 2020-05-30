@@ -3437,6 +3437,10 @@ li.home:before {
     background: -webkit-linear-gradient(45deg, #b3e5fc, #64ffda)!important;
     background: linear-gradient(45deg, #b3e5fc, #64ffda)!important
 }
+.gradient-45deg-dark-blue-black {
+    background: -webkit-linear-gradient(45deg, #290101, #64ffda)!important;
+    background: linear-gradient(45deg, #001797, #000201)!important
+}
 
 .gradient-45deg-light-blue-teal.gradient-shadow {
     box-shadow: 0 6px 20px 0 rgba(100, 255, 218, .5)!important

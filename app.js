@@ -14,7 +14,7 @@ const app = express();
 const cron = require('node-cron');
 app.use(compression());
 app.use(helmet());
-
+//npm i -D eslint babel-eslint
 app.set('trust proxy', 1);
 app.use(session({
     secret: 'clave secretosa',
@@ -42,14 +42,14 @@ app.use(morgan('dev'));
 app.use(myConnection(mysql, {
     host: 'localhost',
     user: 'root',
-    password: '$BTC$#1my00770p',
+    password: 'n0m3l0',
     port: 3306,
     database: 'mychemis_algebrae_v01'
 }, 'single'));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', require(path.join(__dirname, 'src/rutas/rutas')));
-
+ 
 //Archivos estáticos
 app.use(express.static(path.join(__dirname, 'src/public')));
 

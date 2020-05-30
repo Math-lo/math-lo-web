@@ -8,14 +8,33 @@
             Bienvenido a una nueva experiencia en las matematicas, esperemos que el sistema
             sea de gran utilidad para ti.
         </h4>
-    </div>
+    
     {{#if grupo}}
     <h1>Grupo:{{grupoNom}}</h1>
-                
+     <table class="responsive-table highlight">
+                    <thead>
+                        <tr>
+                            <td>Nombre del Usuario</td>
+                            <td>Tipo de Usuario</td>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_grupos">
+                        {{#each grupoF}}
+                        <tr>
+                            <td >{{nom_usu}}</td>
+                            <td>{{cat_tus}}</td>
+                           
+                        </tr>
+                         {{/each}}
+
+                    </tbody>
+                </table>
+                </div>
                 {{else}}
      <div class="section white z-depth-5">
 <div class="row container">
-        <form action="/alumnoIGrupo" method="POST" id="codigo_grupo">
+        <form action="web/alumnoIGrupo" method="POST" id="codigo_grupo">
             <div class="row">
                 <h2 class="center-align">Introduce el código de Grupo</h2>
             </div>

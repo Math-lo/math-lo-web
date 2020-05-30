@@ -62,8 +62,7 @@
       <div id="placeholder" class="card card card-default scrollspy">
         <div class="card-content">
           <h4 class="card-title">Insertar pregunta</h4>
-          <form name="questions" id="questions"
-                        method="POST" action="/web/Addquestion">
+         <!-- <form name="questions" id="questions" method="POST" action="/web/Addquestion">-->
                 {{#if sesionAd}}
                 <div class="row">
               <div class="input-field col s12" style="margin-bottom: 0px;">
@@ -74,7 +73,6 @@
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
               <ul class="collapsible">
-                    <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
                             <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
@@ -219,17 +217,17 @@
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
                             mathField.focus();" style="width: 90px;">√</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField.cmd('\\pm');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathField.cmd('\\pm');
                             mathField.focus();" style="width: 90px;">∓</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField.cmd('\\mp');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathField.cmd('\\mp');
                             mathField.focus();" style="width: 90px;">±</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField.cmd('\\frac');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathField.cmd('\\frac');
                             mathField.focus();" style="width: 90px;">x/x</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('^');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField.cmd('^');
                             mathField.focus();" style="width: 90px;">^</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
                             mathField.focus();" style="width: 90px;">*</a>
                         </div>
                     </li>
@@ -248,17 +246,17 @@
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcA.cmd('\\sqrt');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathField_opcA.cmd('\\sqrt');
                             mathField_opcA.focus();" style="width: 90px;">√</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcA.cmd('\\pm');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathField_opcA.cmd('\\pm');
                             mathField_opcA.focus();" style="width: 90px;">∓</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcA.cmd('\\mp');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathField_opcA.cmd('\\mp');
                             mathField_opcA.focus();" style="width: 90px;">±</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcA.cmd('\\frac');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathField_opcA.cmd('\\frac');
                             mathField_opcA.focus();" style="width: 90px;">x/x</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('^');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcA.cmd('^');
                             mathField_opcA.focus();" style="width: 90px;">^</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
                             mathField_opcA.focus();" style="width: 90px;">*</a>
                         </div>
                     </li>
@@ -276,17 +274,17 @@
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcB.cmd('\\sqrt');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathField_opcB.cmd('\\sqrt');
                             mathField_opcB.focus();" style="width: 90px;">√</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcB.cmd('\\pm');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathField_opcB.cmd('\\pm');
                             mathField_opcB.focus();" style="width: 90px;">∓</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcB.cmd('\\mp');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathField_opcB.cmd('\\mp');
                             mathField_opcB.focus();" style="width: 90px;">±</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcB.cmd('\\frac');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathField_opcB.cmd('\\frac');
                             mathField_opcB.focus();" style="width: 90px;">x/x</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('^');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcB.cmd('^');
                             mathField_opcB.focus();" style="width: 90px;">^</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
                             mathField_opcB.focus();" style="width: 90px;">*</a>
                         </div>
                     </li>
@@ -304,17 +302,17 @@
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcC.cmd('\\sqrt');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathField_opcC.cmd('\\sqrt');
                             mathField_opcC.focus();" style="width: 90px;">√</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcC.cmd('\\pm');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathField_opcC.cmd('\\pm');
                             mathField_opcC.focus();" style="width: 90px;">∓</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcC.cmd('\\mp');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathField_opcC.cmd('\\mp');
                             mathField_opcC.focus();" style="width: 90px;">±</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcC.cmd('\\frac');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathField_opcC.cmd('\\frac');
                             mathField_opcC.focus();" style="width: 90px;">x/x</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('^');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcC.cmd('^');
                             mathField_opcC.focus();" style="width: 90px;">^</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
                             mathField_opcC.focus();" style="width: 90px;">*</a>
                         </div>
                     </li>
@@ -332,17 +330,17 @@
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_sqrt" onclick="mathField_opcD.cmd('\\sqrt');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathField_opcD.cmd('\\sqrt');
                             mathField_opcD.focus();" style="width: 90px;">√</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pm" onclick="mathField_opcD.cmd('\\pm');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathField_opcD.cmd('\\pm');
                             mathField_opcD.focus();" style="width: 90px;">∓</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_mp" onclick="mathField_opcD.cmd('\\mp');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathField_opcD.cmd('\\mp');
                             mathField_opcD.focus();" style="width: 90px;">±</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_frac" onclick="mathField_opcD.cmd('\\frac');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathField_opcD.cmd('\\frac');
                             mathField_opcD.focus();" style="width: 90px;">x/x</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('^');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcD.cmd('^');
                             mathField_opcD.focus();" style="width: 90px;">^</a>
-                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
                             mathField_opcD.focus();" style="width: 90px;">*</a>
                         </div>
                     </li>
@@ -355,7 +353,7 @@
                 <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
               </div>
               <div class="input-field col s12" style="margin-top: 0px;">
-                  <input id="latex-pregunta" type="text" name="pregunta" readonly>
+                  <input id="latex-pregunta" type="text" name="pregunta" readonly="true">
               </div>
               <ul class="collapsible">
                     <li>
@@ -491,7 +489,17 @@
                 </ul>
             </div>
                 {{/if}}
-           
+           <div class="row">
+              <div class="input-field col s12">
+                <select name="res_cor" id="res_cor">
+                                <option value="" disabled selected>Selecciona La respuesta correcta</option>
+                                <option value="a">Iniciso a</option>
+                                <option value="b">Iniciso b</option>
+                                <option value="c">Iniciso c</option>
+                                <option value="d">Iniciso d</option>
+                            </select>
+              </div>
+            </div>
             <div class="row">
               <div class="input-field col s12">
                 <select name="tema" id="tema">
@@ -511,8 +519,7 @@
                                 <option value="3">Díficil</option>
                 </select>
                 {{#if sesionP}}
-                      <button class="btn waves-effect waves-light indigo lighten-1"
-                                type="submit" name="action">Agregar
+                       <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" onclick="addPre(document.getElementById('latex-pregunta').value,document.getElementById('res_cor').value,document.getElementById('latex-opcA').value,document.getElementById('latex-opcB').value,document.getElementById('latex-opcC').value,document.getElementById('latex-opcD').value,document.getElementById('tema').value,document.getElementById('dificultad').value);">Agregar
                                 <i class="material-icons right">send</i>
                       </button>
                 {{else if sesionAd}}
@@ -533,7 +540,7 @@
                   <p id="avisos"></p>
               </div>
             </div>
-          </form>
+          <!--</form>-->
         </div>
       </div>
         <div id="teclado_modal" class="modal bottom-sheet">
@@ -567,12 +574,13 @@
             
             <div class="section app-file-manager-wrapper">
                 <!-- File Manager app overlay -->
-                <div class="app-file-overlay"></div>
+                <div class="app-file-overlay" id="show2"> </div>
                 <!-- /File Manager app overlay -->
                 <!-- sidebar left start -->
                 <div class="sidebar-left">
                     <!--left sidebar of file manager start -->
-                    <form name="broswequestion" id="broswequestion" method="POST" action="/web/preguntasx">
+                    <form name="broswequestion" id="broswequestion" 
+                    method="POST" action="/web/preguntasx">
                         <select id="broswdif">
                             <option value="all">Todas las dificultades</option>
                             <option value="1">Fácil</option>
@@ -586,7 +594,7 @@
                             {{/each}}
                         </select>
                 {{#if sesionP}}
-                        <button type="submit" class="btn waves-effect waves-light indigo lighten-1" href="javascript:void(0);" id="broswe">Buscar</button>
+                        <button type="submit" class="btn waves-effect waves-light gradient-45deg-deep-orange-orange" href="javascript:void(0);" id="broswe">Buscar</button>
                 {{else if sesionAd}}
                         <button type="submit" class="btn waves-effect waves-light green lighten-1" href="javascript:void(0);" id="broswe">Buscar</button>
                 {{else if sesionA}}
@@ -615,13 +623,13 @@
                         <!-- App File Header Ends -->
 
                         <!-- App File Content Starts -->
-                        <div class="app-file-content ps">
+                        <div class="app-file-content ps" id="div_contenedor_pre" style="height: 300px;" >
                             <h6 class="font-weight-700 mb-3">Preguntas</h6>
 
                             <!-- App File - Recent Accessed Files Section Starts -->
                             <div class="row app-file-files" id="contenedor_preguntas">
                                 {{#each preguntas}}
-                                <div class="col xl3 l6 m3 s12" style="height: 70px;">
+                                <div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre({{id_bpr}},'{{con_pre}}','{{opc_a}}','{{opc_b}}','{{opc_c}}','{{opc_d}}')">
                                     <div class="card box-shadow-none mb-1
                                         app-file-info">
                                         <div class="card-content">
@@ -630,6 +638,7 @@
                                                 <div class="fonticon">
                                                     <i class="material-icons">more_vert</i>
                                                 </div>
+                                                
                                                 <div
                                                 class="app-file-recent-details">
                                                 <div class="app-file-name
@@ -655,7 +664,8 @@
                     </div>
                     <!-- content-right end -->
                     <!-- App File sidebar - Right section Starts -->
-                    <div class="app-file-sidebar-info ps">
+                    <div class="app-file-sidebar-info ps " id="show">
+                        
                         <div class="card box-shadow-none m-0 pb-1">
                             <div class="card-header display-flex
                                 justify-content-between align-items-center">
@@ -679,23 +689,50 @@
                                                 class="mt-5 mb-5">
                                         </div>
                                         <div class="divider mt-5 mb-5"></div>
-                                        <div class="pt-6">
+                                        <div class="pt-6">                                             
                                             <span class="app-file-label">Info</span>
                                             <div class="display-flex
                                                 justify-content-between
                                                 align-items-center mt-6">
-                                                <p>Pregunta: </p>
+
+                                                <input type="hidden" id="id_bpr" name="id_bpr_name">
+                                                <p id="con_pre" contenteditable="true">Pregunta: </p>
                                                 <p class="font-weight-700"> 2 - 1</p>
                                             </div>
                                             <div class="display-flex
                                                 justify-content-between
                                                 align-items-center mt-6">
                                                 <p>Opciones</p>
-                                                <p class="font-weight-700">Opciones</p>
-                                                <a href="javascript:void(0);"><i
-                                                        class="material-icons">update</i></a>
-                                            </div></div>
-
+                                                <a href="javascript:void(0);">
+                                                    <i class="material-icons">update</i></a>
+                                            </div>
+                                            <div class="display-flex
+                                                justify-content-between
+                                                align-items-center mt-6">
+                                               <b> <p class="font-weight-700" contenteditable="true" id="opc_a" name="opc_a_name">Opcion a</p></b>
+                                            </div>
+                                            <div class="display-flex
+                                                justify-content-between
+                                                align-items-center mt-6">
+                                               <b><p class="font-weight-700" contenteditable="true" id="opc_b" name="opc_b_name" >Opcion b</p></b> 
+                                            </div>
+                                            <div class="display-flex
+                                                justify-content-between
+                                                align-items-center mt-6">
+                                               <b> <p class="font-weight-700" contenteditable="true" id="opc_c" name="opc_c_name">Opcion c</p></b>
+                                            </div>
+                                            <div class="display-flex
+                                                justify-content-between
+                                                align-items-center mt-6">
+                                                <strong><p class="font-weight-700" contenteditable="true" id="opc_d" name="opc_d_name">Opcion d</p></strong>
+                                            </div>
+                                            <div class="display-flex
+                                                justify-content-between
+                                                align-items-center mt-6">
+                                                <button type="update" class="btn gradient-45deg-deep-orange-orange" onclick="updatePre(document.getElementById('id_bpr').value,document.getElementById('con_pre').innerText,document.getElementById('opc_a').innerText,document.getElementById('opc_b').innerText,document.getElementById('opc_c').innerText,document.getElementById('opc_d').innerText)">Modificar</button>
+                                            </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -886,45 +923,5 @@ for(let index = 0; index < contenidoPregunta.length; index++) {
 }
 </script>
 <script>
-$(function(){
-    $('#broswequestion').on('submit', function (e){
-        
-	e.preventDefault();
-        $.ajax({
-            url:'/web/preguntasx',
-		method:'POST',
-		data:{
-			id_tema:$('#broswtem').val(),
-			id_dif:$('#broswdif').val()
-			},
-            	success:function(questions){
-                    
-                    document.getElementById('contenedor_preguntas').innerHTML="";
-                    questions.forEach(id=>{
-                        console.log(id.con_pre)
-                        let html=`<div class="col xl3 l6 m3 s12" style="height: 70px;">
-                                    <div class="card box-shadow-none mb-1
-                                        app-file-info">
-                                        <div class="card-content">
-                                            <div class="app-file-content-logo
-                                                grey lighten-4">
-                                                <div class="fonticon">
-                                                    <i class="material-icons">more_vert</i>
-                                                </div>
-                                                <div
-                                                class="app-file-recent-details">
-                                                <div class="app-file-name
-                                                    font-weight-700"><span class="mathquillEstatic">${id.con_pre}</span></div>
-                                            </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>`; 
-                        document.getElementById('contenedor_preguntas').innerHTML+=html;
-                    });
-            }
-        })
-    })
-});
+
 </script>

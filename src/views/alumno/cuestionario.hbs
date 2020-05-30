@@ -1,0 +1,54 @@
+
+    </style>
+    <section id="main-container" class="main-container">
+	<div class="container">
+		<div clas="row">
+			<div class="col s10 push-s1">
+				<div class="row">
+					
+					<div class="col s12 m7">
+						<div class="row">
+							<div class="signup-box">
+                                <h3 id="center">CUESTIONARIOS Pendientes</h3>
+
+                                	<div id="quizz" class="quizz">
+                                        {{#if quizz}}
+                                        {{#each quizz}}
+                                        <ul class="collection with-header">
+                                            <li class="collection-header">
+                                                 
+                                                <h6><div>{{nom_cue}}
+                                                  <form action="/web/Quizz" method="POST" id="F{{id_cue}}" name="F{{id_cue}}">
+                                                   <input type="hidden" value="{{id_cue}}" id="quizz{{id_cue}}" name="quizz" readonly="readonly">
+                                                   <a class="secondary-content" type="submit" id="Q{{id_cue}}" onclick="enviar({{id_cue}})">Contestar <i class="material-icons">question_answer</i>
+                                                   </a></form>
+                                                 
+                                                   </div></h6> 
+                                                   
+                                               <div>Limite para contestar: {{fec_fin}}</div>
+                                            </li>
+                                            
+                                           
+                                        </ul>
+                                        {{/each}}
+                                        {{else}}
+                                            No tienes cuestionarios pendientes
+                                        {{/if}}
+                                    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+
+</section>
+
+<script >
+    function enviar(n){
+        document.getElementById('quizz'+n).value = n;
+        document.getElementById("F"+n).submit()
+    }
+
+</script>

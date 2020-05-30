@@ -88,6 +88,31 @@ function mostrarAlumnos(id_gru) {
         }
     });
 }
+function mostrarPregun(id_gru) {
+    $.ajax({
+        url: `/web/getAlumnosGrupo`,
+        method: 'POST',
+        data: {
+            id_gru: id_gru
+        },
+        success: (alumnos) => {
+            let tbody = $('#tabla_alumnos');
+            let n = 1;
+            tbody.html('');
+            alumnos[0].forEach(alumno => {
+                console.log(alumno);
+                tbody.append(`
+                    <tr>
+                        <td>${n}</td>
+                        <td>${alumno.nom_usu}</td>
+                        <td><a href="javascript:void(0);" class="waves-effect waves-teal btn-flat" onclick="eliminarAlumnoGrupo(${alumno.id_ugr}, ${alumno.id_gru}, ${alumno.id_prof})">Eliminar del grupo</a></td>
+                    </tr>
+                `);
+                n++;
+            });
+        }
+    });
+}
 
 function eliminarAlumnoGrupo(id_ugr, id_gru, id_prof) {
     $.ajax({
@@ -211,6 +236,30 @@ function AgregarUsuarioAjax(nom_usu, app_usu, id_tus, cor_usu, pas_usu) {
     });
 }
 
+function addPre(con_pre,res_cor, opc_a, opc_b, opc_c, opc_d,id_tem,id_dif) {
+    $.ajax({
+        url: `/web/Addquestion`,
+        method: 'POST',
+        data: { 
+            con_pre: con_pre,
+            res_cor: res_cor,
+            opc_a: opc_a,
+            opc_b: opc_b,
+            opc_c: opc_c,
+            opc_d: opc_d,
+            id_tem: id_tem,
+            id_dif: id_dif
+
+        },
+        success: (response) => {
+
+            M.toast({ html: response, classes: 'rounded' });
+            mostrarPreguntas(-1);
+        }
+    });
+}
+
+
 function mostrarUsuarios(id_usu) {
     $.ajax({
         url: `/web/getUsuariosAjax`,
@@ -259,7 +308,6 @@ function mostrarUsuarios(id_usu) {
 
 
 
-
 $(() => {
     $("#formuploadajax").on("submit", (e) => {
         e.preventDefault();
@@ -280,7 +328,8 @@ $(() => {
     $('#modificar_apoyo_ventana').on("submit", (e) => {
         e.preventDefault();
         let formData = new FormData(document.getElementById('modificar_apoyo_ventana'));
-        formData.append('link', document.getElementById('url_ventana_muestra').textContent);
+        formData.append('link',document.getElementById('url_ventana_muestra').textContent);
+
         $.ajax({
             url: "/web/updateApoyo",
             method: 'POST',
@@ -295,6 +344,91 @@ $(() => {
         });
     });
 });
+
+function mostrarPreguntas(id_tem) {
+    $.ajax({
+        url: '/web/getPreguntasAjax',
+        method: 'POST',
+        data: {
+            id_tem: id_tem
+        }
+    }).done((preguntas) => {
+        let contenedor = $('#contenedor_preguntas');
+        contenedor.html('');
+        preguntas.forEach(pregunta => {
+            contenedor.append(`
+            <div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre(${pregunta.id_bpr},'${pregunta.con_pre}','${pregunta.opc_a}','${pregunta.opc_b}','${pregunta.opc_c}','${pregunta.opc_d}');
+             document.getElementById('show').className = 'app-file-sidebar-info ps show';
+             document.getElementById('show2').className = 'app-file-overlay show';">
+                                    <div class="card box-shadow-none mb-1
+                                        app-file-info">
+                                        <div class="card-content">
+                                            <div class="app-file-content-logo
+                                                grey lighten-4">
+                                                <div class="fonticon">
+                                                    <i class="material-icons">more_vert</i>
+                                                </div>
+                                                
+                                                <div
+                                                class="app-file-recent-details">
+                                                <div class="app-file-name
+                                                    font-weight-700"><span class="mathquillEstatic">${pregunta.con_pre}</span></div>
+                                            </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+            `);
+        });
+    });
+}
+
+$(function(){
+    $('#broswequestion').on('submit', function (e){
+        
+	e.preventDefault();
+        $.ajax({
+            url:'/web/preguntasx',
+		method:'POST',
+		data:{
+			id_tema:$('#broswtem').val(),
+			id_dif:$('#broswdif').val()
+			},
+            	success:function(questions){
+
+                    
+                    document.getElementById('contenedor_preguntas').innerHTML="";
+                    questions.forEach(id=>{
+                        let html=`<div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre(${id.id_bpr},'${id.con_pre}','${id.opc_a}','${id.opc_b}','${id.opc_c}','${id.opc_d}');
+                        document.getElementById('show').className = 'app-file-sidebar-info ps show';
+                        document.getElementById('show2').className = 'app-file-overlay show';">
+                        <div class="card box-shadow-none mb-1
+                            app-file-info">
+                            <div class="card-content">
+                                <div class="app-file-content-logo
+                                    grey lighten-4">
+                                    <div class="fonticon">
+                                        <i class="material-icons">more_vert</i>
+                                    </div>
+                                    
+                                    <div
+                                    class="app-file-recent-details">
+                                    <div class="app-file-name
+                                        font-weight-700"><span class="mathquillEstatic">${id.con_pre}</span></div>
+                                </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>`; 
+                        document.getElementById('contenedor_preguntas').innerHTML+=html;
+                    });
+            }
+        })
+    })
+});
+
 
 function mostrarApoyos(id_tem) {
     $.ajax({
@@ -311,7 +445,7 @@ function mostrarApoyos(id_tem) {
             <div class="col xl3 l6 m3 s6" style="height: 250px;">
                 <div class="card box-shadow-none mb-1 app-file-info">
                     <div class="card-content">
-                        <div class="app-file-content-logo grey lighten-4" onclick="setVentanaApoyos('${apoyo.nom_pdf}','${apoyo.vin_apo}','${apoyo.nom_tem}');
+                        <div class="app-file-content-logo grey lighten-4" onclick="setVentanaApoyos('${apoyo.nom_pdf}','${apoyo.vin_apo}','${apoyo.nom_tem}', ${apoyo.id_apo},'${apoyo.pdf_apo}');
                         document.getElementById('show').className = 'app-file-overlay show';
                         document.getElementById('show2').className = 'app-file-sidebar-info ps show'">
                             <div class="fonticon">
@@ -331,32 +465,84 @@ function mostrarApoyos(id_tem) {
     });
 }
 
-function setVentanaApoyos(pdf, url, tema, id) {
+function setVentanaApoyos2(pdf, url, tema, id,apo) {
+    document.getElementById('pdf_ventana_muestra').textContent = pdf;
+    document.getElementById('url_ventana_muestra').textContent = url;
+    document.getElementById('tema_ventana_muestra').textContent = tema;
+    document.getElementById('id_apoyo').value = id;
+    document.getElementById('descarga').href = "/uploads/"+apo;
+    document.getElementById('descarga').download = pdf;
+    $('#btn_delete_ventana_apoyos').click(() => {
+        deleteApoyo(id);
+    });
+}
+function setVentanaApoyos(pdf, url, tema, id,apo) {
     document.getElementById('pdf_ventana_muestra').textContent = pdf;
     document.getElementById('url_ventana_muestra').textContent = url;
     document.getElementById('tema_ventana_muestra').textContent = tema;
     document.getElementById('id_apoyo').value = id;
     $('#btn_delete_ventana_apoyos').click(() => {
-        deleteApoyo(id);
+        deleteApoyo(id,apo);
     });
 }
 
 
-function deleteApoyo(id) {
+function deleteApoyo(id,apo) {
     $.ajax({
         url: '/web/deleteApoyoAjax',
         method: 'POST',
         data: {
-            id_apoyo: id
+            id_apoyo: id,
+            pdf_apo:apo
         }
     }).done((res) => {
         M.toast({ html: res, classes: 'rounded' });
         document.getElementById('show').className = 'app-file-overlay';
         document.getElementById('show2').className = 'app-file-sidebar-info ps';
         mostrarApoyos(-1);
+        
 
     });
+
+
+
+    
 }
+
+function setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
+    document.getElementById('con_pre').textContent = con_pre;
+     document.getElementById('opc_a').textContent = opc_a;
+    document.getElementById('opc_b').textContent = opc_b;
+    document.getElementById('opc_c').textContent = opc_c;
+    document.getElementById('opc_d').textContent = opc_d;
+    document.getElementById('id_bpr').value = id_bpr;
+
+     $('#btn_delete_ventana_pre').click(() => {
+         //deletePre(id_bpre);
+    });
+ }
+
+// setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
+function updatePre(id_bpr,con_pre,opc_a,opc_b,opc_c,opc_d) {
+    $.ajax({
+        url: '/web/updatePre',
+        method: 'POST',
+        data: {
+            id_bpr:id_bpr,
+            con_pre:con_pre,
+            opc_a:opc_a,
+            opc_b:opc_b,
+            opc_c:opc_c,
+            opc_d:opc_d
+        },
+        success: (res) => {
+            M.toast({ html: res.aviso, classes: 'rounded' })
+            setVentanaPre(res.id_bpr,res.con_pre, res.opc_a, res.opc_b,res.opc_c, res.opc_d);
+            mostrarPreguntas(-1);
+        }
+    });
+
+};
 
 function obtenerAlumnos(id_gru) {
     $.ajax({
@@ -383,24 +569,6 @@ function obtenerAlumnos(id_gru) {
                 $('#cuestionarioSeleccionado').html('');
                 crearSelectMaterialize(res[1], 'cuestionarioSeleccionado', 'Todos los cuestionarios');
             }
-        }
-    });
-}
-
-function crearSelectMaterialize(arreglo, id_select, general) {
-    let select = document.getElementById(id_select);
-    let optionGeneral = document.createElement('option');
-    optionGeneral.value = -1;
-    optionGeneral.textContent = general;
-    select.appendChild(optionGeneral);
-    arreglo.forEach(elemento => {
-
-        let option = document.createElement('option');
-        option.value = elemento[0];
-        option.textContent = elemento[1];
-        select.appendChild(option);
-        if (arreglo.indexOf(elemento) == (arreglo.length - 1)) {
-            $(`#${id_select}`).formSelect();
         }
     });
 }

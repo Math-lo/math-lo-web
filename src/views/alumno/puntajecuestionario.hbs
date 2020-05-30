@@ -1,0 +1,124 @@
+<link rel="stylesheet" href="/mathquill/mathquill.css"/>
+<link rel="stylesheet" type="text/css"
+    href="/app-assets/css/pages/app-file-manager.min.css">
+<style>
+ .fontt{ 
+      width: 100%;
+      height: 10px;
+      background-color: rgb(85, 27, 160); 
+    }
+</style>
+
+<div class="row">
+    <div class="content-wrapper-before blue-grey lighten-5"></div>
+    <div class="col s12">
+        <div class="container">
+            <div class="col s12 m6 l8">
+      <div id="placeholder" class="card card card-default scrollspy" >
+        <div class="card-content"> 
+          <h4 class="center">{{nom_cue}}</h4>
+          <div class="fontt"></div>
+
+            {{#each qf}}
+            {{#if correct}}         
+            <div>
+                Respuesta Correcta
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p class="flow-text"><h5 class="card-title">{{con_pre}}</h5>
+                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div> 
+            </div>
+            <div class="row center">
+              <div class="col s10">
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="a"/>
+                  <span class="left">a) {{opc_a}}</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="b"/>
+                  <span class="right">b) {{opc_b}}</span>
+                </label>
+              </p>
+              </div>
+              <div class="col s10">
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="c"/>
+                  <span class="left">c) {{opc_c}}</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="d"/>
+                  <span class="right">d) {{opc_d}}</span>
+                </label>
+              </p>
+              </div>      
+            </div>
+            {{else}}
+              <div>
+                Respuesta Incorrecta
+              <div class="input-field col s12" style="margin-bottom: 0px;">
+                  <p class="flow-text"><h5 class="card-title">{{con_pre}}</h5>
+                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+              </div> 
+            </div>
+            <div class="row center">
+              <div class="col s10">
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="a"/>
+                  <span class="left">a) {{opc_a}}</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="b"/>
+                  <span class="right">b) {{opc_b}}</span>
+                </label>
+              </p>
+              </div>
+              <div class="col s10">
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="c"/>
+                  <span class="left">c) {{opc_c}}</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group{{id_bpr}}" type="radio" value="d"/>
+                  <span class="right">d) {{opc_d}}</span>
+                </label>
+              </p>
+              </div>      
+            </div>
+            {{/if}}
+            {{/each}}
+            <br>
+
+        </div>
+      </div>
+        <div id="teclado_modal" class="modal bottom-sheet">
+    <div class="modal-content">
+        <div class="col s12 m6 l6">
+        <span id="math-field" class="width-90"></span>
+        <span id="latex"></span><br><br>
+        
+      </div>
+      <br><br><br>
+      </div>
+      <div class="col s12 m6 l6">
+          <a class="btn waves-effect waves-light indigo lighten-1" href="javascript:void(0);">Aceptar</a>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+
+    </div>
+
+</div>

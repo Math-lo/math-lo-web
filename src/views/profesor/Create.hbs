@@ -1,26 +1,6 @@
-<style>
-body{
-  margin: 0;
-  padding: 0;
-  min-height:100vh; 
-}
-.main-container,.second{
-width: 50%;
-}
-.second{
-  color: aquamarine;
-  background-color: black;
-
-}
-
-</style>
-<section id="main-container" class="main-container">
-	<div class="container">
 		<div clas="row">
-			<div class="col s10 push-s1">
 				<div class="row">
-					
-					<div class="col s12 m7">
+					<div class="col s12 m7 l6">
 						<div class="row">
 							<div class="signup-box">
 								<div id="quizz" class="quizz">
@@ -34,6 +14,7 @@ width: 50%;
       <span class="title">GRUPO: {{nom_gru}}</span>
      
       <a id="check{{id_gru}}" onclick="añadir2({{id_gru}})" class="secondary-content"><i class="material-icons" id="icongru{{id_gru}}">check_box_outline_blank
+        
 </i></a>
     </li>
     {{/each}}
@@ -45,7 +26,7 @@ width: 50%;
         <label>Dificultades:</label>
        
         <select id="broswdif">
-          <option value="0">Todas las dificultades</option>
+          <option value="all">Todas las dificultades</option>
           <option value="1">Fácil</option>
           <option value="2">Medio</option>   
            <option value="3">Díficil</option>      
@@ -54,9 +35,9 @@ width: 50%;
         <label>Temas:</label>
        
         <select id="broswtem">
-          <option value="0">Todos los temas</option>
+          <option value="all">Todos los temas</option>
           {{#each preguntas}}
-          <option value="{{id_bpr}}">{{con_pre}}</option>
+          <option value="{{id_tem}}">{{nom_tem}}</option>
           {{/each}}
         </select>
       <button class="btn waves-effect waves-light"
@@ -64,15 +45,17 @@ width: 50%;
           <i class="material-icons right">send</i>
      </button>
 </form>
-  <div cl ass="item">
-    <ul class="collection">
+  <div class="item" id="preguntasx">
+    <ul class="collection" id="insertQ">
         {{#each preguntas}}
-    <li class="collection-item avatar">
+
+        <li class="collection-item avatar" id="li{{id_bpr}}">
       
       <span class="title">{{con_pre}}</span>
       <a id="check{{id_bpr}}" onclick="añadir({{id_bpr}})" class="secondary-content"><i class="material-icons" id="icon{{id_bpr}}">check_box_outline_blank
-</i></a>
-    </li>
+                                                                                     </i></a>
+      </li>
+     
     {{/each}}
   </ul>  
  </div>  
@@ -105,17 +88,17 @@ width: 50%;
 						</div>
 					</div>
 				</div>
-			</div>
+        <div class="row s12 m7 l1">
+          Preguntas seleccionadas: 
+          <div class="row" >
+            <ul class="collection" id="formContainer">
+
+            </ul>
+          </div>
+        </div>
 		</div>
 	</div>
-  
-
-</section>
- 
-<section id="second" class="second">
- sdasdasd
-</div>          
-            
+   
 <script>
     
     document.addEventListener('DOMContentLoaded', function() {
@@ -135,9 +118,17 @@ width: 50%;
         if(att.innerText!="check_box"){
           att.innerText="check_box";
           att.value=true;
+          let element = document.createElement("li");
+          element.className = "collection-item avatar";
+          element.id = "List"+id; 
+          element.innerHTML = document.getElementById("li"+id).innerHTML; 
+          document.getElementById("formContainer").appendChild(element);
           form.innerHTML+="<input id='element"+id+"' type='hidden' value='"+id+"' readonly name='element'></input>";
         }else{
           att.innerText="check_box_outline_blank";
+          var item = document.getElementById("List"+id);
+          console.log(item)
+          item.parentNode.removeChild(item)
           document.getElementById('element'+id).remove(); 
 
         }
@@ -176,11 +167,20 @@ $(function(){
 			id_dif:$('#broswdif').val()
 			},
       success:function(questions){
-        console.log(questions)
-
+            document.getElementById('insertQ').innerHTML = "";
+            questions.forEach(id=>{
+              let html = `<li class='collection-item avatar' id="li${id.id_bpr}">\n
+                <span class="title">${id.con_pre}</span>
+                <a id="check{{id_bpr}}" onclick="añadir(${id.id_bpr})" class="secondary-content"><i class="material-icons" id="icon${id.id_bpr}">${'check_box_outline_blank'}
+                                                                                     </i></a>
+               </li>
+              `  
+               document.getElementById('insertQ').innerHTML += html;
+            }); 
+         
       }
         })
     })
 });
-
+ 
 </script>

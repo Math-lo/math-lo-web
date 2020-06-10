@@ -390,8 +390,8 @@ $(function(){
 	e.preventDefault();
         $.ajax({
             url:'/web/preguntasx',
-		method:'POST',
-		data:{
+            method:'POST',
+            data:{
 			id_tema:$('#broswtem').val(),
 			id_dif:$('#broswdif').val()
 			},

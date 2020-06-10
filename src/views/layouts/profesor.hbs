@@ -856,6 +856,12 @@
             display: none !important;
         }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems, options);
+        });
+        </script>
     </head>
     <body class="vertical-layout vertical-menu-collapsible page-header-dark
         vertical-modern-menu 2-columns app-page" data-open="click"

@@ -37,7 +37,8 @@ function calcular_primo(num) {
 
 let storage = multer.diskStorage({
     destination: function(req, file, cb) {
- cb(null, 'src/public/uploads/')    },   
+        cb(null, 'src/public/uploads/')
+    },
     filename: function(req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
     }
@@ -55,17 +56,16 @@ router.get('/web', (req, res) => {
         if (req.session.usuario.id_tus == 1) {
             req.getConnection((err, conn) => {
                 conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu=?', req.session.usuario.id_usu, (errConsul, GrupoUsu) => {
-                    if(GrupoUsu.length>0){  
+                    if (GrupoUsu.length > 0) {
                         conn.query('select nom_usu,cat_tus,id_tus from cgrupo natural join musuario natural join ctipousuario where id_gru=? and id_tus!=5 and id_tus!=4 order by nom_usu asc', GrupoUsu[0].id_gru, (errConsulq, grupoF) => {
-                                if(errConsulq)console.log(errConsulq)
-                                console.log("HOLA ",req.session.usuario.id_tus)
-                        
+                            if (errConsulq) console.log(errConsulq)
+
                             GrupoUsu.forEach(element => {
                                 if (element.id_usu == req.session.usuario.id_usu) {
                                     console.log('grupo asignado');
                                     let gru = 1;
                                     req.app.locals.layout = 'alumno';
-                                    res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru,grupoF:grupoF});
+                                    res.render('alumno/inicio2', { usuario: req.session.usuario, grupo: gru, grupoNom: element.nom_gru, grupoF: grupoF });
                                 } else {
                                     console.log('grupo sin asignar');
                                     let gru = 0;
@@ -75,16 +75,16 @@ router.get('/web', (req, res) => {
                             });
 
                         });
-                }else{
-                            
-                    req.app.locals.layout = 'alumno';
-                    res.render('alumno/inicio2', { usuario: req.session.usuario });
-                    console.log("No entra")
-                }
-                   
+                    } else {
+
+                        req.app.locals.layout = 'alumno';
+                        res.render('alumno/inicio2', { usuario: req.session.usuario });
+                        console.log("No entra")
+                    }
+
                 });
             });
-        }else 
+        } else
         if (req.session.usuario.id_tus == 2) {
             req.app.locals.layout = 'tutor';
             req.getConnection((err, conn) => {
@@ -96,18 +96,18 @@ router.get('/web', (req, res) => {
 
             });
 
-        }else
+        } else
         if (req.session.usuario.id_tus == 3) {
             req.app.locals.layout = 'profesor';
             req.getConnection((err, conn) => {
                 conn.query('select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu = ? ', req.session.usuario.id_usu, (err, grupos) => {
                     retornaGrupos(grupos, conn, (ListaFinal) => {
-                        res.render('profesor/prueba-profesor', { grupos: ListaFinal, usuario: req.session.usuario });//si solo agrega la de otro uysuario y sha
+                        res.render('profesor/prueba-profesor', { grupos: ListaFinal, usuario: req.session.usuario }); //si solo agrega la de otro uysuario y sha
                     });
                 });
             });
 
-        }else 
+        } else
         if (req.session.usuario.id_tus == 4) {
             req.app.locals.layout = 'autoridad';
             req.getConnection((err, conn) => {
@@ -119,7 +119,7 @@ router.get('/web', (req, res) => {
                 });
             });
 
-        }else
+        } else
         if (req.session.usuario.id_tus == 5) {
             req.getConnection((err, conn) => {
                 conn.query('select * from musuario natural join ctipousuario where cor_usu != ? order by nom_usu asc', req.session.usuario.cor_usu, (err2, usuario) => {
@@ -314,14 +314,14 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
     let sesionAd = false;
     let sesionA = false;
     let sesionP = false;
-    let sesionAl=false;
+    let sesionAl = false;
     if (req.session.usuario.id_tus == 3) {
         sesionP = true;
         req.app.locals.layout = 'profesor';
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA, sesionAl: sesionAl });
                 });
             });
         });
@@ -331,7 +331,7 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA, sesionAl: sesionAl });
                 });
             });
         });
@@ -341,7 +341,7 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA, sesionAl: sesionAl });
                 });
             });
         });
@@ -351,7 +351,7 @@ router.get('/web/apoyos-a-alumnos', (req, res) => {
         req.getConnection((err, conn) => {
             conn.query('select * from ctemas', (err, temas) => {
                 conn.query('select * from mapoyos natural join ctemas', (err, apoyos) => {
-                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA,sesionAl:sesionAl });
+                    res.render('profesor/apoyos', { temas: temas, apoyos: apoyos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA, sesionAl: sesionAl });
                 });
             });
         });
@@ -417,25 +417,25 @@ router.post('/web/updateUserType', (req, res) => {
             if (!err) res.json('Usuario modificado satisfactoriamente');
             console.log(state);
 
-        });//abre el localhost plox :c
+        }); //abre el localhost plox :c
     });
 });
 router.post('/web/updatePre', (req, res) => {
-    let id=req.body.id_bpr;
-    let data={
-        "con_pre":req.body.con_pre,
-        "opc_a":req.body.opc_a,
-        "opc_b":req.body.opc_b,
-        "opc_c":req.body.opc_c,
-        "opc_d":req.body.opc_d,
+    let id = req.body.id_bpr;
+    let data = {
+        "con_pre": req.body.con_pre,
+        "opc_a": req.body.opc_a,
+        "opc_b": req.body.opc_b,
+        "opc_c": req.body.opc_c,
+        "opc_d": req.body.opc_d,
     }
     console.log(data);
-    console.log('Este es el id a modificar',id);
+    console.log('Este es el id a modificar', id);
     req.getConnection((err, conn) => {
-        conn.query('update mbancopreguntas set ? where id_bpr = ?', [data,id], (err, state) => {
+        conn.query('update mbancopreguntas set ? where id_bpr = ?', [data, id], (err, state) => {
             conn.query('select * from mbancopreguntas where id_bpr = ?', id, (err2, datos) => {
-                if(err) console.log('este es el error: ',err);
-                if(err2)console.log('este es el error2: ',err2);
+                if (err) console.log('este es el error: ', err);
+                if (err2) console.log('este es el error2: ', err2);
                 datos.forEach(uwu => {
                     res.json({
                         'aviso': "pregunta modificada satisfactoriamente",
@@ -447,7 +447,7 @@ router.post('/web/updatePre', (req, res) => {
                         'opc_d': uwu.opc_d
 
                     });
-                }); 
+                });
             });
         });
     });
@@ -464,7 +464,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                    
+
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -477,7 +477,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                    
+
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -490,7 +490,7 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-                 
+
                     res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
                 });
             });
@@ -579,15 +579,15 @@ router.post('/web/getApoyosAjax', (req, res) => {
 router.post('/web/deleteApoyoAjax', (req, res) => {
     let id = req.body.id_apoyo;
     let apo = req.body.pdf_apo;
-    
-        var filePath = './src/public/uploads/'+apo; 
-         fs.unlinkSync(filePath);  
-    
-    console.log('id',id);
 
-    console.log('apoyo',apo);
+    var filePath = './src/public/uploads/' + apo;
+    fs.unlinkSync(filePath);
+
+    console.log('id', id);
+
+    console.log('apoyo', apo);
     req.getConnection((err, conn) => {
-       conn.query('delete from mapoyos where id_apo = ?', id, (err, exito) => {
+        conn.query('delete from mapoyos where id_apo = ?', id, (err, exito) => {
             console.log(err);
             res.json('Apoyo eliminado satisfactoriamente');
         });
@@ -597,8 +597,8 @@ router.post('/web/deleteApoyoAjax', (req, res) => {
 router.post('/web/updateApoyoLinkAjax', (req, res) => {
     let id = req.body.id_apoyo;
     let link = req.body.link;
-    let uwu=req.body.apo_name;
-    console.log('vamos suicidate',uwu);
+    let uwu = req.body.apo_name;
+    console.log('vamos suicidate', uwu);
 
     req.getConnection((err, conn) => {
         conn.query('update mapoyos set vin_apo = ? where id_apo = ?', [link, id], (err, apoyoModificado) => {
@@ -813,7 +813,7 @@ function retornaPreguntas(preguntas, conn, callback) {
             }
             preguntasFin.push(g);
             console.log(preguntasFin);
-            n = 0; //pero entonces no va en la consulta post de ajax? purque el retorna grupo oo tienes en ajax
+            n = 0; 
         });
     });
     setTimeout(() => {
@@ -826,26 +826,46 @@ function retornaPreguntas(preguntas, conn, callback) {
 // Registrar usuario en la bd
 
 router.post('/web/registrar', (req, res) => {
-    var reNom= /^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$/;
-    let reNomB= false;
-    let reAppB= false;
-    reNomB= reNom.test(req.body.nombres_usuario);
-    reAppB= reNom.test(req.body.apellidos_usuario);
+    /*Comienzo Validacion de Registro */
+    console.log('Si entra');
+    var reNomA = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+    var reNom = /^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$/;
+    var reCorreo = /^[a-zA-ZÀ-ÿ\u00f1\u00d10-9._-]+@[a-zA-ZÀ-ÿ\u00f1\u00d10-9.-]+\.([a-zA-ZÀ-ÿ\u00f1\u00d1]{2,4})+$/
+    var reCurp = /[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
+    var reContra = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,50}$/;
+    //let reNomB= false;
+    //let reAppB= false;
+    //let reCorreoB= false;
+    //reCorreoB= reCorreo.test(req.body.email_usuario);
+    //reNomB= reNomA.test(req.body.nombres_usuario);
+    // reAppB= reNomA.test(req.body.apellidos_usuario);
     let spaceNom = req.body.nombres_usuario.split(' ');
-    let spaceApp=req.body.apellidos_usuario.split(' ');
+    let spaceApp = req.body.apellidos_usuario.split(' ');
 
-    
+
     if (!req.body.nombres_usuario || !req.body.apellidos_usuario || !req.body.email_usuario ||
         !req.body.curp_alumno || !req.body.contraseña_usuario || !req.body.tipo_usuario) {
         console.log('rellene todos los campos');
         res.redirect('/web/#modal1');
-    }else if(reNomB==false || reAppB== false){
+    } else if (!reNomA.test(req.body.nombres_usuario) || !reNomA.test(req.body.apellidos_usuario)) {
         console.log('El nombre o apellidos contiene caracteres invalidos');
         res.redirect('/web/#modal1');
-    }else if(spaceNom.length>2 || spaceApp.length!=2){
+    } else if (spaceNom.length > 2 || spaceApp.length != 2) {
         console.log('numero de espacios');
         res.redirect('/web/#modal1');
-    } else {
+    } else if (!reCorreo.test(req.body.email_usuario)) {
+        console.log('correo invalido');
+        res.redirect('/web/#modal1');
+    } else if (req.body.email_usuario.length > 70) {
+        console.log('correo invalido por tamaño');
+        res.redirect('/web/#modal1');
+    } else if (!reCurp.test(req.body.curp_alumno)) {
+        console.log('curp invalido');
+        res.redirect('/web/#modal1');
+    } else if (!reContra.test(req.body.contraseña_usuario)) {
+        console.log('contraseña invalida');
+        res.redirect('/web/#modal1');
+    }else {/*Fin Validacion de Registro */
         let nombre = req.body.apellidos_usuario + ' ' + req.body.nombres_usuario;
         let cor = req.body.email_usuario.toLowerCase();
         let pas = req.body.contraseña_usuario;
@@ -860,8 +880,10 @@ router.post('/web/registrar', (req, res) => {
                 "tok_usu": tok,
                 "id_tus": tip
             }
+            console.log('Si entra: ', usuario);
             req.getConnection(async(err, conn) => {
                 await conn.query(`select * from musuario where nom_usu = '${usuario.nom_usu}' or cor_usu = ' ${usuario.cor_usu}'`, (err, usuarioExistente) => {
+                    if (err) console.log("ERROR AL REGISTRAR")
                     if (usuarioExistente.length < 1) {
                         usuario.pas_usu = cifrado.cifrar(usuario.pas_usu);
                         usuario.curp_usu = cifrado.cifrar(usuario.curp_usu);
@@ -870,8 +892,8 @@ router.post('/web/registrar', (req, res) => {
                             req.session.usuario_sin_verificar = undefined;
                             res.redirect('/web');
                         });
-                       // mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
-                       // res.redirect('/web/confirmacion_de_usuario');
+                        // mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
+                        // res.redirect('/web/confirmacion_de_usuario');
                     } else {
                         res.redirect('/web');
                     }
@@ -919,11 +941,11 @@ router.post('/web/alumnoIGrupo', (req, res) => {
     let cla_gru = req.body.codigo_grupo;
     req.getConnection((err, conn) => {
         if (err) console.log('el error es: ', err);
-        
+
         conn.query('select * from cgrupo where cla_gru = ?', cla_gru, (errConsul, clave) => {
             if (errConsul) console.log('el error en la consulta es: ', errConsul);
             console.log(clave)
-            if(clave.length>0){       
+            if (clave.length > 0) {
                 clave.forEach(element => {
                     console.log(element.cla_gru);
                     console.log(element.id_gru);
@@ -935,7 +957,8 @@ router.post('/web/alumnoIGrupo', (req, res) => {
                         conn.query('insert into eusuariosgrupo set ?', [insertData], (errInsert, row) => {
                             if (errInsert) console.log('El error al insertar es: ', errInsert);
                             console.log(req.session.usuario.id_usu);
-                            res.redirect('/web');//arcados no puedo abrir el localhost:,c
+                            req.session.usuario.id_gru = element.id_gru;
+                            res.redirect('/web'); 
                         });
 
                     } else {
@@ -943,8 +966,8 @@ router.post('/web/alumnoIGrupo', (req, res) => {
                         res.redirect('/web');
                     }
                 });
-            }else{
-                console.log("No Existe el código de grupo"); 
+            } else {
+                console.log("No Existe el código de grupo");
                 res.redirect("/web")
             }
         })
@@ -1088,18 +1111,35 @@ router.post('/web/iniciar', (req, res) => {
         let email = req.body.email_inicio;
         let password = req.body.contraseña_inicio;
         req.getConnection((err, conn) => {
-            conn.query(`select * from musuario where cor_usu = '${email}' and pas_usu = '${cifrado.cifrar(password)}'`, (err, usuarioCorrecto) => {
+            conn.query(`select * from  musuario where cor_usu = '${email}' and pas_usu = '${cifrado.cifrar(password)}'`, (err, usuarioCorrecto) => {
                 if (usuarioCorrecto.length > 0) {
-                    let usuario = {
-                        "id_usu": usuarioCorrecto[0].id_usu,
-                        "nom_usu": usuarioCorrecto[0].nom_usu,
-                        "curp_usu": usuarioCorrecto[0].curp_usu,
-                        "cor_usu": usuarioCorrecto[0].cor_usu,
-                        "pas_usu": usuarioCorrecto[0].pas_usu,
-                        "id_tus": usuarioCorrecto[0].id_tus
-                    }
-                    req.session.usuario = usuario;
-                    res.redirect('/web');
+                    conn.query(`select * from eusuariosgrupo natural join musuario where cor_usu = '${email}' and pas_usu = '${cifrado.cifrar(password)}'`, (err, grupo) => {
+                        let usuario = {}
+                        if(grupo.length > 0){
+                            usuario = {
+                                "id_usu": usuarioCorrecto[0].id_usu,
+                                "nom_usu": usuarioCorrecto[0].nom_usu,
+                                "curp_usu": usuarioCorrecto[0].curp_usu,
+                                "cor_usu": usuarioCorrecto[0].cor_usu,
+                                "pas_usu": usuarioCorrecto[0].pas_usu,
+                                "id_tus": usuarioCorrecto[0].id_tus,
+                                "id_gru": grupo[0].id_gru
+                            }
+                        }else{
+                            usuario = {
+                                "id_usu": usuarioCorrecto[0].id_usu,
+                                "nom_usu": usuarioCorrecto[0].nom_usu,
+                                "curp_usu": usuarioCorrecto[0].curp_usu,
+                                "cor_usu": usuarioCorrecto[0].cor_usu,
+                                "pas_usu": usuarioCorrecto[0].pas_usu,
+                                "id_tus": usuarioCorrecto[0].id_tus,
+                                "id_gru": undefined
+                            }
+                        }     
+                        req.session.usuario = usuario;
+                        res.redirect('/web');
+                    })
+                    
                 } else {
                     res.json('Usuario inexistente con estas credenciales');
                 }
@@ -1120,7 +1160,7 @@ router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => 
     }
     if (req.body.hipervinculo_apoyo != undefined) {
         vinculo = req.body.hipervinculo_apoyo;
-    } else { 
+    } else {
         vinculo = null;
     }
     if (!req.body.apoyo_tema) {
@@ -1142,7 +1182,7 @@ router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => 
 
 router.post('/web/updateApoyo', upload.single('archivo_apoyo_modificar'), (req, res) => {
     let json = {};
-    
+
     if (req.file != undefined) {
         json.pdf_apo = req.file.filename;
         json.nom_pdf = req.file.originalname;
@@ -1158,7 +1198,7 @@ router.post('/web/updateApoyo', upload.single('archivo_apoyo_modificar'), (req, 
             conn.query('select * from mapoyos natural join ctemas where id_apo = ?', [req.body.id_apoyo_name], (err, apoyo) => {
                 console.log(apoyo);
                 console.log(apoyo[0].pdf_apo);
-              
+
                 res.json({
                     'aviso': "Apoyo modificado satisfactoriamente",
                     'id': apoyo[0].id_apo,
@@ -1403,7 +1443,7 @@ router.post('/web/Addquestions/:questions', (req, res) => {
     });
 });
 router.get('/web/questions', (req, res) => {
-    
+
     req.app.locals.layout = 'profesor';
     req.getConnection((err, conn) => {
         conn.query("select * from ctemas", (err2, temas) => {
@@ -1427,8 +1467,8 @@ router.post('/web/Addquestion', (req, res) => {
             "id_tem": req.body.id_tem,
             "id_dif": req.body.id_dif
         }
-        console.log('estos son los valore kawai: ',valores)
-        conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => {//no se por que aparece ese Send osea en html no lo tengo:c
+        console.log('estos son los valore kawai: ', valores)
+        conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => { //no se por que aparece ese Send osea en html no lo tengo:c
             if (err2) console.log("ERROR 2 ", err2)
             res.json('Se inserto la pregunta correctamente');
         }); //Error: Lock wait timeout exceeded; try restarting transaction es algo del maisicuel XD
@@ -1436,7 +1476,74 @@ router.post('/web/Addquestion', (req, res) => {
     });
 });
 
-router.post('/web/AddQuizz', (req, res) => {
+ 
+ router.post('/web/AddQuizz', (req, res) => {
+     //Validacion de cuestionarios
+     //if(req.session.usuario.id_tus==2){
+
+     //}
+    console.log(req.body.date);
+    let dateS=req.body.date.split('-');
+   
+    var reNomCuest = /^[a-zA-Z0-9À-ÿ\u00f1\u00d1]+(\s*[a-zA-Z0-9À-ÿ\u00f1\u00d1]*)*[a-zA-Z0-9À-ÿ\u00f1\u00d1]+$/
+    //var reFecha= /^(\d{4})(\/|-)(0[1-9]|1[0-2])\2([0-2][0-9]|3[0-1])$/
+    var reFecha= /\d{4}([-])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/
+    let todaydatere = new Date();
+    console.log(parseInt(dateS[1])); //
+    console.log('mes actual: ',todaydatere.getMonth());
+    if(!req.body.nombre||!req.body.date||!req.body.element||!req.body.group){
+        console.log('Campos vacios');
+        res.redirect('/web/cuestionarios');
+    } else if(!reNomCuest.test(req.body.nombre)){
+        console.log('Solo debe contener letras');
+        res.redirect('/web/cuestionarios');
+    }else if(req.body.nombre.length>60|| req.body.nombre.length<1){
+            console.log('Supera el rango');
+            res.redirect('/web/cuestionarios');
+    }else if(!reFecha.test(req.body.date)){
+                    console.log('Fecha invalida');
+                    res.redirect('/web/cuestionarios');
+    }else if(parseInt(dateS[0])< todaydatere.getFullYear()){
+        console.log('fecha imposible');
+        res.redirect('/web/cuestionarios');
+
+    }else if(parseInt(dateS[1])< (todaydatere.getMonth()+1) && parseInt(dateS[0]) == todaydatere.getFullYear()){
+        console.log('fecha imposible por que el mes es anterior a la fecha de creacion');
+        res.redirect('/web/cuestionarios');
+
+    }else if(parseInt(dateS[2])< todaydatere.getDate()&& parseInt(dateS[1]) == (todaydatere.getMonth()+1)){///
+       
+            console.log('fecha imposible por que el dia es anterior a la fecha de creacion');
+        res.redirect('/web/cuestionarios');
+        
+    
+
+    }else{
+        req.app.locals.layout = 'profesor';
+    req.getConnection((err, conn) => {
+        let todaydate = new Date();
+        let today = todaydate.getFullYear() + "-" + (todaydate.getMonth() + 1) + "-" + todaydate.getDate();
+        console.log(today)
+        let elements = {
+            "nom_cue": req.body.nombre,
+            "fec_ini": req.body.date,
+            "fec_fin": today,
+            "id_bpr": req.body.element.toString(),
+            "id_gru": req.body.group.toString()
+        }
+        console.log(elements)
+        conn.query('insert into ecuestionario set ?', elements, (err2, elementos) => {
+            if (err2) console.log("ERROR 2 ", err2)
+            res.redirect('/web/cuestionarios');
+        });
+        if (err) console.log("ERROR 1 ", err)
+    });
+    }
+    
+});
+
+/*router.post('/web/AddQuizz', (req, res) => {
+  
     req.app.locals.layout = 'profesor';
     req.getConnection((err, conn) => {
         let todaydate = new Date();
@@ -1454,22 +1561,25 @@ router.post('/web/AddQuizz', (req, res) => {
         });
         if (err) console.log("ERROR 1 ", err)
     });
-});
+});*/
+
+
+
 router.get('/web/viewQuestions', (req, res) => {
-    if(req.session.usuario){
+    if (req.session.usuario) {
         const id_tus = req.session.usuario.id_tus;
-        if(id_tus === 3 || id_tus === 4 || id_tus === 5){
+        if (id_tus === 3 || id_tus === 4 || id_tus === 5) {
             req.app.locals.layout = 'profesor';
             req.getConnection((err, conn) => {
                 viewquestions(conn, (quizz) => {
-                        res.render('profesor/VerCuestionarios', { quizz: quizz })
-                    })
-        
+                    res.render('profesor/VerCuestionarios', { quizz: quizz })
+                })
+
             });
-        }else{
-            res.redirect("/web"); 
+        } else {
+            res.redirect("/web");
         }
-    }else{
+    } else {
         res.redirect("/web");
     }
 });
@@ -1499,7 +1609,7 @@ function viewquestions(conn, callback) {
                 let json = {
                     "id_cue": element.id_cue,
                     "nom_cue": element.nom_cue,
-                    "fec_ini": element.fec_ini,
+                    "fec_ini": element.fec_ini, 
                     "fec_fin": element.fec_fin,
                     "questions": questions
                 }
@@ -1513,7 +1623,6 @@ function viewquestions(conn, callback) {
         }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
     });
 }
-
 function returnQuestionasQuestionaire(conn, question, callback) {
     let questions = [];
    
@@ -1528,84 +1637,89 @@ function returnQuestionasQuestionaire(conn, question, callback) {
         callback(questions);
     }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
 }
-
-router.get("/web/Quizz", (req,res)=>{
+router.get("/web/Quizz", (req, res) => {
     req.session.quizz = undefined;
-    if(req.session.usuario){
-        if(req.session.usuario.id_tus === 1){
-            req.app.locals.layout = 'alumno';
-            req.getConnection((err, conn) => {
-                const id_us = req.session.usuario.id_usu;
-                conn.query("select * from eusuariosgrupo where id_usu = ?", id_us, (err, group) => {  
-                    returnQuestionAlumno(conn,id_us,group, (quizz) => {
-                        res.render('alumno/cuestionario', { quizz: quizz })
+    if (req.session.usuario) {
+        req.app.locals.layout = 'alumno';
+        if (req.session.usuario.id_tus === 1) {
+            if(req.session.usuario.id_gru){
+                req.getConnection((err, conn) => {
+                    const id_us = req.session.usuario.id_usu;
+                    conn.query("select * from eusuariosgrupo where id_usu = ?", id_us, (err, group) => {
+                        returnQuestionAlumno(conn, id_us, group, (quizz) => {
+                            res.render('alumno/cuestionario', { quizz: quizz })
+                        })
                     })
-                })
-                
-            });
-        }else{
+
+                });
+            }else{
+                res.redirect('/web');
+            }
+        } else {
             res.redirect("/web");
         }
-    }else{
+    } else {
         res.redirect("/web");
     }
 });
-router.post("/web/Quizz", (req,res)=>{
-    if(req.session.usuario){
-        if(req.session.usuario.id_tus === 1){
+router.post("/web/Quizz", (req, res) => {
+ 
+    if (req.session.usuario) {
+        if (req.session.usuario.id_tus === 1) {
             req.app.locals.layout = 'alumno';
-              req.session.quizz = req.body.quizz
-              res.redirect("/web/Quizz/solve")
-        }else{
+            req.session.quizz = req.body.quizz
+            res.redirect("/web/Quizz/solve")
+        } else {
             res.redirect("/web")
         }
-    }else{
+    } else {
         res.redirect("/web")
     }
-}); 
-router.get("/web/Quizz/solve", (req,res)=>{
+});
+router.get("/web/Quizz/solve", (req, res) => {
     const id_cue = req.session.quizz
-    if(req.session.usuario){
-        if(req.session.usuario.id_tus == 1){
-            if(id_cue){
+    if (req.session.usuario) {
+        if (req.session.usuario.id_tus == 1) {
+            if (id_cue) {
                 req.app.locals.layout = 'alumno';
-                req.getConnection((err, conn)=>{
-                    conn.query("select * from ecuestionario where id_cue = ?", id_cue, (err2, quizz)=>{
-                        if(err2) console.log("ERROR AL ARROJAR QUiZZ ",err2)
-                        returnQuizzAlumno(conn ,quizz[0], (quiz)=>{
-                            req.session.questions = quiz[0].questions;             
-                        res.render("alumno/ContestarQuizz", {quizz:quiz, id_cue:id_cue})
+                req.getConnection((err, conn) => {
+                    conn.query("select * from ecuestionario where id_cue = ?", id_cue, (err2, quizz) => {
+                        if (err2) console.log("ERROR AL ARROJAR QUiZZ ", err2)
+                        returnQuizzAlumno(conn, quizz[0], (quiz) => {
+                            req.session.questions = quiz[0].questions;
+                            res.render("alumno/ContestarQuizz", { quizz: quiz, id_cue: id_cue })
                         });
                     });
                 });
-            }else{
+            } else {
                 res.redirect("/web");
             }
-        }else{
-            res.redirect("/web"); 
+        } else {
+            res.redirect("/web");
         }
-    }else{
+    } else {
         res.redirect("/web");
     }
-}); 
-function returnQuizzAlumno(conn, quizz,  callback){
-    let quizzFinal=[]
-    let cont = 0; 
-    id_bpr = quizz.id_bpr.split(','); 
+});
+
+function returnQuizzAlumno(conn, quizz, callback) {
+    let quizzFinal = []
+    let cont = 0;
+    id_bpr = quizz.id_bpr.split(',');
     let qf = [];
     qf = id_bpr;
-    for(let i = 0; i<id_bpr.length; i++){
-        for(let j = 0; j < id_bpr.length; j++){
-            if(id_bpr[i] == id_bpr[j]){
-                    if(cont > 0){
-                        qf.splice(j,1)
-                    }
-             cont++;
-        }  
+    for (let i = 0; i < id_bpr.length; i++) {
+        for (let j = 0; j < id_bpr.length; j++) {
+            if (id_bpr[i] == id_bpr[j]) {
+                if (cont > 0) {
+                    qf.splice(j, 1)
+                }
+                cont++;
+            }
+        }
+        cont = 0;
     }
-    cont = 0;
-    }
-    returnQuestionasQuestionaire(conn,qf, (preguntas)=>{
+    returnQuestionasQuestionaire(conn, qf, (preguntas) => {
         let json = {
             "id_cue": quizz.id_cue,
             "nom_cue": quizz.nom_cue,
@@ -1613,7 +1727,7 @@ function returnQuizzAlumno(conn, quizz,  callback){
             "fec_fin": quizz.fec_fin,
             "questions": preguntas
         }
-        quizzFinal.push(json); 
+        quizzFinal.push(json);
     })
 
     setTimeout(() => {
@@ -1622,128 +1736,127 @@ function returnQuizzAlumno(conn, quizz,  callback){
 
 }
 
-function returnQuestionAlumno(conn,id_us,group,callback){
-    let id_bpr; 
-    let qs =[]; 
-    conn.query("select * from ecuestionario", (err,ques)=>{
-        ques.forEach(element=>{
-           cuestionarioContestado(conn,element.id_cue,id_us,(bool)=>{
-               console.log("Contestado ", bool)
-               if(bool){
-                id_bpr = element.id_gru.split(',');
-                    for(let i = 0; i < id_bpr.length; i++){
-                        if(id_bpr[i] == group[0].id_gru){ 
-                            qs.push(element); 
-                            break; 
+function returnQuestionAlumno(conn, id_us, group, callback) {
+    let id_bpr;
+    let qs = [];
+    conn.query("select * from ecuestionario", (err, ques) => {
+        ques.forEach(element => {
+            cuestionarioContestado(conn, element.id_cue, id_us, (bool) => {
+                if (bool) {
+                    id_bpr = element.id_gru.split(',');
+                    for (let i = 0; i < id_bpr.length; i++) {
+                        if (id_bpr[i] == group[0].id_gru) {
+                            qs.push(element);
+                            break;
                         }
                     }
                 }
-           })
-           
-        }); 
+            })
 
-    setTimeout(() => {
-        callback(qs);
-    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+        });
+
+        setTimeout(() => {
+            callback(qs);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
     })
 }
-function cuestionarioContestado(conn, id_cue,id_us, callback){
-    let bool = false; 
-    conn.query("select * from dpuntajealumnocuestionario where id_cue = ? and id_usu = ?",[id_cue,id_us],(err,rows)=>{
-        if(err)console.log("Error de dpuntaje ",err);
-        if(rows.length<1){
+
+function cuestionarioContestado(conn, id_cue, id_us, callback) {
+    let bool = false;
+    conn.query("select * from dpuntajealumnocuestionario where id_cue = ? and id_usu = ?", [id_cue, id_us], (err, rows) => {
+        if (err) console.log("Error de dpuntaje ", err);
+        
+        if (rows.length < 1) {
             bool = true
         }
-        
         setTimeout(() => {
             callback(bool);
-        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 100);
     });
 }
 
-router.post("/web/resultadosQuizz", (req,res)=>{
-    const respuestas = req.body; 
-    const id_cue = req.session.quizz;  
+router.post("/web/resultadosQuizz", (req, res) => {
+    const respuestas = req.body;
+    const id_cue = req.session.quizz;
     const questions = req.session.questions;
-    console.log("QUESTIONS ",questions)
-    if(id_cue){
-        let res_cor = []; 
-        let res_incor =[];
-        let cont = 0; 
+    console.log("QUESTIONS ", questions)
+    if (id_cue) {
+        let res_cor = [];
+        let res_incor = [];
+        let cont = 0;
         req.app.locals.layout = 'alumno';
-        for(k in respuestas){
-            if(respuestas[k] == questions[cont].res_cor){ 
-                res_cor.push(questions[cont].id_bpr); 
-            }else{
-                res_incor.push(questions[cont].id_bpr); 
-            } 
+        for (k in respuestas) {
+            if (respuestas[k] == questions[cont].res_cor) {
+                res_cor.push(questions[cont].id_bpr);
+            } else {
+                res_incor.push(questions[cont].id_bpr);
+            }
             cont += 1;
         }
-    
-        req.getConnection((err, conn)=>{
+
+        req.getConnection((err, conn) => {
             let json = {
-                "id_usu" : req.session.usuario.id_usu,
-                "id_cue" : req.session.quizz,
-                "id_pco" : res_cor.toString(),
-                "id_pin" : res_incor.toString()
-            } 
-            conn.query("insert into dpuntajealumnocuestionario set ? ",json , (err, ban)=>{
-                if(err) console.log('el error al insertar las respuestas:',err)
-                res.redirect("/web/Quizz/puntaje"); 
-            }); 
+                "id_usu": req.session.usuario.id_usu,
+                "id_cue": req.session.quizz,
+                "id_pco": res_cor.toString(),
+                "id_pin": res_incor.toString()
+            }
+            conn.query("insert into dpuntajealumnocuestionario set ? ", json, (err, ban) => {
+                if (err) console.log('el error al insertar las respuestas:', err)
+                res.redirect("/web/Quizz/puntaje");
+            });
         });
-    }else{
+    } else {
         res.redirect("/web")
     }
 
-}); 
+});
 
-router.get('/web/Quizz/puntaje', (req,res)=>{
-    const id_cue = req.session.quizz; 
-    const id_usu = req.session.usuario.id_usu; 
+router.get('/web/Quizz/puntaje', (req, res) => {
+    const id_cue = req.session.quizz;
+    const id_usu = req.session.usuario.id_usu;
     const questions = req.session.questions;
-    if(req.session.usuario.id_tus == 1){
+    if (req.session.usuario.id_tus == 1) {
         req.app.locals.layout = 'alumno';
-        if(id_cue){ 
-            req.getConnection((err,conn)=>{
-                conn.query("select * from dpuntajealumnocuestionario  natural join ecuestionario where id_cue = ? and id_usu = ?", 
-                [id_cue, id_usu], (err,puntaje)=>{
-                    if(err) console.log(err)
+        if (id_cue) {
+            req.getConnection((err, conn) => {
+                conn.query("select * from dpuntajealumnocuestionario  natural join ecuestionario where id_cue = ? and id_usu = ?", [id_cue, id_usu], (err, puntaje) => {
+                    if (err) console.log(err)
                     req.session.quizz = undefined;
                     req.session.questions = undefined;
-                    compararquizz(questions, puntaje[0], (qf)=>{
-                        res.render("alumno/puntajecuestionario", {qf:qf})
+                    compararquizz(questions, puntaje[0], (qf) => {
+                        res.render("alumno/puntajecuestionario", { qf: qf })
                     })
 
-                }); 
+                });
             })
-        }else{
+        } else {
             res.redirect("/web")
         }
-    }else{
+    } else {
         res.redirect("/web")
     }
-}); 
+});
 
-function compararquizz(questions, puntaje, callback){
-    let qf = questions; 
+function compararquizz(questions, puntaje, callback) {
+    let qf = questions;
     res_cor = puntaje.id_pco.split(',');
     res_incor = puntaje.id_pin.split(',');
-    let cont = 0; 
-    questions.forEach(element=>{
-        for(let i = 0; i<res_cor.length; i++){
-            if(element.id_bpr == res_cor[i]){
-                qf[cont].correct = true; 
+    let cont = 0;
+    questions.forEach(element => {
+        for (let i = 0; i < res_cor.length; i++) {
+            if (element.id_bpr == res_cor[i]) {
+                qf[cont].correct = true;
             }
         }
-        for(let i = 0; i<res_incor.length; i++){
-            if(element.id_bpr == res_incor[i]){
-                qf[cont].correct = false; 
+        for (let i = 0; i < res_incor.length; i++) {
+            if (element.id_bpr == res_incor[i]) {
+                qf[cont].correct = false;
             }
         }
-        cont++; 
+        cont++;
 
-    });  
+    });
     setTimeout(() => {
         callback(qf);
     }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
@@ -1752,56 +1865,244 @@ function compararquizz(questions, puntaje, callback){
 
 /*-------------------------------------FIN DE CUESTIONARIO--------------------------------------------*/
 /*--------------------------------------CALIFICACIONES------------------------------------------------*/
-router.get('/web/calificacionesgrupo', (req,res)=>{
-    if(req.session.usuario.id_tus == 3){
-        req.app.locals.layout = 'profesor' 
-        req.getConnection((err, conn)=>{
-            conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario", (err2, puntajes)=>{
-                calificacionesxgrupo(conn, puntajes,req.session.usuario.id_usu, (puntajesF)=>{
-                    console.log("PUNTAJES ",puntajesF)
-                    res.render("profesor/calificacionesxgrupo", {puntajesF:puntajesF})
-                })
 
-            }); 
+router.get('/web/calificacionesgrupo', (req, res) => {
+    if (req.session.usuario.id_tus == 3) {
+        req.app.locals.layout = 'profesor'
+        req.getConnection((err, conn) => {
+            conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu = ?', (req.session.usuario.id_usu), (err, grupos) => {
+                if (err) console.log("ERROR EN CONSULTA DE GRUPOS", err)
+                    //conn.query('select * from eusuariosgrupo where id_usu =?', (req.session.usuario.id_usu), (err3,grupos)=>{
+                    //  if(err3) console.log("ERROR 3", err3)
+                    //retornarcuestionariosprofesor(conn,grupos, (cuestionariosF)=>{
+
+                res.render("profesor/calificacionesxgrupo", { grupos: grupos /*, cuestionario:cuestionariosF*/ })
+                    //})
+                    //})
+            });
         });
-    }else{
+    } else {
         res.redirect("/web")
     }
-}); 
-function calificacionesxgrupo(conn, puntajes, usuario, callback){
-    conn.query("select * from eusuariosgrupo where id_usu = ?",usuario,(err,groups)=>{
-        let puntajesF = [];
-        let bool = false; 
-        groups.forEach(grupo=>{
-            puntajes.forEach(element=>{
-                let grupos = element.id_gru.split(','); 
-                    if(puntajesF.length>0){
-                        for(let j=0; j<puntajesF.length; j++){
-                            if(puntajesF[j] == element){
-                                bool = true; 
-                                break; 
-                            }else{
-                                bool =false;
-                            }
-                        }
+})
+
+function retornarcuestionariosprofesor(conn, grupos, callback) {
+    let cuestionariosF = [];
+    conn.query('select * from ecuestionario', (err2, cuestionarios) => {
+        if (err2) console.log("EEROR2")
+        cuestionarios.forEach(element => {
+            let grupos2 = element.id_gru.split(',');
+            grupos.forEach(grupo => {
+                for (let i = 0; i < grupos2.length; i++) {
+                    if (grupo.id_gru == grupos2[i]) {
+                        cuestionariosF.push(element);
+                        break;
+                    } else {
+                        break;
                     }
-                    if(!bool){
-                        for(let i = 0; i<grupos.length; i++){
-                            if(grupos[i] == grupo.id_gru){
-                                puntajesF.push(element)
-                                break;
-                            }
-                        }
-                    }
-            }); 
-        }); 
-       // console.log("PUNTAJE FINAL ", puntajesF.length, "\n", puntajesF)
+                }
+            })
+        });
+        console.log("CUestionarios ", cuestionariosF)
+
         setTimeout(() => {
-            callback(puntajesF);
+            callback(cuestionariosF);
         }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
     });
 }
 
+router.post('/web/calificacionesgrupo', (req, res) => {
+    if (req.session.usuario.id_tus == 3) {
+        req.app.locals.layout = 'profesor'
+        req.getConnection((err, conn) => {
+            console.log(req.body)
+            const grupo = req.body.grupo;
+            const cuest = req.body.cuestionario;
+            if (!cuest) {
+                conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario natural join musuario ", (err2, puntajes) => {
+                    calificacionesxgrupo(conn, puntajes, req.session.usuario.id_usu, grupo, (puntajesF) => {
+                        // console.log("PUNTAJES ",puntajesF)
+                        const calificaciones = sacarcalificacion(puntajesF, cuest);
+                        console.log("CALIFICACIONES ", calificaciones[0])
+                        res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                    })
+                });
+            } else {
+                conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario natural join musuario where id_cue = ?", (parseInt(cuest)), (err2, puntajes) => {
+                    calificacionesxgrupo(conn, puntajes, req.session.usuario.id_usu, grupo, (puntajesF) => {
+                        // console.log("PUNTAJES ",puntajesF)
+                        const calificaciones = sacarcalificacion(puntajesF, cuest);
+                        console.log("CALIFICACIONES ", calificaciones[0])
+                        res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                    })
+
+                });
+            }
+        });
+    } else {
+        res.redirect("/web")
+    }
+});
+
+function calificacionesxgrupo(conn, puntajes, usuario, grupo, callback) {
+    conn.query("select * from eusuariosgrupo natural join cgrupo where id_usu =? and id_gru = ?", [usuario, parseInt(grupo)], (err, groups) => {
+        if (err) console.log("ERROR EN CALIFICACIONES 2", err)
+        let puntajesF = [];
+        let bool = false;
+        let arraysgrupo = []
+        groups.forEach(grupoo => {
+            arraysgrupo.push(grupoo.nom_gru);
+            puntajes.forEach(element => {
+                let grupos = element.id_gru.split(',');
+                if (puntajesF.length > 0) {
+                    for (let j = 0; j < puntajesF.length; j++) {
+                        if (puntajesF[j] == element) {
+                            bool = true;
+                            break;
+                        } else {
+                            bool = false;
+                        }
+                    }
+                }
+                if (!bool) {
+                    for (let i = 0; i < grupos.length; i++) {
+                        if (grupos[i] == grupoo.id_gru) {
+                            puntajesF.push(element)
+                            break;
+                        }
+                    }
+                }
+            });
+        });
+        puntajesFF = [];
+        puntajesF.forEach(element=>{
+            validargrupo(element,conn,grupo,(puntajesFF)=>{
+                puntajesFF.push(puntajesFF)
+            })
+        });
+        setTimeout(() => {
+            callback(puntajesFF);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    });
+}
+function validargrupo(puntajes,conn,grupo, callback){
+    puntajesFF = [];
+    conn.query('select * from eusuariosgrupo where id_usu = ?',(puntajes.id_usu), (err,gru)=>{
+        if(gru[0].id_gru == grupo){
+            puntajesFF.push(puntajes)
+        } 
+        setTimeout(() => {
+            callback(puntajesFF);
+        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    })
+}
+
+function sacarcalificacion(puntaje, cuest) {
+    calificaciones = [];
+    cuestionarios = []
+    let json2 = {}
+    puntaje.forEach(element => {
+        let correctas = element.id_pco.split(',');
+        let incorrectas = element.id_pin.split(',');
+        let calificacion;
+        if (correctas[0] == '') {
+            correctas = correctas.splice(0, 0);
+        }
+        if (incorrectas[0] == '') {
+            incorrectas = incorrectas.splice(0, 1);
+        }
+        calificacion = (correctas.length * 10 / (correctas.length + incorrectas.length));
+
+        let json = {
+            "nom_cue": element.nom_cue,
+            "nom_usu": element.nom_usu,
+            "calificacion": calificacion
+        }
+        if (!cuest) {
+            if (cuestionarios.length == 0) {
+                json2 = {
+                    "id_cue": element.id_cue,
+                    "nom_cue": element.nom_cue
+                }
+                cuestionarios.push(json2)
+            } else {
+                for (let i = 0; i < cuestionarios.length; i++) {
+                    if (element.id_cue == cuestionarios[i].id_cue) {
+                        break;
+                    } else {
+                        json2 = {
+                            "id_cue": element.id_cue,
+                            "nom_cue": element.nom_cue
+                        }
+                        cuestionarios.push(json2)
+                        break;
+                    }
+                }
+            }
+        }
+        calificaciones.push(json);
+    });
+    return [calificaciones, cuestionarios];
+}
+
+router.get('/web/calificaciones', (req, res) => {
+    if (req.session.usuario.id_usu) {
+        req.app.locals.layout = 'alumno';
+        if(req.session.usuario.id_gru){
+            req.getConnection((err, conn) => {
+                conn.query("select * from dpuntajealumnocuestionario natural join musuario natural join ecuestionario where id_usu=?", (req.session.usuario.id_usu), (err2, rows) => {
+                    let calificacion = sacarcalificacion(rows, undefined);
+                    let promedio = promedios(calificacion[0])
+                    console.log(calificacion[0])
+                    res.render('alumno/calificaciones', { calificaciones: calificacion[0], promedio: promedio })
+                })
+            });
+        }else{
+            res.redirect('/web')
+        }
+    } else {
+        res.redirect('/web')
+    }
+
+})
+
+function promedios(calificacion) {
+    let sum = 0;
+    calificacion.forEach(element => {
+        sum += element.calificacion;
+    })
+    let promedio = sum / calificacion.length;
+    if (promedio <= 5) {
+        return promedio + "\n (DBERÍAS ESTUDIAR MÁS. Revisa la sección de apoyo)";
+    } else if (promedio < 7 && promedio > 5) {
+        return promedio + "\n(Puedes hacerlo mejor. Revisa la sección de apoyo)";
+    } else if (promedio >= 8 && promedio < 9) {
+        return promedio + "\n(Vas bien, pero puedes hacerlo mejor. Revisa la sección de apoyo)";
+    } else if(promedio == "" || promedio == undefined || isNaN(promedio)){
+     
+    }else{    
+        return promedio + "\n MUY BIEN!";
+    }
+
+}
+
+/*------------------------------------FIN DE CALIFICACIONES-------------------------------------------*/
+/* 
+ * Inicio de autoridad
+ */
+
+router.get('/web/vergrupos', (req, res) => {
+    if (req.session.usuario.id_tus == 4) {
+        req.app.locals.layout = 'autoridad';
+        req.getConnection((err, conn) => {
+            retornaGruposAutoridad(conn, (grupos) => {
+                conn.query('select * from musuario where id_tus = 3 or id_tus = 4', (err, profesores) => {
+                    res.render('autoridad/grupos', { grupos, usuario: req.session.usuario, profesores });
+                });
+            });
+        });
+    }
+});
 /*------------------------------------FIN DE CALIFICACIONES-------------------------------------------*/
 /* 
  * Inicio de autoridad
@@ -1908,7 +2209,7 @@ router.get('/web/curp_cifrar:id_usuario', (req, res) => {
             } else {
                 res.json(id);
             }
-        }); 
+        });
     });
 });
 
@@ -1924,7 +2225,7 @@ router.get('/web/obtenerCurp:id', (req, res) => {
 function generarToken(id_usu) {
     req.getConnection((err, conn) => {
         token.generar(tok => {
-            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id_usu], (err, estado) => {//ya funciona??8
+            conn.query('update musuario set tok_usu = ? where id_usu = ?', [cifrado.cifrar(tok), id_usu], (err, estado) => { //ya funciona??8
                 if (estado) console.log(estado);
             });
         });

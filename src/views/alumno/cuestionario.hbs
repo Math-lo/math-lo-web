@@ -1,6 +1,4 @@
-
-    </style>
-    <section id="main-container" class="main-container">
+<section id="main-container" class="main-container">
 	<div class="container">
 		<div clas="row">
 			<div class="col s10 push-s1">
@@ -44,7 +42,65 @@
   
 
 </section>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/mathquill/mathquill.js"></script>
+<script>
+var mathFieldSpan = document.getElementById('math-field-pregunta');
+var mathFieldSpanA = document.getElementById('math-field-opcA');
+var mathFieldSpanB = document.getElementById('math-field-opcB');
+var mathFieldSpanC = document.getElementById('math-field-opcC');
+var mathFieldSpanD = document.getElementById('math-field-opcD');
+var latexSpan = document.getElementById('latex-pregunta');
+var latexSpanA = document.getElementById('latex-opcA');
+var latexSpanB = document.getElementById('latex-opcB');
+var latexSpanC = document.getElementById('latex-opcC');
+var latexSpanD = document.getElementById('latex-opcD');
+var MQ = MathQuill.getInterface(2); // for backcompat
+var mathField = MQ.MathField(mathFieldSpan, {
+  spaceBehavesLikeTab: true, // configurable
+  handlers: {
+    edit: function() { // useful event handlers
+      latexSpan.value = mathField.latex(); // simple API
+    }
+  }
+});
+var mathField_opcA = MQ.MathField(mathFieldSpanA, {
+  spaceBehavesLikeTab: true, // configurable
+  handlers: {
+    edit: function() { // useful event handlers
+      latexSpanA.value = mathField_opcA.latex(); // simple API
+    }
+  }
+});
+var mathField_opcB = MQ.MathField(mathFieldSpanB, {
+  spaceBehavesLikeTab: true, // configurable
+  handlers: {
+    edit: function() { // useful event handlers
+      latexSpanB.value = mathField_opcB.latex(); // simple API
+    }
+  }
+});
+var mathField_opcC = MQ.MathField(mathFieldSpanC, {
+  spaceBehavesLikeTab: true, // configurable
+  handlers: {
+    edit: function() { // useful event handlers
+      latexSpanC.value = mathField_opcC.latex(); // simple API
+    }
+  }
+});
+var mathField_opcD = MQ.MathField(mathFieldSpanD, {
+  spaceBehavesLikeTab: true, // configurable
+  handlers: {
+    edit: function() { // useful event handlers
+      latexSpanD.value = mathField_opcD.latex(); // simple API
+    }
+  }
+});
+let contenidoPregunta = document.getElementsByClassName('mathquillEstatic');
+for(let index = 0; index < contenidoPregunta.length; index++) {
+    MQ.StaticMath(contenidoPregunta.item(index));
+}
+</script>
 <script >
     function enviar(n){
         document.getElementById('quizz'+n).value = n;

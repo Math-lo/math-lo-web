@@ -51,7 +51,7 @@
 
         <li class="collection-item avatar" id="li{{id_bpr}}">
       
-      <span class="title">{{con_pre}}</span>
+      <span class=""><span class="mathquillEstatic">{{con_pre}}</span></span>
       <a id="check{{id_bpr}}" onclick="añadir({{id_bpr}})" class="secondary-content"><i class="material-icons" id="icon{{id_bpr}}">check_box_outline_blank
                                                                                      </i></a>
       </li>
@@ -183,4 +183,18 @@ $(function(){
     })
 });
  
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/mathquill/mathquill.js"></script>
+<script>
+var MQ = MathQuill.getInterface(2); // for backcompat
+
+let contenidoPregunta = document.getElementsByClassName('mathquillEstatic');
+for(let index = 0; index < contenidoPregunta.length; index++) {
+    MQ.StaticMath(contenidoPregunta.item(index));
+}
+let esconder = document.getElementsByClassName('mq-selectable');
+for(let index = 0; index < esconder.length; index++) {
+    esconder.item(index).innerHTML = "";
+}
 </script>

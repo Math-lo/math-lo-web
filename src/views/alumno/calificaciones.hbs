@@ -1,0 +1,49 @@
+<section id="main-container" class="main-container">
+	<div class="container">
+		<div clas="row">
+			<div class="col s10 push-s1">
+				<div class="row">
+					
+					<div class="col s12 m7">
+						<div class="row">
+							<div class="signup-box">
+                                <div class="col s12 m7 l9">
+                                    {{#if calificaciones}}
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Cuestionario</th>
+                                                <th>Calificación</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <thead> 
+                                            {{#each calificaciones}}
+                                             <tr>
+                                                <td>{{nom_cue}}</td>
+                                                <td>{{calificacion}}</td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                    {{#if promedio}}
+                                      <h5>Tu promedio es: {{promedio}}</h5>
+                                    {{/if}}
+                                    {{else}}
+                                        <h3>Aún no tienes cuestionarios contestados</h3>
+                                    {{/if}}
+                                </div> 
+                                <div class="col s12 m7 l3">
+                                    </br>
+                                    </br></br></br>
+                                 
+                                </div>
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+	</div>
+
+</section>

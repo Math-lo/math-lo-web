@@ -45,7 +45,7 @@ app.use(myConnection(mysql, {
     password: 'n0m3l0',
     port: 3306,
     database: 'mychemis_algebrae_v01'
-}, 'single'));
+}, 'single')); 
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', require(path.join(__dirname, 'src/rutas/rutas')));

@@ -2009,10 +2009,10 @@ function sacarcalificacion(puntaje, cuest) {
             correctas = correctas.splice(0, 0);
         }
         if (incorrectas[0] == '') {
-            incorrectas = incorrectas.splice(0, 1);
+            incorrectas = incorrectas.splice(0, 0);
         }
         calificacion = (correctas.length * 10 / (correctas.length + incorrectas.length));
-
+        calificacion = trunc(calificacion, 2); 
         let json = {
             "nom_cue": element.nom_cue,
             "nom_usu": element.nom_usu,
@@ -2044,6 +2044,14 @@ function sacarcalificacion(puntaje, cuest) {
     });
     return [calificaciones, cuestionarios];
 }
+function trunc (x, posiciones = 0) {
+    var s = x.toString()
+    var l = s.length
+    var decimalLength = s.indexOf('.') + 1
+    var numStr = s.substr(0, decimalLength + posiciones)
+    return Number(numStr)
+  }
+  
 
 router.get('/web/calificaciones', (req, res) => {
     if (req.session.usuario.id_usu) {

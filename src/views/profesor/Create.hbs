@@ -1,6 +1,19 @@
-		<div clas="row">
+	<style>
+.scroll {
+display:block;
+height:520px;
+overflow:auto;
+}
+.scroll2{
+  display:block;
+height:250px;
+overflow:auto;
+}
+</style>
+<section class="container">
+  <div clas="row">
 				<div class="row">
-					<div class="col s12 m7 l6">
+					<div class="col s12 m7 l6 scroll">
 						<div class="row">
 							<div class="signup-box">
 								<div id="quizz" class="quizz">
@@ -21,7 +34,7 @@
   </ul>  
 
 
-  <h5>Selecciona las preguntas</h5> 
+<h6>Filtrar preguntas</h6>
     <form name="broswequestion" id="broswequestion" method="POST" action="/web/preguntasx">
         <label>Dificultades:</label>
        
@@ -45,6 +58,7 @@
           <i class="material-icons right">send</i>
      </button>
 </form>
+  <h5>Selecciona las preguntas</h5> 
   <div class="item" id="preguntasx">
     <ul class="collection" id="insertQ">
         {{#each preguntas}}
@@ -59,42 +73,31 @@
     {{/each}}
   </ul>  
  </div>  
-
-            
-             <!-- Seleccione una pregunta: 
-                <div class="input-field col s12" id="selects">
-                <select name="dificultad" id="dificultad">
-                <option value="" disabled selected>Escoge una opción</option>
-                {{#each preguntas}}
-                <option value={{id_bpr}}>
-                            {{con_pre}}                   
-                {{/each}}
-                </select>
-                <label>Dificultad</label>
-                <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
-                </div> -->
-            <form name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
-                   Escriba un nombre para el cuestionario
-                  <input type="text" id="nombre" name="nombre">
-                  Escriba la fecha límite del cuestionario
-                  <input type="date" id="date" name="date">
-                   <button class="btn waves-effect waves-light indigo lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
-            </form>
-
-								
-                                                                <p id="avisos"></p>
-							</div>
-    
+         
+							</div>   
 						</div>
 					</div>
 				</div>
-        <div class="row s12 m7 l1">
-          Preguntas seleccionadas: 
-          <div class="row" >
+        <div class="row s12 m7 l6">
+           Preguntas seleccionadas: 
+            <div class="row scroll2"> 
             <ul class="collection" id="formContainer">
-
             </ul>
-          </div>
+            </br>
+            </br>
+         
+            </div>
+         <form name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
+                  <input type="text" id="nombre" name="nombre" class="input-field col s6">
+                   <label for="nombre">Escriba un nombre para el cuestionario</label>
+                <br> <br> <br> 
+                  <input type="date" id="date" name="date" class="input-field col s6">
+                   <label for="date">    Escriba la fecha límite del cuestionario</label>
+                    <br> <br> <br>
+                   <button class="btn waves-effect waves-light indigo lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
+            </form>
+                  <p id="avisos"></p>
+
         </div>
 		</div>
 	</div>
@@ -107,10 +110,7 @@
   });
 </script>
 
-{{#each 2}}
-<script>
-</script>
-{{/each}}
+
 <script>
     function añadir(id){
         let att=document.getElementById('icon'+id);
@@ -148,12 +148,10 @@
     }
     
 </script>
-
-
-
 {{res_cor}}<br>
 {{nom_tem}}<br>
 {{cat_dif}}<br>
+</section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 $(function(){

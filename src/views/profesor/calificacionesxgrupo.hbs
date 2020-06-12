@@ -1,3 +1,18 @@
+<style>
+tbody {
+display:block;
+height:500px;
+overflow:auto;
+}
+thead, tbody tr {
+display:table;
+ width:100%;
+table-layout:fixed;
+}
+table {
+width:200%;
+}
+</style>
 <script>
      document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
@@ -38,7 +53,7 @@
                                 </div>
                                 <div class="col s12 m7 l5">
                                     <center>
-                                    <div id="Calificaciones"></div>
+                                    <div id="Calificaciones" class="section scrollspy"></div>
                                     </center>
                                 </div>
 						</div>
@@ -48,12 +63,14 @@
 		</div>
 	</div>
 
-    
+
 </section><!--:c-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-
+ $(document).ready(function(){
+    $('.scrollspy').scrollSpy();
+  });
 $(() => {
      $('#select').change(function(){
        document.getElementById('quizz').innerHTML=`  <input name="cuestionarios" id="cuestionarios" readonly hidden="true" >`; 

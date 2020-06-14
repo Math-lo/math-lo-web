@@ -1,12 +1,12 @@
 	<style>
 .scroll {
 display:block;
-height:520px;
+height:540px;
 overflow:auto;
 }
 .scroll2{
   display:block;
-height:250px;
+height:190px;
 overflow:auto;
 }
 </style>
@@ -49,7 +49,7 @@ overflow:auto;
        
         <select id="broswtem">
           <option value="all">Todos los temas</option>
-          {{#each preguntas}}
+          {{#each temas}}
           <option value="{{id_tem}}">{{nom_tem}}</option>
           {{/each}}
         </select>
@@ -87,7 +87,43 @@ overflow:auto;
             </br>
          
             </div>
-         <form name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
+            <!--
+              <form class="contact100-form validate-form" name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
+<p></p>
+<b><span class="label-input100"id="aelem"></span></b>
+<p></p>
+<b><span class="label-input100"id="agru"></span></b>
+<p></p>
+Escriba un nombre para el cuestionario
+ <div class="wrap-input100 validate-input col-lg-12" data-validate="Nombre!">
+        <input class="gfort-form-control gfort-mt-12  input100" type="text"  name="nombre" id="nombre" placeholder="Nombre">
+        <span class="focus-input100"></span>
+         <b><span class="label-input100" id="anombre"></span></b>
+</div>
+Escriba la fecha límite del cuestionario
+ <div class="wrap-input100 validate-input col-lg-12" data-validate="Fecha!">
+        <input class="gfort-form-control gfort-mt-12  input100" type="date"  name="date" id="date" >
+        <span class="focus-input100" ></span>
+        <b><span class="label-input100"id="afecha"></span></b>
+</div>
+<div class="preg" id="preg">
+
+</div>
+<div class="container-contact100-form-btn col-lg-12">
+        <div class="wrap-contact100-form-btn">
+          <div class="contact100-form-bgbtn"></div>
+          <button class=" btn waves-effect waves-light contact100-form-btn" id="send" type="submit" >
+            <span>
+              Agregar
+              <i class="material-icons right">send</i>
+            </span>
+          </button>
+        </div>
+      
+  </div>
+</form>
+            
+            <form name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
                   <input type="text" id="nombre" name="nombre" class="input-field col s6">
                    <label for="nombre">Escriba un nombre para el cuestionario</label>
                 <br> <br> <br> 
@@ -95,6 +131,30 @@ overflow:auto;
                    <label for="date">    Escriba la fecha límite del cuestionario</label>
                     <br> <br> <br>
                    <button class="btn waves-effect waves-light indigo lighten-1" type="submit" name="action" >Agregar<i class="material-icons right">send</i></button>
+            </form>
+            -->
+         <form class="contact100-form validate-form" name="preguntas" id="preguntas" method="POST" action="/web/AddQuizz">
+                   <p></p>
+                  <b><span class="label-input100"id="aelem"></span></b>
+                  <p></p>
+                  <b><span class="label-input100"id="agru"></span></b>
+                  <p></p>
+                  <input type="text" id="nombre" name="nombre" class="input-field col s6" autocomplete="off"> 
+                  <b><span class="label-input100" id="anombre"></span></b>
+                  <p></p>
+
+                   <label for="nombre">Escriba un nombre para el cuestionario</label>
+                <br> <br> <br> 
+                  <input type="date" id="date" name="date" class="input-field col s6" autocomplete="off">
+                  <b><span class="label-input100"id="afecha"></span></b>
+                  <p></p>
+
+                   <label for="date">    Escriba la fecha límite del cuestionario</label>
+                    <br> <br> <br>
+                    <div class="preg" id="preg">
+
+                    </div>
+                   <button class="btn waves-effect waves-light indigo lighten-1" type="submit" id="send" name="action " >Agregar<i class="material-icons right">send</i></button>
             </form>
                   <p id="avisos"></p>
 
@@ -114,7 +174,7 @@ overflow:auto;
 <script>
     function añadir(id){
         let att=document.getElementById('icon'+id);
-        let form=document.getElementById('preguntas'); 
+        let form=document.getElementById('preg'); 
         if(att.innerText!="check_box"){
           att.innerText="check_box";
           att.value=true;
@@ -135,7 +195,7 @@ overflow:auto;
     }
     function añadir2(id){
         let att=document.getElementById('icongru'+id);
-        let form=document.getElementById('preguntas'); 
+        let form=document.getElementById('preg'); 
         if(att.innerText!="check_box"){
           att.innerText="check_box";
           att.value=true;
@@ -168,7 +228,7 @@ $(function(){
             document.getElementById('insertQ').innerHTML = "";
             questions.forEach(id=>{
               let html = `<li class='collection-item avatar' id="li${id.id_bpr}">\n
-                <span class="title">${id.con_pre}</span>
+                <span class="title"><span class="mathquillEstatic">${id.con_pre}</span></span>
                 <a id="check{{id_bpr}}" onclick="añadir(${id.id_bpr})" class="secondary-content"><i class="material-icons" id="icon${id.id_bpr}">${'check_box_outline_blank'}
                                                                                      </i></a>
                </li>
@@ -182,6 +242,8 @@ $(function(){
 });
  
 </script>
+<script src="/js-Val/Validacion.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="/mathquill/mathquill.js"></script>
 <script>

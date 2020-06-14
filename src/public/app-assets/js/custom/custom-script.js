@@ -1,3 +1,111 @@
+
+let enviar=document.getElementById('sendprex'); 
+ 
+function retrono(){
+  let pre=  document.getElementById('latex-pregunta').value
+  let res_cor=  document.getElementById('res_cor').value
+  let opc_a=document.getElementById('latex-opcA').value
+  let opc_b=document.getElementById('latex-opcB').value
+  let opc_c=document.getElementById('latex-opcC').value
+  let opc_d= document.getElementById('latex-opcD').value
+  let id_tem= document.getElementById('tema').value
+  let id_dif= document.getElementById('dificultad').value
+
+    /*-----------------------------*/
+
+    let vpre=validarPre(pre);
+    if(vpre==true){
+        document.getElementById('apre').innerHTML=""; 
+        let vopc_a=validarPreOPC(opc_a);
+        if(vopc_a==true){
+            document.getElementById('aopc_a').innerHTML=""; 
+            let vopc_b=validarPreOPC(opc_b);
+            if(vopc_b==true){
+                document.getElementById('aopc_b').innerHTML=""; 
+                let vopc_c=validarPreOPC(opc_c);
+                if(vopc_c==true){
+                    document.getElementById('aopc_c').innerHTML=""; 
+                    let vopc_d=validarPreOPC(opc_d);
+                    if(vopc_d==true){
+                        document.getElementById('aopc_d').innerHTML=""; 
+                        let vtem= validarTem(id_tem);
+                        if(vtem==true){
+                            document.getElementById('atem').innerHTML=""; 
+                            let vdif=validarDif(id_dif);
+                            if(vdif==true){
+                                document.getElementById('adif').innerHTML=""; 
+                                carga2();
+                                
+                            }else{
+                                document.getElementById('adif').innerHTML=""; 
+                                return false;
+                            }
+                        }else{
+                            document.getElementById('atem').innerHTML=vtem; 
+                            return false;
+                        }
+                    }else{
+                        document.getElementById('aopc_d').innerHTML=vopc_d; 
+                        return false;
+                    }
+                }else{
+                    document.getElementById('aopc_c').innerHTML=vopc_c; 
+                    return false;
+                }
+            }else{
+                
+                document.getElementById('aopc_b').innerHTML=vopc_b; 
+                return false;
+            }
+        }else{
+            document.getElementById('aopc_a').innerHTML=vopc_a; 
+            return false;
+        }
+    }else{
+        document.getElementById('apre').innerHTML=vpre; 
+        return false;
+    }
+}
+    
+
+function validarPre(pre){
+    if(pre.length>150||pre.length<1){
+        return "*Nombre de la pregunta entre 1-150 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarPreOPC(opc_pre){
+    if(opc_pre.length>50||opc_pre.length<1){
+        return "*Inciso de la pregunta entre 1-50 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarTem(tem){
+    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
+        console.log('*Tema invalido'); 
+    }else{
+        return true; 
+    } 
+}
+function validarDif(dif){
+    if(dif!='1'&&dif!='2'&&dif!='3'){
+        console.log('*Dificultad invalida'); 
+    }else{
+        return true; 
+    } 
+}
+enviar.addEventListener('click', (e)=>{
+    if(!retrono()){
+        e.preventDefault(); 
+    }
+}, false); 
+
+
+
+
+
 function barraBusqueda(id_barra, id_tabla) {
     let input, filter, table, tr, td, i, txtValue;
     input = document.getElementById(id_barra);
@@ -252,8 +360,8 @@ function addPre(con_pre,res_cor, opc_a, opc_b, opc_c, opc_d,id_tem,id_dif) {
 
         },
         success: (response) => {
-
-            M.toast({ html: response, classes: 'rounded' });
+            
+            M.toast({ html: response, classes: 'rounded' }).de;
             mostrarPreguntas(-1);
         }
     });
@@ -521,6 +629,28 @@ function setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
          //deletePre(id_bpre);
     });
  }
+
+
+function carga(){
+    let pre=  document.getElementById('latex-pregunta').value
+  let res_cor=  document.getElementById('res_cor').value
+  let opc_a=document.getElementById('latex-opcA').value
+  let opc_b=document.getElementById('latex-opcB').value
+  let opc_c=document.getElementById('latex-opcC').value
+  let opc_d= document.getElementById('latex-opcD').value
+  let id_tem= document.getElementById('tema').value
+  let id_dif= document.getElementById('dificultad').value
+    document.getElementById('hidem').click();
+    addPre(pre,res_cor,opc_a,opc_b,opc_c,opc_d,id_tem,id_dif);
+};
+function carga2(){
+    document.getElementById('hidem2').click();
+};
+
+
+
+
+
 
 // setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
 function updatePre(id_bpr,con_pre,opc_a,opc_b,opc_c,opc_d) {

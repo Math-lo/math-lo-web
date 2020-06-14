@@ -464,8 +464,9 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-
-                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    conn.query("select * from ctemas",  (err3, temas) => { 
+                        res.render('profesor/Create', { preguntas: preguntas, grupos: grupos,temas:temas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    })            
                 });
             });
         });
@@ -1455,38 +1456,52 @@ router.get('/web/questions', (req, res) => {
 
 });
 router.post('/web/Addquestion', (req, res) => {
-    req.app.locals.layout = 'profesor';
-    req.getConnection((err, conn) => {
-        let valores = {
-            "con_pre": req.body.con_pre,
-            "res_cor": req.body.res_cor,
-            "opc_a": req.body.opc_a,
-            "opc_b": req.body.opc_b,
-            "opc_c": req.body.opc_c,
-            "opc_d": req.body.opc_d,
-            "id_tem": req.body.id_tem,
-            "id_dif": req.body.id_dif
-        }
-        console.log('estos son los valore kawai: ', valores)
-        conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => { //no se por que aparece ese Send osea en html no lo tengo:c
-            if (err2) console.log("ERROR 2 ", err2)
-            res.json('Se inserto la pregunta correctamente');
-        }); //Error: Lock wait timeout exceeded; try restarting transaction es algo del maisicuel XD
-        if (err) console.log("ERROR 1 ", err)
-    });
+    if(!req.body.con_pre||!req.body.res_cor||!req.body.opc_a||!req.body.opc_b||!req.body.opc_c||!req.body.opc_d||!req.body.id_tem||!req.body.id_dif){
+        console.log('Campos vacios');
+    }else if(req.body.con_pre.length>150||req.body.con_pre.length<1){
+        console.log('entre 1-150 caracteres');
+    }else if(req.body.opc_a.length<1||req.body.opc_a.length>50){
+        console.log('a)entre 1-50 caracteres');
+    }else if(req.body.opc_b.length<1||req.body.opc_b.length>50){
+        console.log('b)entre 1-50 caracteres');
+    }else if(req.body.opc_c.length<1||req.body.opc_c.length>50){
+        console.log('c)entre 1-50 caracteres');
+    }else if(req.body.opc_d.length<1||req.body.opc_d.length>50){
+        console.log('d)entre 1-50 caracteres');
+    }else if(req.body.id_tem!='1'&& req.body.id_tem!='2'&&req.body.id_tem!='3'&&req.body.id_tem!='4'){
+        console.log('id de tema invalido');
+    }else if(req.body.id_dif!='1'&&req.body.id_dif!='2'&&req.body.id_dif!='3'){
+        console.log('id de dificultad invalido');
+    }else{
+        req.app.locals.layout = 'profesor';
+        req.getConnection((err, conn) => {
+            let valores = {
+                "con_pre": req.body.con_pre,
+                "res_cor": req.body.res_cor,
+                "opc_a": req.body.opc_a,
+                "opc_b": req.body.opc_b,
+                "opc_c": req.body.opc_c,
+                "opc_d": req.body.opc_d,
+                "id_tem": req.body.id_tem,
+                "id_dif": req.body.id_dif
+            }
+            console.log('estos son los valore kawai: ', valores)
+            conn.query('insert into mbancopreguntas set ?', valores, (err2, temaEliminado) => { //no se por que aparece ese Send osea en html no lo tengo:c
+                if (err2) console.log("ERROR 2 ", err2)
+                res.json('Se inserto la pregunta correctamente');
+            }); //Error: Lock wait timeout exceeded; try restarting transaction es algo del maisicuel XD
+            if (err) console.log("ERROR 1 ", err)
+        });
+    }
 });
 
  
  router.post('/web/AddQuizz', (req, res) => {
      //Validacion de cuestionarios
-     //if(req.session.usuario.id_tus==2){
-
-     //}
+    console.log('erwqefcqweqwerwqerewrzwrqwe ',req.body.element)
     console.log(req.body.date);
     let dateS=req.body.date.split('-');
-   
     var reNomCuest = /^[a-zA-Z0-9À-ÿ\u00f1\u00d1]+(\s*[a-zA-Z0-9À-ÿ\u00f1\u00d1]*)*[a-zA-Z0-9À-ÿ\u00f1\u00d1]+$/
-    //var reFecha= /^(\d{4})(\/|-)(0[1-9]|1[0-2])\2([0-2][0-9]|3[0-1])$/
     var reFecha= /\d{4}([-])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/
     let todaydatere = new Date();
     console.log(parseInt(dateS[1])); //
@@ -1512,12 +1527,9 @@ router.post('/web/Addquestion', (req, res) => {
         res.redirect('/web/cuestionarios');
 
     }else if(parseInt(dateS[2])< todaydatere.getDate()&& parseInt(dateS[1]) == (todaydatere.getMonth()+1)){///
-       
+
             console.log('fecha imposible por que el dia es anterior a la fecha de creacion');
         res.redirect('/web/cuestionarios');
-        
-    
-
     }else{
         req.app.locals.layout = 'profesor';
     req.getConnection((err, conn) => {
@@ -2113,7 +2125,7 @@ router.get('/web/vergrupos', (req, res) => {
 });
 /*------------------------------------FIN DE CALIFICACIONES-------------------------------------------*/
 /* 
- * Inicio de autoridad
+ * I nicio de autoridad
  */
 
 router.get('/web/vergrupos', (req, res) => {

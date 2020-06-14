@@ -1,56 +1,41 @@
-<!--
-<div clas="row">
-    <div class="col s12">
-        <div class="container">
-            <div class="signup-box">
-                <div id="quizz" class="quizz">
-                    <h1>Agregar una pregunta</h1>
-                    <form name="questions" id="questions" class="form"
-                        method="POST" action="/Addquestion">
-                        Ingresa la pregunta: <input type='text'
-                            id='pregunta' name="pregunta">
-                         iniciso a: <input type='text' id='a' name="a">
-                        inciso b: <input type='text' id='b' name="b">
-                        inciso c: <input type='text' id='c' name="c">
-                        inciso d: <input type='text' id='d' name="d">
-                        Ingresa el tema:
-                        <div class="input-field col s12">
-                            <select name="tema" id="tema">
-                                <option value="" disabled selected>Escoge
-                                    una opción</option>
-                                {{#each temas}}
-                                <option value={{id_tem}}>{{nom_tem}}</option>
-                                {{/each}}
-                            </select>
-                            <label>Temas</label>
-                        </div>
-                        Ingresa la dificultad:
-                        <div class="input-field col s12">
-                            <select name="dificultad" id="dificultad">
-                                <option value="" disabled selected>Escoge
-                                    una opción</option>
-                                <option value="1">Fácil</option>
-                                <option value="2">Normal</option>
-                                <option value="1">Díficil</option>
-                            </select>
-                            <label>Dificultad</label>
-                        </div>
-                        <div>
-                            <button class="btn waves-effect waves-light"
-                                type="submit" name="action">Agregar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </form>
-                    <p id="avisos"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
+
 
 <!-- Inicio chido -->
+
+<div class="hide">
+  <a class="waves-effect waves-light btn modal-trigger" id="hidem2" href="#modal1" onclick="setTimeout(carga,3000);">Modal</a>
+</div>
+
+  
+  <div id="modal1" class="modal " style="padding-top: 12 rem;">
+      <div class="center" >
+ Añadiendo pregunta...
+    <div class="modal-content">
+      <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+      </div>
+     
+  </div>
+
+  <div class="hide">
+   <a href="#!" id="hidem" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+ </div>
+    
+    
+  </div>
+
+
+
+
 <link rel="stylesheet" href="/mathquill/mathquill.css"/>
 <link rel="stylesheet" type="text/css"
     href="/app-assets/css/pages/app-file-manager.min.css">
@@ -72,6 +57,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
+              <b><span class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
@@ -100,6 +86,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -128,6 +115,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_b"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -156,6 +144,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -184,6 +173,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -213,6 +203,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
+              <b><span class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -242,6 +233,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -270,6 +262,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_b"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -298,6 +291,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -326,6 +320,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -355,6 +350,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly="true">
               </div>
+              <b><span class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -384,6 +380,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -412,6 +409,8 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
+                <b><span class="label-input100" id="aopc_b"></span></b>
+
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -440,6 +439,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -468,6 +468,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
+              <b><span class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -508,6 +509,7 @@
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
                             </select>
+                            <b><span class="label-input100" id="atem"></span></b>
               </div>
             </div>
             <div class="row">
@@ -518,16 +520,19 @@
                                 <option value="2">Normal</option>
                                 <option value="3">Díficil</option>
                 </select>
+                <b><span class="label-input100" id="adif"></span></b>
                 {{#if sesionP}}
-                       <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" onclick="addPre(document.getElementById('latex-pregunta').value,document.getElementById('res_cor').value,document.getElementById('latex-opcA').value,document.getElementById('latex-opcB').value,document.getElementById('latex-opcC').value,document.getElementById('latex-opcD').value,document.getElementById('tema').value,document.getElementById('dificultad').value);">Agregar
+                
+                       <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" id="sendprex">Agregar
+
                                 <i class="material-icons right">send</i>
                       </button>
                 {{else if sesionAd}}
-                      <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" onclick="addPre(document.getElementById('latex-pregunta').value,document.getElementById('res_cor').value,document.getElementById('latex-opcA').value,document.getElementById('latex-opcB').value,document.getElementById('latex-opcC').value,document.getElementById('latex-opcD').value,document.getElementById('tema').value,document.getElementById('dificultad').value);">Agregar
+                      <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" id="sendprex">Agregar
                                 <i class="material-icons right">send</i>
                       </button>
                 {{else if sesionA}}
-                      <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" onclick="addPre(document.getElementById('latex-pregunta').value,document.getElementById('res_cor').value,document.getElementById('latex-opcA').value,document.getElementById('latex-opcB').value,document.getElementById('latex-opcC').value,document.getElementById('latex-opcD').value,document.getElementById('tema').value,document.getElementById('dificultad').value);">Agregar
+                      <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" id="sendprex">Agregar
                                 <i class="material-icons right">send</i>
                       </button>
                 {{/if}}
@@ -845,6 +850,12 @@
     </div>
 </div></div>
 
+
+
+
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
@@ -856,7 +867,7 @@
   });
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
+    var instances = M.Modal.init(elems,{dismissible: false});
   });
 </script>
 

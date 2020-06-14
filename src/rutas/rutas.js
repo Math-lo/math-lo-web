@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); 
 const cifrado = require('../tools/cifrado');
 const cifradoRSA = require('../tools/cifrado-rsa');
 const validacion = require('../tools/validacion');
-//const firma = require('../tools/Firma');
+//const firma = require('../tools/Firma'); 
 const multer = require('multer');
 const path = require('path');
 const cron = require('node-cron');
@@ -57,7 +57,7 @@ router.get('/web', (req, res) => {
             req.getConnection((err, conn) => {
                 conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu=?', req.session.usuario.id_usu, (errConsul, GrupoUsu) => {
                     if (GrupoUsu.length > 0) {
-                        conn.query('select nom_usu,cat_tus,id_tus from cgrupo natural join musuario natural join ctipousuario where id_gru=? and id_tus!=5 and id_tus!=4 order by nom_usu asc', GrupoUsu[0].id_gru, (errConsulq, grupoF) => {
+                        conn.query('select nom_usu,cat_tus from eusuariosgrupo natural join cgrupo natural join musuario natural join ctipousuario where id_gru=? order by nom_usu asc', GrupoUsu[0].id_gru, (errConsulq, grupoF) => {
                             if (errConsulq) console.log(errConsulq)
 
                             GrupoUsu.forEach(element => {
@@ -1154,7 +1154,31 @@ router.post('/web/iniciar', (req, res) => {
 
 router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => {
     let fileroute, vinculo, filename;
+    /*
+    let reNomUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    let rePDF=/^(?:[\w]\:|\\À-ÿ\u00f1\u00d1)(\\[a-zÀ-ÿ\u00f1\u00d1\u00E0-\u00FC\-\s0-9_\.]+)+\.(pdf|PDF)$/i;
 
+    if(reNomUrl.test(req.body.hipervinculo_apoyo)==false){
+        
+        return '*URL no tiene el formato correcto';
+    }else if(req.body.hipervinculo_apoyo.length<1||req.body.hipervinculo_apoyo.length>60){
+        return '*URL entre 1-60 caracteres' ;      
+    }else if(rePDF.test(pdf)==false){
+        return '*Pdf no tiene el formato correcto';
+    }else{
+        return true
+    }
+    
+}
+
+function validarTem(tem){
+    
+    if(tem!=1 && tem!=2 && tem!=3 && tem!=4){
+        return '*Tema invalido'; 
+    }else{
+        return true; 
+    } 
+}*/
     if (req.file != undefined) {
         fileroute = req.file.filename;
         filename = req.file.originalname;
@@ -1935,27 +1959,25 @@ router.post('/web/calificacionesgrupo', (req, res) => {
             const cuest = req.body.cuestionario;
             if (!cuest) {
                 conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario natural join musuario ", (err2, puntajes) => {
-                    calificacionesxgrupo(conn, puntajes, req.session.usuario.id_usu, grupo, (puntajesF) => {
-                        // console.log("PUNTAJES ",puntajesF)
-                        const calificaciones = sacarcalificacion(puntajesF, cuest);
-                        console.log("CALIFICACIONES ", calificaciones[0])
-                        res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                    calificacionesxgrupo(conn, puntajes, req.session.usuario.id_usu, grupo, (puntajesF) => {          
+                            validargrupo(puntajesF,conn,grupo,(puntajesFF)=>{
+                                const calificaciones = sacarcalificacion(puntajesFF, cuest);
+                                res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                            })
                     })
                 });
             } else {
                 conn.query("select * from dpuntajealumnocuestionario natural join ecuestionario natural join musuario where id_cue = ?", (parseInt(cuest)), (err2, puntajes) => {
                     calificacionesxgrupo(conn, puntajes, req.session.usuario.id_usu, grupo, (puntajesF) => {
-                        // console.log("PUNTAJES ",puntajesF)
-                        const calificaciones = sacarcalificacion(puntajesF, cuest);
-                        console.log("CALIFICACIONES ", calificaciones[0])
-                        res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                        validargrupo(puntajesF,conn,grupo,(puntajesFF)=>{
+                            const calificaciones = sacarcalificacion(puntajesFF, cuest);
+                            res.json({ calificaciones: calificaciones[0], cuestionarios: calificaciones[1] })
+                        })
                     })
 
                 });
             }
         });
-    } else {
-        res.redirect("/web")
     }
 });
 
@@ -1989,27 +2011,32 @@ function calificacionesxgrupo(conn, puntajes, usuario, grupo, callback) {
                 }
             });
         });
-        puntajesFF = [];
-        puntajesF.forEach(element=>{
-            validargrupo(element,conn,grupo,(puntajesFF)=>{
-                puntajesFF.push(puntajesFF)
-            })
-        });
+    
         setTimeout(() => {
-            callback(puntajesFF);
+            callback(puntajesF);
         }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
     });
 }
-function validargrupo(puntajes,conn,grupo, callback){
+
+async function validargrupo(puntajesF,conn,grupo, callback){
     puntajesFF = [];
-    conn.query('select * from eusuariosgrupo where id_usu = ?',(puntajes.id_usu), (err,gru)=>{
-        if(gru[0].id_gru == grupo){
-            puntajesFF.push(puntajes)
-        } 
-        setTimeout(() => {
-            callback(puntajesFF);
-        }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
+    await puntajesF.forEach(element=>{
+    conn.query('select * from eusuariosgrupo where id_usu = ?',element.id_usu, (err,gru)=>{
+        if(err) console.log("ERROR",err)
+        if(gru.length>0){
+            if(gru[0].id_gru == grupo){
+                puntajesFF.push(element)
+            }else{
+                console.log("ENTRA AQUI")
+            } 
+        }else{
+            console.log("No pertenece al grupo")
+        }
+    }); 
     })
+    setTimeout(() => {
+        callback(puntajesFF);
+    }, 0 | Math.random() * (.3 - .2) + .2 * 1000);
 }
 
 function sacarcalificacion(puntaje, cuest) {

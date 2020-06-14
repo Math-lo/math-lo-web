@@ -424,10 +424,13 @@ router.post('/web/updatePre', (req, res) => {
     let id = req.body.id_bpr;
     let data = {
         "con_pre": req.body.con_pre,
+        "res_cor":req.body.res_cor,
         "opc_a": req.body.opc_a,
         "opc_b": req.body.opc_b,
         "opc_c": req.body.opc_c,
         "opc_d": req.body.opc_d,
+        "id_tem":req.body.id_tem,
+        "id_dif":req.body.id_dif
     }
     console.log(data);
     console.log('Este es el id a modificar', id);
@@ -2078,7 +2081,7 @@ router.get('/web/calificaciones', (req, res) => {
                 })
             });
         }else{
-            res.redirect('/web')
+            res.redirect('/web')//SUERTE
         }
     } else {
         res.redirect('/web')

@@ -1,3 +1,43 @@
+
+
+
+<div class="hide">
+  <a class="waves-effect waves-light btn modal-trigger" id="hidem2" href="#modal1" onclick="setTimeout(carga,2000);">Modal</a>
+</div>
+
+  
+  <div id="modal1" class="modal " style="padding-top: 12 rem;">
+      <div class="center" >
+ Añadiendo pregunta...
+    <div class="modal-content">
+      <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+      </div>
+     
+  </div>
+
+  <div class="hide">
+   <a href="#!" id="hidem" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+ </div>
+    
+    
+  </div>
+
+
+
+
+
+
+
 {{#if sesionAl}}
 <link rel="stylesheet" type="text/css"
     href="/app-assets/css/pages/app-file-manager.min.css">
@@ -305,6 +345,7 @@
                                 <!-- Add File Button -->
                                 <form enctype="multipart/form-data" id="formuploadajax" method="POST">
                                 <input type="text" placeholder="URL" name="hipervinculo_apoyo" id="url_apoyo">
+                                <b><span class="label-input100" id="aurl"></span></b>
                                 <div class="file-field input-field">
                                     {{#if sesionP}}
                                     <div class="btn indigo
@@ -312,12 +353,14 @@
                                         <span>PDF</span>
                                         <input type="file" id="archivo_apoyo" name="archivo_apoyo">
                                     </div>
+                                    <b><span class="label-input100" id="apdf"></span></b>
                                     {{else if sesionAd}}
                                     <div class="btn green
                                     lighten-1">
                                         <span>PDF</span>
                                         <input type="file" id="archivo_apoyo" name="archivo_apoyo">
                                     </div>
+                                    <b><span class="label-input100" id="apdf"></span></b>
                                     {{/if}}
 
                                     <div class="file-path-wrapper">
@@ -330,24 +373,43 @@
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
                                 </select>
+                                <b><span class="label-input100" id="atem"></span></b>
                                 {{#if sesionP}}
-                                <button class="add-file-btn btn btn-block
+                                <div class="hide">
+                                    <button id="xd" class="add-file-btn btn btn-block
                                     waves-effect waves-light mb-10 indigo
-                                    lighten-1" type="submit">
+                                    lighten-1" type="submit" >
+                                    <i class="material-icons">add</i>
+                                    <span>Añadir apoyo</span>  
+                                </button>
+                                </div>
+                                </form>
+                                <button id="sendprea" class="add-file-btn btn btn-block
+                                    waves-effect waves-light mb-10 indigo
+                                    lighten-1"  >
                                     <i class="material-icons">add</i>
                                     <span>Añadir apoyo</span>
                                     
                                 </button>
                                 {{else if sesionAd}}
-                                <button class="add-file-btn btn btn-block
+                                <div class="hide">
+                                    <button id="xd" class="add-file-btn btn btn-block
                                     waves-effect waves-dark mb-10 green
                                     lighten-1" type="submit">
+                                    <i class="material-icons">add</i>
+                                    <span>Añadir apoyo</span>    
+                                </button>
+                                </div>
+                                
+                                </form>
+                                <button id="sendprea" class="add-file-btn btn btn-block
+                                    waves-effect waves-dark mb-10 green
+                                    lighten-1" >
                                     <i class="material-icons">add</i>
                                     <span>Añadir apoyo</span>
                                     
                                 </button>
                                 {{/if}}
-                                </form>
                                 
                             </div>
                             
@@ -653,3 +715,111 @@
 </div>
                                     
 {{/if}}
+<script>
+    let enviar=document.getElementById('sendprea'); 
+ 
+function retrono(){
+    
+  let url_=  document.getElementById('url_apoyo').value
+  let pdf_=  document.getElementById('archivo_apoyo').value
+  let tem_=document.getElementById('tema_apoyo').value
+ 
+    /*-----------------------------*/
+    
+let vurl=validarURL(url_);
+if(vurl==true){
+    document.getElementById('aurl').innerHTML=""; 
+    let vpdf=validarPdf(pdf_);
+    if(vpdf==true){
+        document.getElementById('apdf').innerHTML=""; 
+        let vtem=validarTem(tem_);   
+        if(vtem==true){
+            document.getElementById('atem').innerHTML=""; 
+            carga2();
+        }else{
+            document.getElementById('atem').innerHTML=vtem; 
+            return false;
+        }
+
+    }else{
+        document.getElementById('apdf').innerHTML=vpdf;
+        return false; 
+    }
+}else{
+    document.getElementById('aurl').innerHTML=vurl;
+    return false;      
+}
+}    
+
+function validarURL(url){
+    let reNomUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    if(reNomUrl.test(url)==false){
+        
+        return '*URL no tiene el formato correcto';
+    }else if(url.length<1||url.length>60){
+        return '*URL entre 1-60 caracteres' ;      
+    }else{
+        return true
+    }
+    
+}
+function validarPdf(pdf){
+    let rePDF=/^(?:[\w]\:|\\À-ÿ\u00f1\u00d1)(\\[a-zÀ-ÿ\u00f1\u00d1\u00E0-\u00FC\-\s0-9_\.]+)+\.(pdf|PDF)$/i;
+    if(rePDF.test(pdf)==false){
+        return '*Pdf no tiene el formato correcto';
+    }else{
+        return true
+    }
+    
+}
+
+function validarTem(tem){
+    
+    if(tem!=1 && tem!=2 && tem!=3 && tem!=4){
+        return '*Tema invalido'; 
+    }else{
+        return true; 
+    } 
+}
+
+
+enviar.addEventListener('click', (e)=>{
+ 
+    if(!retrono()){
+        e.preventDefault(); 
+    }
+}, false); 
+
+
+function carga(){
+    
+    document.getElementById('hidem').click();
+    document.getElementById('xd').click();
+
+};
+function carga2(){
+    document.getElementById('hidem2').click();
+};
+
+
+
+    function prueba(){
+  let url_=  document.getElementById('url_apoyo').value
+  let pdf_=  document.getElementById('archivo_apoyo').value
+  let tem_=document.getElementById('tema_apoyo').value
+  alert(url_);
+  alert(pdf_);
+  alert(tem_);
+    }
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems,{dismissible: false});
+  });
+</script>

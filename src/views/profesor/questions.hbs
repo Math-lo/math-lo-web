@@ -1,9 +1,59 @@
-
+<!--
+<div clas="row">
+    <div class="col s12">
+        <div class="container">
+            <div class="signup-box">
+                <div id="quizz" class="quizz">
+                    <h1>Agregar una pregunta</h1>
+                    <form name="questions" id="questions" class="form"
+                        method="POST" action="/Addquestion">
+                        Ingresa la pregunta: <input type='text'
+                            id='pregunta' name="pregunta">
+                        iniciso a: <input type='text' id='a' name="a">
+                        inciso b: <input type='text' id='b' name="b">
+                        inciso c: <input type='text' id='c' name="c">
+                        inciso d: <input type='text' id='d' name="d">
+                        Ingresa el tema:
+                        <div class="input-field col s12">
+                            <select name="tema" id="tema">
+                                <option value="" disabled selected>Escoge
+                                    una opción</option>
+                                {{#each temas}}
+                                <option value={{id_tem}}>{{nom_tem}}</option>
+                                {{/each}}
+                            </select>
+                            <label>Temas</label>
+                        </div>
+                        Ingresa la dificultad:
+                        <div class="input-field col s12">
+                            <select name="dificultad" id="dificultad">
+                                <option value="" disabled selected>Escoge
+                                    una opción</option>
+                                <option value="1">Fácil</option>
+                                <option value="2">Normal</option>
+                                <option value="1">Díficil</option>
+                            </select>
+                            <label>Dificultad</label>
+                        </div>
+                        <div>
+                            <button class="btn waves-effect waves-light"
+                                type="submit" name="action">Agregar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </form>
+                    <p id="avisos"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 
 <!-- Inicio chido -->
 
 <div class="hide">
-  <a class="waves-effect waves-light btn modal-trigger" id="hidem2" href="#modal1" onclick="setTimeout(carga,3000);">Modal</a>
+  <a class="waves-effect waves-light btn modal-trigger" id="hidem2" href="#modal1" onclick="setTimeout(carga,2000);">Modal</a>
 </div>
 
   
@@ -501,10 +551,11 @@
                             </select>
               </div>
             </div>
+            <b><span class="label-input100" id="aresc"></span></b>
             <div class="row">
               <div class="input-field col s12">
                 <select name="tema" id="tema">
-                                <option value="" disabled selected>Selecciona tema</option>
+                                <option value="0" disabled selected>Selecciona tema</option>
                                 {{#each temas}}
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
@@ -628,11 +679,13 @@
                         <!-- App File Content Starts -->
                         <div class="app-file-content ps" id="div_contenedor_pre" style="height: 300px;" >
                             <h6 class="font-weight-700 mb-3">Preguntas</h6>
+                            
 
                             <!-- App File - Recent Accessed Files Section Starts -->
                             <div class="row app-file-files" id="contenedor_preguntas">
                                 {{#each preguntas}}
-                                <div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre({{id_bpr}},'{{con_pre}}','{{opc_a}}','{{opc_b}}','{{opc_c}}','{{opc_d}}')">
+                                <div id="fg">
+                                    <div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre({{id_bpr}},'{{con_pre}}','{{opc_a}}','{{opc_b}}','{{opc_c}}','{{opc_d}}')">
                                     <div class="card box-shadow-none mb-1
                                         app-file-info">
                                         <div class="card-content">
@@ -652,6 +705,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="" id="prueba">
+                                    
+                                </div>
+
+                                </div>
+
+                              
+                                
                                 {{/each}}
                                 <!-- App File - Recent Accessed Files Section Ends -->
                                 <div class="ps__rail-x" style="left: 0px;
@@ -692,8 +753,90 @@
                                                 class="mt-5 mb-5">
                                         </div>
                                         <div class="divider mt-5 mb-5"></div>
-                                        <div class="pt-6">                                             
-                                            <span class="app-file-label">Info</span>
+                                        <div class="pt-6">
+                                           
+                                                <div class="" id="ventanaMod1">
+
+                                            </div>
+                                            <ul class="collapsible" id="ventanaModTec1">
+                    
+                                            </ul><div class="" id="ventanaMod2">
+
+                                            </div>
+                                            <ul class="collapsible" id="ventanaModTec2">
+                    
+                                            </ul>
+                                            <div class="" id="ventanaMod3">
+
+                                            </div>
+                                            <ul class="collapsible" id="ventanaModTec3">
+                    
+                                            </ul>
+                                            <div class="" id="ventanaMod4">
+
+                                            </div>
+                                            <ul class="collapsible" id="ventanaModTec4">
+                    
+                                            </ul>
+                                            <div class="" id="ventanaMod5">
+
+                                            </div>
+                                            <ul class="collapsible" id="ventanaModTec5">
+                    
+                                            </ul>
+                                             <div class="row">
+              <div class="input-field col s12">
+                <select name="res_cor" id="res_cor-mod">
+                                <option value="" disabled selected>Selecciona La respuesta correcta</option>
+                                <option value="a">Iniciso a</option>
+                                <option value="b">Iniciso b</option>
+                                <option value="c">Iniciso c</option>
+                                <option value="d">Iniciso d</option>
+                            </select>
+              </div>
+            </div>
+            <b><span class="label-input100" id="aresc-mod"></span></b>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="tema" id="tema-mod">
+                                <option value="0" disabled selected>Selecciona tema</option>
+                                {{#each temas}}
+                                <option value={{id_tem}}>{{nom_tem}}</option>
+                                {{/each}}
+                            </select>
+                            <b><span class="label-input100" id="atem-mod"></span></b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="dificultad" id="dificultad-mod">
+                                <option value="" disabled selected>Selecciona dificultad</option>
+                                <option value="1">Fácil</option>
+                                <option value="2">Normal</option>
+                                <option value="3">Díficil</option>
+                </select>
+                <b><span class="label-input100" id="adif-mod"></span></b>
+                                            
+               </div>
+                            </div>
+                                </div>
+                            </div>
+                            <button id="sendpremod" class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action">Agregar
+                            <i class="material-icons right">send</i>
+                            </button>
+                                <script>
+                                let enviar2=document.getElementById('sendpremod');
+                                </script>
+                      <div class="prueba2" id="prueba2">
+
+                      </div>
+                      <script>
+                          enviar2.addEventListener('click', (e)=>{
+                                if(!retronoMod()){
+                                    e.preventDefault(); 
+                                }
+                            }, false);
+                      </script>                           <!--<span class="app-file-label">Info</span>
                                             <div class="display-flex
                                                 justify-content-between
                                                 align-items-center mt-6">
@@ -733,13 +876,7 @@
                                                 justify-content-between
                                                 align-items-center mt-6">
                                                 <button type="update" class="btn gradient-45deg-deep-orange-orange" onclick="updatePre(document.getElementById('id_bpr').value,document.getElementById('con_pre').innerText,document.getElementById('opc_a').innerText,document.getElementById('opc_b').innerText,document.getElementById('opc_c').innerText,document.getElementById('opc_d').innerText)">Modificar</button>
-                                            </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                            </div>-->
                             <div class="ps__rail-x" style="left: 0px; bottom:
                                 0px;"><div
                                     class="ps__thumb-x" tabindex="0"
@@ -854,7 +991,8 @@
 
 
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    |                       <script src="/mathquill/mathquill.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -872,8 +1010,7 @@
 </script>
 
 <!-- Tecladito -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="/mathquill/mathquill.js"></script>
+
 <script>
 var mathFieldSpan = document.getElementById('math-field-pregunta');
 var mathFieldSpanA = document.getElementById('math-field-opcA');
@@ -881,10 +1018,12 @@ var mathFieldSpanB = document.getElementById('math-field-opcB');
 var mathFieldSpanC = document.getElementById('math-field-opcC');
 var mathFieldSpanD = document.getElementById('math-field-opcD');
 var latexSpan = document.getElementById('latex-pregunta');
+
 var latexSpanA = document.getElementById('latex-opcA');
 var latexSpanB = document.getElementById('latex-opcB');
 var latexSpanC = document.getElementById('latex-opcC');
 var latexSpanD = document.getElementById('latex-opcD');
+
 var MQ = MathQuill.getInterface(2); // for backcompat
 var mathField = MQ.MathField(mathFieldSpan, {
   spaceBehavesLikeTab: true, // configurable
@@ -894,6 +1033,7 @@ var mathField = MQ.MathField(mathFieldSpan, {
     }
   }
 });
+
 var mathField_opcA = MQ.MathField(mathFieldSpanA, {
   spaceBehavesLikeTab: true, // configurable
   handlers: {
@@ -932,5 +1072,143 @@ for(let index = 0; index < contenidoPregunta.length; index++) {
 }
 </script>
 <script>
+let enviar=document.getElementById('sendprex'); 
+
+function retrono(){
+  let pre=  document.getElementById('latex-pregunta').value;
+  
+  let res_cor=  document.getElementById('res_cor').value;
+  let opc_a=document.getElementById('latex-opcA').value
+  let opc_b=document.getElementById('latex-opcB').value
+  let opc_c=document.getElementById('latex-opcC').value
+  let opc_d= document.getElementById('latex-opcD').value
+  let id_tem= document.getElementById('tema').value
+  let id_dif= document.getElementById('dificultad').value
+  
+
+    /*-----------------------------*/
+
+    let vpre=validarPre(pre);
+    if(vpre==true){
+        document.getElementById('apre').innerHTML=""; 
+        let vopc_a=validarPreOPC(opc_a);
+        if(vopc_a==true){
+            document.getElementById('aopc_a').innerHTML=""; 
+            let vopc_b=validarPreOPC(opc_b);
+            if(vopc_b==true){
+                document.getElementById('aopc_b').innerHTML=""; 
+                let vopc_c=validarPreOPC(opc_c);
+                if(vopc_c==true){
+                    document.getElementById('aopc_c').innerHTML=""; 
+                    let vopc_d=validarPreOPC(opc_d);
+                    if(vopc_d==true){
+                        document.getElementById('aopc_d').innerHTML=""; 
+                        let vtem= validarTem(id_tem);
+                        if(vtem==true){
+                            document.getElementById('atem').innerHTML=""; 
+                            let vdif=validarDif(id_dif);
+                            if(vdif==true){
+                                
+                                let vresc=validarResCor(res_cor);
+                                if(vresc==true){
+                                    document.getElementById('aresc').innerHTML=""; 
+                                    carga2();
+                                }else{
+                                    document.getElementById('aresc').innerHTML=vresc; 
+                                }
+                                
+                            }else{
+                                document.getElementById('adif').innerHTML=vdif; 
+                                return false;
+                            }
+                        }else{
+                            document.getElementById('atem').innerHTML=vtem; 
+                            return false;
+                        }
+                    }else{
+                        document.getElementById('aopc_d').innerHTML=vopc_d; 
+                        return false;
+                    }
+                }else{
+                    document.getElementById('aopc_c').innerHTML=vopc_c; 
+                    return false;
+                }
+            }else{
+                
+                document.getElementById('aopc_b').innerHTML=vopc_b; 
+                return false;
+            }
+        }else{
+            document.getElementById('aopc_a').innerHTML=vopc_a; 
+            return false;
+        }
+    }else{
+        document.getElementById('apre').innerHTML=vpre; 
+        return false;
+    }
+}
+    
+
+function validarPre(pre){
+    if(pre.length>150||pre.length<10){
+        return "*Nombre de la pregunta entre 10-150 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarPreOPC(opc_pre){
+    if(opc_pre.length>50||opc_pre.length<1){
+        return "*Inciso de la pregunta entre 1-50 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarTem(tem){
+    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
+        return '*Tema invalido'; 
+    }else{
+        return true; 
+    } 
+}
+function validarDif(dif){
+    if(dif!='1'&&dif!='2'&&dif!='3'){
+        return '*Dificultad invalida'; 
+    }else{
+        return true; 
+    } 
+}
+function validarResCor(resc){
+    if(resc!='a'&&resc!='b'&&resc!='c'&&resc!='d'){
+        return '*Selecione una respuesta Correcta'; 
+    }else{
+        return true; 
+    } 
+}
+
+document.getElementById('sendprex').addEventListener('click', (e)=>{
+    if(!retrono()){
+        e.preventDefault(); 
+    }
+}, false); 
+
+
+
+function carga(){
+    let pre1=  document.getElementById('latex-pregunta').value
+  let res_cor1=  document.getElementById('res_cor').value
+  let opc_a1=document.getElementById('latex-opcA').value
+  let opc_b1=document.getElementById('latex-opcB').value
+  let opc_c1=document.getElementById('latex-opcC').value
+  let opc_d1= document.getElementById('latex-opcD').value
+  let id_tem1= document.getElementById('tema').value
+  
+  let id_dif1= document.getElementById('dificultad').value
+    document.getElementById('hidem').click();
+    addPre(pre1,res_cor1,opc_a1,opc_b1,opc_c1,opc_d1,id_tem1,id_dif1);
+};
+function carga2(){
+    document.getElementById('hidem2').click();
+};
 
 </script>
+

@@ -1,111 +1,4 @@
 
-let enviar=document.getElementById('sendprex'); 
- 
-function retrono(){
-  let pre=  document.getElementById('latex-pregunta').value
-  let res_cor=  document.getElementById('res_cor').value
-  let opc_a=document.getElementById('latex-opcA').value
-  let opc_b=document.getElementById('latex-opcB').value
-  let opc_c=document.getElementById('latex-opcC').value
-  let opc_d= document.getElementById('latex-opcD').value
-  let id_tem= document.getElementById('tema').value
-  let id_dif= document.getElementById('dificultad').value
-
-    /*-----------------------------*/
-
-    let vpre=validarPre(pre);
-    if(vpre==true){
-        document.getElementById('apre').innerHTML=""; 
-        let vopc_a=validarPreOPC(opc_a);
-        if(vopc_a==true){
-            document.getElementById('aopc_a').innerHTML=""; 
-            let vopc_b=validarPreOPC(opc_b);
-            if(vopc_b==true){
-                document.getElementById('aopc_b').innerHTML=""; 
-                let vopc_c=validarPreOPC(opc_c);
-                if(vopc_c==true){
-                    document.getElementById('aopc_c').innerHTML=""; 
-                    let vopc_d=validarPreOPC(opc_d);
-                    if(vopc_d==true){
-                        document.getElementById('aopc_d').innerHTML=""; 
-                        let vtem= validarTem(id_tem);
-                        if(vtem==true){
-                            document.getElementById('atem').innerHTML=""; 
-                            let vdif=validarDif(id_dif);
-                            if(vdif==true){
-                                document.getElementById('adif').innerHTML=""; 
-                                carga2();
-                                
-                            }else{
-                                document.getElementById('adif').innerHTML=""; 
-                                return false;
-                            }
-                        }else{
-                            document.getElementById('atem').innerHTML=vtem; 
-                            return false;
-                        }
-                    }else{
-                        document.getElementById('aopc_d').innerHTML=vopc_d; 
-                        return false;
-                    }
-                }else{
-                    document.getElementById('aopc_c').innerHTML=vopc_c; 
-                    return false;
-                }
-            }else{
-                
-                document.getElementById('aopc_b').innerHTML=vopc_b; 
-                return false;
-            }
-        }else{
-            document.getElementById('aopc_a').innerHTML=vopc_a; 
-            return false;
-        }
-    }else{
-        document.getElementById('apre').innerHTML=vpre; 
-        return false;
-    }
-}
-    
-
-function validarPre(pre){
-    if(pre.length>150||pre.length<1){
-        return "*Nombre de la pregunta entre 1-150 caracteres"; 
-    }else{
-        return true; 
-    } 
-}
-function validarPreOPC(opc_pre){
-    if(opc_pre.length>50||opc_pre.length<1){
-        return "*Inciso de la pregunta entre 1-50 caracteres"; 
-    }else{
-        return true; 
-    } 
-}
-function validarTem(tem){
-    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
-        console.log('*Tema invalido'); 
-    }else{
-        return true; 
-    } 
-}
-function validarDif(dif){
-    if(dif!='1'&&dif!='2'&&dif!='3'){
-        console.log('*Dificultad invalida'); 
-    }else{
-        return true; 
-    } 
-}
-enviar.addEventListener('click', (e)=>{
-    if(!retrono()){
-        e.preventDefault(); 
-    }
-}, false); 
-
-
-
-
-
 function barraBusqueda(id_barra, id_tabla) {
     let input, filter, table, tr, td, i, txtValue;
     input = document.getElementById(id_barra);
@@ -461,7 +354,7 @@ function mostrarPreguntas(id_tem) {
             id_tem: id_tem
         }
     }).done((preguntas) => {
-        let contenedor = $('#contenedor_preguntas');
+        let contenedor = $('#fg');
         contenedor.html('');
         preguntas.forEach(pregunta => {
             contenedor.append(`
@@ -486,6 +379,9 @@ function mostrarPreguntas(id_tem) {
                                             
                                         </div>
                                     </div>
+                                </div>
+                                <div class="" id="prueba">
+                                    
                                 </div>
             `);
         });
@@ -618,34 +514,361 @@ function deleteApoyo(id,apo) {
 }
 
 function setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
-    document.getElementById('con_pre').textContent = con_pre;
-     document.getElementById('opc_a').textContent = opc_a;
-    document.getElementById('opc_b').textContent = opc_b;
-    document.getElementById('opc_c').textContent = opc_c;
-    document.getElementById('opc_d').textContent = opc_d;
-    document.getElementById('id_bpr').value = id_bpr;
+    let mod1=$('#ventanaMod1');
+    mod1.html('');
+    mod1.append(`<div class="row">
+    <div class="input-field col s12" style="margin-bottom: 0px;">
+        <p>Pregunta: 
+      <span id='math-field-pregunta-mod${id_bpr}' style="width: 100%; min-height:40px; margin-bottom: 0px;">${con_pre}</span></p>
+    </div>
+    <div class="input-field col s12" style="margin-top: 0px;">
+        <input id="latex-pregunta-mod${id_bpr}" type="text" name="pregunta" value="${con_pre}" readonly ">
+    </div>
+    <b><span class="label-input100" id="apre-mod"></span></b>
+      
+  </div>                     
+                              </div>`);
+let modTec1=$('#ventanaModTec1');
+    modTec1.html('');
+    modTec1.append(`<li>
+    <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+    <div class="collapsible-body text-reset">
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathFieldSpanMod${id_bpr}.cmd('\\sqrt');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">√</a>
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathFieldSpanMod${id_bpr}.cmd('\\pm');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">∓</a>
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathFieldSpanMod${id_bpr}.cmd('\\mp');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">±</a>
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathFieldSpanMod${id_bpr}.cmd('\\frac');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">x/x</a>
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanMod${id_bpr}.cmd('^');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">^</a>
+        <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanMod${id_bpr}.cmd('\\cdot');
+        mathFieldSpanMod${id_bpr}.focus();" style="width: 90px;">*</a>
+    </div>
+</li>`);
+let mod2=$('#ventanaMod2');
+mod2.html('');
+mod2.append(`<div class="row">
+<div class="input-field col s12" style="margin-bottom: 0px;">
+<p>Opción A: 
+<span id='math-field-opcA-mod${id_bpr}' style="width: 100%; min-height:40px; margin-bottom: 0px;">${opc_a}</span></p>
+</div>
+<div class="input-field col s12" style="margin-top: 0px;">
+<input id="latex-opcA-mod${id_bpr}" type="text" name="a" value="${opc_a}" readonly ">
+</div>
+<b><span class="label-input100" id="aopc_a-mod"></span></b>
+  
+</div>                     
+                          </div>`);
+let modTec2=$('#ventanaModTec2');
+modTec2.html('');
+modTec2.append(`<li>
+<div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+<div class="collapsible-body text-reset">
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathFieldSpanAMod${id_bpr}.cmd('\\sqrt');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">√</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathFieldSpanAMod${id_bpr}.cmd('\\pm');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">∓</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathFieldSpanAMod${id_bpr}.cmd('\\mp');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">±</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathFieldSpanAMod${id_bpr}.cmd('\\frac');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">x/x</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanAMod${id_bpr}.cmd('^');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">^</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanAMod${id_bpr}.cmd('\\cdot');
+    mathFieldSpanAMod${id_bpr}.focus();" style="width: 90px;">*</a>
+</div>
+</li>`);
+let mod3=$('#ventanaMod3');
+mod3.html('');
+mod3.append(`<div class="row">
+<div class="input-field col s12" style="margin-bottom: 0px;">
+<p>Opción B: 
+<span id='math-field-opcB-mod${id_bpr}' style="width: 100%; min-height:40px; margin-bottom: 0px;">${opc_b}</span></p>
+</div>
+<div class="input-field col s12" style="margin-top: 0px;">
+<input id="latex-opcB-mod${id_bpr}" type="text" name="a" value="${opc_b}" readonly >
+</div>
+<b><span class="label-input100" id="aopc_b-mod"></span></b>
+  
+</div>                     
+                          </div>`);
+let modTec3=$('#ventanaModTec3');
+modTec3.html('');
+modTec3.append(`<li>
+<div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+<div class="collapsible-body text-reset">
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathFieldSpanBMod${id_bpr}.cmd('\\sqrt');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">√</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathFieldSpanBMod${id_bpr}.cmd('\\pm');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">∓</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathFieldSpanBMod${id_bpr}.cmd('\\mp');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">±</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathFieldSpanBMod${id_bpr}.cmd('\\frac');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">x/x</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanBMod${id_bpr}.cmd('^');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">^</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanBMod${id_bpr}.cmd('\\cdot');
+    mathFieldSpanBMod${id_bpr}.focus();" style="width: 90px;">*</a>
+</div>
+</li>`);
+let mod4=$('#ventanaMod4');
+mod4.html('');
+mod4.append(`<div class="row">
+<div class="input-field col s12" style="margin-bottom: 0px;">
+<p>Opción C: 
+<span id='math-field-opcC-mod${id_bpr}' style="width: 100%; min-height:40px; margin-bottom: 0px;">${opc_c}</span></p>
+</div>
+<div class="input-field col s12" style="margin-top: 0px;">
+<input id="latex-opcC-mod${id_bpr}" type="text" name="a" value="${opc_c}" readonly>
+</div>
+<b><span class="label-input100" id="aopc_c-mod"></span></b>
+  
+</div>                     
+                          </div>`);
+let modTec4=$('#ventanaModTec4');
+modTec4.html('');
+modTec4.append(`<li>
+<div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+<div class="collapsible-body text-reset">
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathFieldSpanCMod${id_bpr}.cmd('\\sqrt');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">√</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathFieldSpanCMod${id_bpr}.cmd('\\pm');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">∓</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathFieldSpanCMod${id_bpr}.cmd('\\mp');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">±</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathFieldSpanCMod${id_bpr}.cmd('\\frac');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">x/x</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanCMod${id_bpr}.cmd('^');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">^</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanCMod${id_bpr}.cmd('\\cdot');
+    mathFieldSpanCMod${id_bpr}.focus();" style="width: 90px;">*</a>
+</div>
+</li>`);
+let mod5=$('#ventanaMod5');
+mod5.html('');
+mod5.append(`<div class="row">
+<div class="input-field col s12" style="margin-bottom: 0px;">
+<p>Opción D: 
+<span id='math-field-opcD-mod${id_bpr}' style="width: 100%; min-height:40px; margin-bottom: 0px;">${opc_d}</span></p>
+</div>
+<div class="input-field col s12" style="margin-top: 0px;">
+<input id="latex-opcD-mod${id_bpr}" type="text" name="a" value="${opc_d}" readonly>
+</div>
+<b><span class="label-input100" id="aopc_d-mod"></span></b>
+  
+</div>                     
+                          </div>`);
+let modTec5=$('#ventanaModTec5');
+modTec5.html('');
+modTec5.append(`<li>
+<div class="collapsible-header"><i class="material-icons">keyboard</i></div>
+<div class="collapsible-body text-reset">
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_sqrt" onclick="mathFieldSpanDMod${id_bpr}.cmd('\\sqrt');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">√</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pm" onclick="mathFieldSpanDMod${id_bpr}.cmd('\\pm');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">∓</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_mp" onclick="mathFieldSpanDMod${id_bpr}.cmd('\\mp');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">±</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_frac" onclick="mathFieldSpanDMod${id_bpr}.cmd('\\frac');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">x/x</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanDMod${id_bpr}.cmd('^');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">^</a>
+    <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathFieldSpanDMod${id_bpr}.cmd('\\cdot');
+    mathFieldSpanDMod${id_bpr}.focus();" style="width: 90px;">*</a>
+</div>
+</li>`);
 
+    let prueba = $('#prueba');
+    prueba.html('');
+    prueba.append(`
+    
+    <script>
+    var mathFieldSpanMod${id_bpr} = document.getElementById('math-field-pregunta-mod${id_bpr}');
+    var mathFieldSpanAMod${id_bpr} = document.getElementById('math-field-opcA-mod${id_bpr}');
+    var mathFieldSpanBMod${id_bpr} = document.getElementById('math-field-opcB-mod${id_bpr}');
+    var mathFieldSpanCMod${id_bpr} = document.getElementById('math-field-opcC-mod${id_bpr}');
+    var mathFieldSpanDMod${id_bpr} = document.getElementById('math-field-opcD-mod${id_bpr}');
+
+
+
+    var latexSpanAMod${id_bpr} = document.getElementById('latex-opcA-mod${id_bpr}');
+    var latexSpanMod${id_bpr} = document.getElementById('latex-pregunta-mod${id_bpr}');
+    var latexSpanBMod${id_bpr} = document.getElementById('latex-opcB-mod${id_bpr}');
+    var latexSpanCMod${id_bpr} = document.getElementById('latex-opcC-mod${id_bpr}');
+    var latexSpanDMod${id_bpr} = document.getElementById('latex-opcD-mod${id_bpr}');
+
+
+
+    var MQ = MathQuill.getInterface(2); // for backcompat
+    var mathFieldSpanMod${id_bpr} = MQ.MathField(mathFieldSpanMod${id_bpr}, {
+    spaceBehavesLikeTab: true, // configurable
+    handlers: {
+        edit: function() { // useful event handlers
+        latexSpanMod${id_bpr}.value = mathFieldSpanMod${id_bpr}.latex(); // simple API
+        }
+    }
+    });
+    var mathFieldSpanAMod${id_bpr} = MQ.MathField(mathFieldSpanAMod${id_bpr}, {
+        spaceBehavesLikeTab: true, // configurable
+        handlers: {
+          edit: function() { // useful event handlers
+            latexSpanAMod${id_bpr}.value = mathFieldSpanAMod${id_bpr}.latex(); // simple API
+          }
+        }
+      });
+      var mathFieldSpanBMod${id_bpr} = MQ.MathField(mathFieldSpanBMod${id_bpr}, {
+        spaceBehavesLikeTab: true, // configurable
+        handlers: {
+          edit: function() { // useful event handlers
+            latexSpanBMod${id_bpr}.value = mathFieldSpanBMod${id_bpr}.latex(); // simple API
+          }
+        }
+      });
+      var mathFieldSpanCMod${id_bpr} = MQ.MathField(mathFieldSpanCMod${id_bpr}, {
+        spaceBehavesLikeTab: true, // configurable
+        handlers: {
+          edit: function() { // useful event handlers
+            latexSpanCMod${id_bpr}.value = mathFieldSpanCMod${id_bpr}.latex(); // simple API
+          }
+        }
+      });
+      var mathFieldSpanDMod${id_bpr} = MQ.MathField(mathFieldSpanDMod${id_bpr}, {
+        spaceBehavesLikeTab: true, // configurable
+        handlers: {
+          edit: function() { // useful event handlers
+            latexSpanDMod${id_bpr}.value = mathFieldSpanDMod${id_bpr}.latex(); // simple API
+          }
+        }
+      });
+    </script>
+    
+    `);
+    let prueba2 = $('#prueba2');
+    prueba2.html('');
+    prueba2.append(`
+    <script>
+function retronoMod(){
+    
+let pre_mod${id_bpr}=  document.getElementById('latex-pregunta-mod${id_bpr}').value
+let res_cor_mod${id_bpr}=  document.getElementById('res_cor-mod').value
+let opc_a_mod${id_bpr}=document.getElementById('latex-opcA-mod${id_bpr}').value
+let opc_b_mod${id_bpr}=document.getElementById('latex-opcB-mod${id_bpr}').value
+let opc_c_mod${id_bpr}=document.getElementById('latex-opcC-mod${id_bpr}').value
+let opc_d_mod${id_bpr}= document.getElementById('latex-opcD-mod${id_bpr}').value
+let id_tem_mod${id_bpr}= document.getElementById('tema-mod').value
+let id_dif_mod${id_bpr}= document.getElementById('dificultad-mod').value
+  
+
+    /*-----------------------------*/
+
+    let vpre=validarPre2(pre_mod${id_bpr});
+    if(vpre==true){
+        document.getElementById('apre-mod').innerHTML=""; 
+        let vopc_a=validarPreOPC2(opc_a_mod${id_bpr});
+        if(vopc_a==true){
+            document.getElementById('aopc_a-mod').innerHTML=""; 
+            let vopc_b=validarPreOPC2(opc_b_mod${id_bpr});
+            if(vopc_b==true){
+                document.getElementById('aopc_b-mod').innerHTML=""; 
+                let vopc_c=validarPreOPC2(opc_c_mod${id_bpr});
+                if(vopc_c==true){
+                    document.getElementById('aopc_c-mod').innerHTML=""; 
+                    let vopc_d=validarPreOPC2(opc_d_mod${id_bpr});
+                    if(vopc_d==true){
+                        document.getElementById('aopc_d-mod').innerHTML=""; 
+                        let vtem= validarTem2(id_tem_mod${id_bpr});
+                        if(vtem==true){
+                            document.getElementById('atem-mod').innerHTML=""; 
+                            let vdif=validarDif2(id_dif_mod${id_bpr});
+                            if(vdif==true){
+                                
+                                let vresc=validarResCor2(res_cor_mod${id_bpr});
+                                if(vresc==true){
+                                    document.getElementById('aresc-mod').innerHTML=""; 
+                                    
+                                    updatePre(${id_bpr},document.getElementById('latex-pregunta-mod${id_bpr}').value,document.getElementById('res_cor-mod').value,document.getElementById('latex-opcA-mod${id_bpr}').value,document.getElementById('latex-opcB-mod${id_bpr}').value,document.getElementById('latex-opcC-mod${id_bpr}').value,document.getElementById('latex-opcD-mod${id_bpr}').value,document.getElementById('tema-mod').value,parseInt(document.getElementById('dificultad-mod').value));
+                                    return true;
+                                }else{
+                                    document.getElementById('aresc-mod').innerHTML=vresc; 
+                                }
+                                
+                            }else{
+                                document.getElementById('adif-mod').innerHTML=vdif; 
+                                return false;
+                            }
+                        }else{
+                            document.getElementById('atem-mod').innerHTML=vtem; 
+                            return false;
+                        }
+                    }else{
+                        document.getElementById('aopc_d-mod').innerHTML=vopc_d; 
+                        return false;
+                    }
+                }else{
+                    document.getElementById('aopc_c-mod').innerHTML=vopc_c; 
+                    return false;
+                }
+            }else{
+                
+                document.getElementById('aopc_b-mod').innerHTML=vopc_b; 
+                return false;
+            }
+        }else{
+            document.getElementById('aopc_a-mod').innerHTML=vopc_a; 
+            return false;
+        }
+    }else{
+        document.getElementById('apre-mod').innerHTML=vpre; 
+        return false;
+    }
+}
+function validarPre2(pre){
+    if(pre.length>150||pre.length<10){
+        return "*Nombre de la pregunta entre 10-150 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarPreOPC2(opc_pre){
+    if(opc_pre.length>50||opc_pre.length<1){
+        return "*Inciso de la pregunta entre 1-50 caracteres"; 
+    }else{
+        return true; 
+    } 
+}
+function validarTem2(tem){
+    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
+        return '*Tema invalido'; 
+    }else{
+        return true; 
+    } 
+}
+function validarDif2(dif){
+    if(dif!='1'&&dif!='2'&&dif!='3'){
+        return '*Dificultad invalida'; 
+    }else{
+        return true; 
+    } 
+}
+function validarResCor2(resc){
+    if(resc!='a'&&resc!='b'&&resc!='c'&&resc!='d'){
+        return '*Selecione una respuesta Correcta'; 
+    }else{
+        return true; 
+    } 
+}
+
+    </script>
+    
+    `);
      $('#btn_delete_ventana_pre').click(() => {
          //deletePre(id_bpre);
     });
  }
 
 
-function carga(){
-    let pre=  document.getElementById('latex-pregunta').value
-  let res_cor=  document.getElementById('res_cor').value
-  let opc_a=document.getElementById('latex-opcA').value
-  let opc_b=document.getElementById('latex-opcB').value
-  let opc_c=document.getElementById('latex-opcC').value
-  let opc_d= document.getElementById('latex-opcD').value
-  let id_tem= document.getElementById('tema').value
-  let id_dif= document.getElementById('dificultad').value
-    document.getElementById('hidem').click();
-    addPre(pre,res_cor,opc_a,opc_b,opc_c,opc_d,id_tem,id_dif);
-};
-function carga2(){
-    document.getElementById('hidem2').click();
-};
 
 
 
@@ -653,17 +876,20 @@ function carga2(){
 
 
 // setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
-function updatePre(id_bpr,con_pre,opc_a,opc_b,opc_c,opc_d) {
+function updatePre(id_bpr,con_pre,res_cor,opc_a,opc_b,opc_c,opc_d,id_tem,id_dif) {
     $.ajax({
         url: '/web/updatePre',
         method: 'POST',
         data: {
             id_bpr:id_bpr,
             con_pre:con_pre,
+            res_cor:res_cor,
             opc_a:opc_a,
             opc_b:opc_b,
             opc_c:opc_c,
-            opc_d:opc_d
+            opc_d:opc_d,
+            id_tem: id_tem,
+            id_dif: id_dif
         },
         success: (res) => {
             M.toast({ html: res.aviso, classes: 'rounded' })

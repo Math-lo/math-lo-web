@@ -1050,20 +1050,18 @@ router.post('/web/registrar_ajax', (req, res) => {
         "nom_usu": nombre,
         "curp_usu": curp,
         "cor_usu": cor,
-        "pas_usu": pas,
+        "pas_usu": cifrado.cifrar(pas),
         "id_tus": tip
     }
     if (!req.body.nom_usu || !req.body.app_usu || !req.body.cor_usu || !req.body.pas_usu || !req.body.id_tus) {
         res.json('No se pudo insertar el usuario satisfactoriamente ');
         console.log(usuario)
     } else {
-
-
         console.log(usuario);
 
         req.getConnection(async(err, conn) => {
             await conn.query('insert into musuario set ?', usuario, (err, usuariosC) => {
-
+                if(err) console.log(err)
                 res.json('Se inserto Satisfactoriamente ');
             });
         });
@@ -1154,32 +1152,15 @@ router.post('/web/iniciar', (req, res) => {
 
 router.post('/web/insertarApoyo', upload.single('archivo_apoyo'), (req, res) => {
     let fileroute, vinculo, filename;
-    /*
     let reNomUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    let rePDF=/^(?:[\w]\:|\\À-ÿ\u00f1\u00d1)(\\[a-zÀ-ÿ\u00f1\u00d1\u00E0-\u00FC\-\s0-9_\.]+)+\.(pdf|PDF)$/i;
-
     if(reNomUrl.test(req.body.hipervinculo_apoyo)==false){
-        
-        return '*URL no tiene el formato correcto';
+         res.json('No se pudo insertar el apoyo, verifique los datos');
     }else if(req.body.hipervinculo_apoyo.length<1||req.body.hipervinculo_apoyo.length>60){
-        return '*URL entre 1-60 caracteres' ;      
-    }else if(rePDF.test(pdf)==false){
-        return '*Pdf no tiene el formato correcto';
+         res.json('No se pudo insertar el apoyo, verifique los datos');      
+    }else if(req.body.apoyo_tema!=1 && req.body.apoyo_tema!=2 && req.body.apoyo_tema!=3 && req.body.apoyo_tema!=4){
+         res.json('No se pudo insertar el apoyo, verifique los datos');      
     }else{
-        return true
-    }
-    
-}
-
-function validarTem(tem){
-    
-    if(tem!=1 && tem!=2 && tem!=3 && tem!=4){
-        return '*Tema invalido'; 
-    }else{
-        return true; 
-    } 
-}*/
-    if (req.file != undefined) {
+if (req.file != undefined) {
         fileroute = req.file.filename;
         filename = req.file.originalname;
     } else {
@@ -1205,6 +1186,7 @@ function validarTem(tem){
                 res.json('Apoyo insertado satisfactoriamente');
             });
         });
+    }
     }
 });
 
@@ -1864,7 +1846,10 @@ router.get('/web/Quizz/puntaje', (req, res) => {
                     req.session.quizz = undefined;
                     req.session.questions = undefined;
                     compararquizz(questions, puntaje[0], (qf) => {
-                        res.render("alumno/puntajecuestionario", { qf: qf })
+
+                        questionarioFinal = correctas(qf); 
+                        console.log("FINAL ",questionarioFinal)
+                        res.render("alumno/puntajecuestionario", { qf: questionarioFinal })
                     })
 
                 });
@@ -1876,7 +1861,22 @@ router.get('/web/Quizz/puntaje', (req, res) => {
         res.redirect("/web")
     }
 });
-
+function correctas(qf){
+    let questionarioFinal = []; 
+    qf.forEach(element=>{
+        if(element.res_cor == 'a'){
+            element.a = true;
+        }else if(element.res_cor == 'b'){
+            element.b = true;
+        }else if(element.res_cor == 'c'){
+            element.c = true;
+        }else{
+            element.d = true;
+        }
+        questionarioFinal.push(element)
+    })
+    return questionarioFinal; 
+}
 function compararquizz(questions, puntaje, callback) {
     let qf = questions;
     res_cor = puntaje.id_pco.split(',');

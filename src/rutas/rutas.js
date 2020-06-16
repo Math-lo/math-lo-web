@@ -481,8 +481,9 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-
-                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    conn.query("select * from ctemas",  (err3, temas) => { 
+                        res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, temas:temas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    });
                 });
             });
         });
@@ -494,8 +495,9 @@ router.get('/web/cuestionarios', (req, res) => {
                 conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
-
-                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    conn.query("select * from ctemas",  (err3, temas) => { 
+                    res.render('profesor/Create', { preguntas: preguntas, grupos: grupos,temas:temas, sesionP: sesionP, sesionAd: sesionAd, sesionA: sesionA });
+                    });
                 });
             });
         });
@@ -535,8 +537,6 @@ router.post('/web/preguntasx', (req, res) => {
                 res.json(preguntas);
             });
         }
-
-
     });
 });
 
@@ -1906,21 +1906,21 @@ function compararquizz(questions, puntaje, callback) {
 /*--------------------------------------CALIFICACIONES------------------------------------------------*/
 
 router.get('/web/calificacionesgrupo', (req, res) => {
-    if (req.session.usuario.id_tus == 3) {
-        req.app.locals.layout = 'profesor'
+    const id_tus = req.session.usuario.id_tus
+    if (id_tus == 3 || id_tus == 4) {
+        if(id_tus == 3){
+            req.app.locals.layout = 'profesor'
+        }else if(id_tus == 4){
+            req.app.locals.layout = 'autoridad'
+        }
         req.getConnection((err, conn) => {
             conn.query('select * from eusuariosgrupo natural join cgrupo where id_usu = ?', (req.session.usuario.id_usu), (err, grupos) => {
                 if (err) console.log("ERROR EN CONSULTA DE GRUPOS", err)
-                    //conn.query('select * from eusuariosgrupo where id_usu =?', (req.session.usuario.id_usu), (err3,grupos)=>{
-                    //  if(err3) console.log("ERROR 3", err3)
-                    //retornarcuestionariosprofesor(conn,grupos, (cuestionariosF)=>{
-
-                res.render("profesor/calificacionesxgrupo", { grupos: grupos /*, cuestionario:cuestionariosF*/ })
-                    //})
-                    //})
+                res.render("profesor/calificacionesxgrupo", { grupos: grupos })
             });
         });
-    } else {
+   
+    }else{
         res.redirect("/web")
     }
 })
@@ -1951,7 +1951,7 @@ function retornarcuestionariosprofesor(conn, grupos, callback) {
 }
 
 router.post('/web/calificacionesgrupo', (req, res) => {
-    if (req.session.usuario.id_tus == 3) {
+    if (req.session.usuario.id_tus == 3  || req.session.id_tus == 4) {
         req.app.locals.layout = 'profesor'
         req.getConnection((err, conn) => {
             console.log(req.body)

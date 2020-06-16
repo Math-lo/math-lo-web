@@ -1139,7 +1139,7 @@ router.post('/web/iniciar', (req, res) => {
                             }
                         }     
                         req.session.usuario = usuario;
-                        res.redirect('/web');
+                        res.json(true);
                     })
                     
                 } else {

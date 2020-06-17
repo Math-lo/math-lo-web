@@ -557,7 +557,7 @@ router.get('/web/cuestionarios', (req, res) => {
         req.app.locals.layout = 'Administrador2';
         req.getConnection((err, conn) => {
             conn.query("select * from mbancopreguntas natural join ctemas natural join cdificultad", (err2, preguntas) => {
-                conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo where id_usu=?", req.session.usuario.id_usu, (err3, grupos) => {
+                conn.query("select * from eusuariosgrupo natural join musuario natural join cgrupo ", req.session.usuario.id_usu, (err3, grupos) => {
                     if (err2) console.log("ERROR 2: " + err2)
                     if (err3) console.log("ERROR 3: " + err2)
                     conn.query("select * from ctemas",  (err3, temas) => { 
@@ -1103,81 +1103,85 @@ router.post('/web/modificarTema', (req, res) => {
 });
 // Registrar usuario en la bd
 router.post('/web/registrar_ajax', (req, res) => {
-    /*Comienzo Validacion de Registro */
-    console.log('Si entra');
-    var reNomA = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+    /*var reNomA = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
     var reNom = /^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$/;
     var reCorreo = /^[a-zA-ZÀ-ÿ\u00f1\u00d10-9._-]+@[a-zA-ZÀ-ÿ\u00f1\u00d10-9.-]+\.([a-zA-ZÀ-ÿ\u00f1\u00d1]{2,4})+$/
-    var reCurp = /[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
     var reContra = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,50}$/;
-    //let reNomB= false;
-    //let reAppB= false;
-    //let reCorreoB= false;
-    //reCorreoB= reCorreo.test(req.body.email_usuario);
-    //reNomB= reNomA.test(req.body.nombres_usuario);
-    // reAppB= reNomA.test(req.body.apellidos_usuario);
-    let spaceNom = req.body.nombres_usuario.split(' ');
-    let spaceApp = req.body.apellidos_usuario.split(' ');
+    
+    let spaceNom = req.body.nom_usu.split(' ');
+    let spaceApp = req.body.app_usu.split(' ');
 
-
-    if (!req.body.nombres_usuario || !req.body.apellidos_usuario || !req.body.email_usuario ||
-        !req.body.curp_alumno || !req.body.contraseña_usuario || !req.body.tipo_usuario) {
+    console.log("BODY",req.body)
+    if (!req.body.nom_usu || !req.body.app_usu || !req.body.cor_usu || !req.body.pas_usu || !req.body.id_tus) {
         res.json('rellene todos los campos');
        
-    } else if (!reNomA.test(req.body.nombres_usuario) || !reNomA.test(req.body.apellidos_usuario)) {
+    } else if (!reNomA.test(req.body.nom_usu) || !reNomA.test(req.body.app_usu)) {
         res.json('El nombre o apellidos contiene caracteres invalidos');
         
     } else if (spaceNom.length > 2 || spaceApp.length != 2) {
         res.json('numero de espacios');
         
-    } else if (!reCorreo.test(req.body.email_usuario)) {
+    } else if (!reCorreo.test(req.body.cor_usu)) {
         res.json('correo invalido');
         
-    } else if (req.body.email_usuario.length > 70) {
+    } else if (req.body.cor_usu.length > 70) {
         res.json('correo invalido por tamaño');
         
-    } else if (!reCurp.test(req.body.curp_alumno)) {
-        res.json('curp invalido');
-      
-    } else if (!reContra.test(req.body.contraseña_usuario)) {
+    }else if (!reContra.test(req.body.pas_usu)) {
         res.json('contraseña invalida');
         
-    }else {/*Fin Validacion de Registro */
-        let nombre = req.body.apellidos_usuario + ' ' + req.body.nombres_usuario;
-        let cor = req.body.email_usuario.toLowerCase();
-        let pas = req.body.contraseña_usuario;
-        let tip = req.body.tipo_usuario;
-        let curp = req.body.curp_alumno.toUpperCase();
-        token.generar(tok => {
-            let usuario = {
-                "nom_usu": nombre,
-                "curp_usu": curp,
-                "cor_usu": cor,
-                "pas_usu": pas,
-                "tok_usu": tok,
-                "id_tus": tip
-            }
-            console.log('Si entra: ', usuario);
-            req.getConnection(async(err, conn) => {
-                await conn.query(`select * from musuario where nom_usu = '${usuario.nom_usu}' or cor_usu = ' ${usuario.cor_usu}'`, (err, usuarioExistente) => {
-                    if (err) console.log("ERROR AL REGISTRAR")
-                    if (usuarioExistente.length < 1) {
-                        usuario.pas_usu = cifrado.cifrar(usuario.pas_usu);
-                        usuario.curp_usu = cifrado.cifrar(usuario.curp_usu);
-                        req.session.usuario_sin_verificar = usuario;
-                        conn.query(`insert into musuario set ?`, req.session.usuario_sin_verificar, (err, usuarioInsertado) => {
-                            req.session.usuario_sin_verificar = undefined;
-                            res.json('Registrado Exitosamente');
-                        });
-                        // mail.envia(usuario.cor_usu, usuario.tok_usu + mail.generaCodigo(usuario.cor_usu));
-                        // res.redirect('/web/confirmacion_de_usuario');
-                    } else {
-                        res.json('Error al Registrar');
-                    }
-                });
+    }else {*/
+    var reNomA = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+    var reNom = /^[a-zA-Z]+(\s*[a-zA-Z]*)*[a-zA-Z]+$/;
+    var reCorreo = /^[a-zA-ZÀ-ÿ\u00f1\u00d10-9._-]+@[a-zA-ZÀ-ÿ\u00f1\u00d10-9.-]+\.([a-zA-ZÀ-ÿ\u00f1\u00d1]{2,4})+$/
+    var reContra = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,50}$/;
+    let spaceNom = req.body.nom_usu.split(' ');
+    let spaceApp = req.body.app_usu.split(' ');
+
+    console.log("id_tus",req.body.id_tus)
+    let nombre = req.body.app_usu + ' ' + req.body.nom_usu;
+    let cor = req.body.cor_usu.toLowerCase();
+    let pas = req.body.pas_usu;
+    let tip = req.body.id_tus;
+    let curp = "-";
+
+    let usuario = {
+        "nom_usu": nombre,
+        "curp_usu": curp,
+        "cor_usu": cor,
+        "pas_usu": pas,
+        "id_tus": tip
+    }
+    
+    if (!req.body.nom_usu || !req.body.app_usu || !req.body.cor_usu || !req.body.pas_usu || !req.body.id_tus) {
+        res.json('rellene todos los campos');
+       
+    } else if (!reNomA.test(req.body.nom_usu) || !reNomA.test(req.body.app_usu)) {
+        res.json('El nombre o apellidos contiene caracteres invalidos');
+        
+    } else if (spaceNom.length > 2 || spaceApp.length != 2) {
+        res.json('numero de espacios');
+        
+    } else if (!reCorreo.test(req.body.cor_usu)) {
+        res.json('correo invalido');
+        
+    } else if (req.body.cor_usu.length > 70) {
+        res.json('correo invalido por tamaño');
+        
+    }else if (!reContra.test(req.body.pas_usu)) {
+        res.json('contraseña invalida');
+        
+    }else {
+
+
+        console.log(usuario);
+
+        req.getConnection(async(err, conn) => {
+            await conn.query('insert into musuario set ?', usuario, (err, usuariosC) => {
+
+                res.json('Se inserto Satisfactoriamente ');
             });
         });
-
     }
 });
 
@@ -2280,7 +2284,7 @@ function promedios(calificacion) {
  * Inicio de autoridad
  */
 
-router.get('/web/vergrupos', (req, res) => {
+/*router.get('/web/vergrupos', (req, res) => {
     if (req.session.usuario.id_tus == 4) {
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
@@ -2291,15 +2295,17 @@ router.get('/web/vergrupos', (req, res) => {
             });
         });
     }
-});
+});*/
 /*------------------------------------FIN DE CALIFICACIONES-------------------------------------------*/
 /* 
  * I nicio de autoridad
  */
 
 router.get('/web/vergrupos', (req, res) => {
-    const id_tus =req.session.usuario.id_tus; 
+    const id_tus = req.session.usuario.id_tus; 
+    console.log("ID:TUS" , id_tus)
     if (id_tus == 4) {
+        console.log()
         req.app.locals.layout = 'autoridad';
         req.getConnection((err, conn) => {
             retornaGruposAutoridad(conn, (grupos) => {
@@ -2309,6 +2315,7 @@ router.get('/web/vergrupos', (req, res) => {
             });
         });
     } else if (id_tus == 5) {
+        console.log("Se supone que debería entrar aquí")
         req.app.locals.layout = 'Administrador2';
         req.getConnection((err, conn) => {
             retornaGruposAutoridad(conn, (grupos) => {

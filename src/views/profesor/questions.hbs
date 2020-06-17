@@ -49,16 +49,17 @@
           <h4 class="card-title">Insertar pregunta</h4>
          <!-- <form name="questions" id="questions" method="POST" action="/web/Addquestion">-->
                 {{#if sesionAd}}
-                <div class="row">
+                                    <div class="row">
               <div class="input-field col s12" style="margin-bottom: 0px;">
                   <p>Pregunta: 
-                <span  id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
               </div>
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
               <b><span style="color:#FF0000" class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
+                    <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
                             <a class="btn waves-effect green lighten-1" id="btn_formula_sqrt" onclick="mathField.cmd('\\sqrt');
@@ -73,6 +74,8 @@
                             mathField.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
                             mathField.focus();" style="width: 90px;">*</a>
+                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\text');
+                            mathField.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -103,6 +106,8 @@
                             mathField_opcA.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
                             mathField_opcA.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\text');
+                            mathField_opcA.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -132,6 +137,8 @@
                             mathField_opcB.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
                             mathField_opcB.focus();" style="width: 90px;">*</a>
+                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\text');
+                            mathField_opcB.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -161,6 +168,8 @@
                             mathField_opcC.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
                             mathField_opcC.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\text');
+                            mathField_opcC.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -190,6 +199,8 @@
                             mathField_opcD.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
                             mathField_opcD.focus();" style="width: 90px;">*</a>
+                           <a class="btn waves-effect green lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\text');
+                            mathField_opcD.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -220,6 +231,8 @@
                             mathField.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
                             mathField.focus();" style="width: 90px;">*</a>
+                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField.cmd('\\text');
+                            mathField.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -250,6 +263,8 @@
                             mathField_opcA.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
                             mathField_opcA.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\text');
+                            mathField_opcA.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -279,6 +294,8 @@
                             mathField_opcB.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
                             mathField_opcB.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\text');
+                            mathField_opcB.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -308,6 +325,8 @@
                             mathField_opcC.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
                             mathField_opcC.focus();" style="width: 90px;">*</a>
+                              <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\text');
+                            mathField_opcC.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -337,6 +356,8 @@
                             mathField_opcD.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
                             mathField_opcD.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect gradient-45deg-deep-orange-orange" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\text');
+                            mathField_opcD.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -367,6 +388,8 @@
                             mathField.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\cdot');
                             mathField.focus();" style="width: 90px;">*</a>
+                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField.cmd('\\text');
+                            mathField.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -397,6 +420,8 @@
                             mathField_opcA.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\cdot');
                             mathField_opcA.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcA.cmd('\\text');
+                            mathField_opcA.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -427,6 +452,9 @@
                             mathField_opcB.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\cdot');
                             mathField_opcB.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcB.cmd('\\text');
+                            mathField_opcB.focus();" style="width: 90px;">Texto</a>
+                            
                         </div>
                     </li>
                 </ul>
@@ -456,6 +484,8 @@
                             mathField_opcC.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\cdot');
                             mathField_opcC.focus();" style="width: 90px;">*</a>
+                            <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcC.cmd('\\text');
+                            mathField_opcC.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>
@@ -485,6 +515,8 @@
                             mathField_opcD.focus();" style="width: 90px;">^</a>
                             <a class="btn waves-effect indigo lighten-1" id="btn_formula_pot" onclick="mathField_opcD.cmd('\\cdot');
                             mathField_opcD.focus();" style="width: 90px;">*</a>
+                             <a class="btn waves-effect green lighten-1" id="btn_text" onclick="mathField.cmd('\text');
+                            mathField.focus();" style="width: 90px;">Texto</a>
                         </div>
                     </li>
                 </ul>

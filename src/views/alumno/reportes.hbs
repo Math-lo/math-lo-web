@@ -1,0 +1,63 @@
+
+<div class="row">
+    <div class="container">
+        <div class="col s12">
+            <p id="nombre_alumno">{{usuario.nom_usu}}</p>
+        </div>
+        <div class="col s6" id="menu_nav_reportes_cuestionario">
+            <select id="cuestionarioSeleccionado" class="red-text" 
+            onchange="document.getElementById('cuestionario_ver').value = document.getElementById('cuestionarioSeleccionado').value">
+                {{#each cuestionario}}
+                    <option value= {{id_cue}}>{{nom_cue}}</option>
+                {{/each}}
+            </select>
+            <input type="hidden" value= -1 id="grupo_ver">
+            <input type="hidden" value= -1 id="cuestionario_ver">
+            <input type="hidden" value= -1 id="tema_ver">
+            <input type="hidden" value= {{usuario.id_usu}} id="alumno_ver">
+            <a class="btn btn-flat btn-light-blue" id="btn_filtro" onclick="filtrarGraficas();"
+                href="javascript:void(0);">Aceptar</a>
+        </div>
+        </div>
+        <div class="col s6" id="menu_temas_seleccionados">
+            <select id="temaSeleccionado" onchange="document.getElementById('tema_ver').value = document.getElementById('temaSeleccionado').value">
+                {{#each tema}}
+                    <option value= {{id_tem}}>{{nom_tem}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s12">
+                            <div id="grafica1"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica2"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica3"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica4"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica5"></div>
+                        </div>
+                        <div class="col s12">
+                            <div id="grafica6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- GRAFICAS -->
+<script src="/app-assets/js/custom/graficas.js"></script>
+<!-- FIN GRAFICAS -->

@@ -407,25 +407,28 @@ $(function(){
                         let html=`<div class="col xl3 l6 m3 s12" style="height: 120px;" onclick="setVentanaPre(${id.id_bpr},'${id.con_pre}','${id.opc_a}','${id.opc_b}','${id.opc_c}','${id.opc_d}');
                         document.getElementById('show').className = 'app-file-sidebar-info ps show';
                         document.getElementById('show2').className = 'app-file-overlay show';">
-                        <div class="card box-shadow-none mb-1
-                            app-file-info">
-                            <div class="card-content">
-                                <div class="app-file-content-logo
-                                    grey lighten-4">
-                                    <div class="fonticon">
-                                        <i class="material-icons">more_vert</i>
-                                    </div>
-                                    
-                                    <div
-                                    class="app-file-recent-details">
-                                    <div class="app-file-name
-                                        font-weight-700"><span class="mathquillEstatic">${id.con_pre}</span></div>
-                                </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>`; 
+                                               <div class="card box-shadow-none mb-1
+                                                   app-file-info">
+                                                   <div class="card-content">
+                                                       <div class="app-file-content-logo
+                                                           grey lighten-4">
+                                                           <div class="fonticon">
+                                                               <i class="material-icons">more_vert</i>
+                                                           </div>
+                                                           
+                                                           <div
+                                                           class="app-file-recent-details">
+                                                           <div class="app-file-name
+                                                               font-weight-700"><span class="mathquillEstatic">${id.con_pre}</span></div>
+                                                       </div>
+                                                       </div>
+                                                       
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <div class="" id="prueba">
+                                               
+                                           </div>`; 
                         document.getElementById('contenedor_preguntas').innerHTML+=html;
                     });
             }
@@ -524,7 +527,7 @@ function setVentanaPre(id_bpr,con_pre, opc_a, opc_b,opc_c, opc_d) {
     <div class="input-field col s12" style="margin-top: 0px;">
         <input id="latex-pregunta-mod${id_bpr}" type="text" name="pregunta" value="${con_pre}" readonly ">
     </div>
-    <b><span class="label-input100" id="apre-mod"></span></b>
+    <b><span style="color:#FF0000" class="label-input100" id="apre-mod"></span></b>
       
   </div>                     
                               </div>`);
@@ -557,7 +560,7 @@ mod2.append(`<div class="row">
 <div class="input-field col s12" style="margin-top: 0px;">
 <input id="latex-opcA-mod${id_bpr}" type="text" name="a" value="${opc_a}" readonly ">
 </div>
-<b><span class="label-input100" id="aopc_a-mod"></span></b>
+<b><span style="color:#FF0000" class="label-input100" id="aopc_a-mod"></span></b>
   
 </div>                     
                           </div>`);
@@ -825,8 +828,8 @@ let id_dif_mod${id_bpr}= document.getElementById('dificultad-mod').value
     }
 }
 function validarPre2(pre){
-    if(pre.length>150||pre.length<10){
-        return "*Nombre de la pregunta entre 10-150 caracteres"; 
+    if(pre.length>150||pre.length<1){
+        return "*Nombre de la pregunta entre 1-150 caracteres"; 
     }else{
         return true; 
     } 
@@ -839,12 +842,22 @@ function validarPreOPC2(opc_pre){
     } 
 }
 function validarTem2(tem){
-    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
-        return '*Tema invalido'; 
-    }else{
-        return true; 
-    } 
-}
+    let bol=false;
+     var myOpts = document.getElementById('tema').options;
+         var array = [];
+         for (var i = 0; i < myOpts.length; i++) {
+             array.push(i);
+              if(parseInt(tem-1)!=array[i]){
+             }else{
+                 bol=true;
+             }   
+         }
+         if(bol==true){
+             return true;
+         }else{
+             return "*Tema invalido";
+         }
+ }
 function validarDif2(dif){
     if(dif!='1'&&dif!='2'&&dif!='3'){
         return '*Dificultad invalida'; 

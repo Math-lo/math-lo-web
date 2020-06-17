@@ -1,45 +1,3 @@
-<style>
-  #snackbar {
-  visibility: hidden; 
-  min-width: 250px; 
-  margin-left: 125px; 
-  background-color: rgb(15, 108, 170); 
-  color: rgb(255, 255, 255); 
-  text-align: center; 
-  border-radius: 2px; 
-  padding: 16px; 
-  position: fixed; 
-  z-index: 1; 
-  left: 60%; 
-  bottom: 30px; 
-}
-
-#snackbar.show {
-  visibility: visible; 
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
-
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
-
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
-
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
-</style>
 <div id="gfort-main-wrapper">
 
 <div id="gfort-main-container">
@@ -245,7 +203,7 @@
 
 <div class="gfort-form-block-container"  id="section-3">
 
-<form method="POST" class="contact100-form validate-form" action="/web/registrar">
+<form method="POST" class="contact100-form validate-form" name="form_reg" id="form_reg" action="/web/registrar">
 
 <div class="col-lg-12">
 <h4 class="gfort-text-center gfort-mb-36 gfort-mt-3">Registrarse</h4>
@@ -254,13 +212,13 @@
  <div class="wrap-input100 validate-input col-lg-12" data-validate="Nombre!">
         <input class="gfort-form-control gfort-mt-12  input100" type="text"  name="nombres_usuario" id="nom" placeholder="Nombre" autocomplete="off">
         <span class="focus-input100"></span>
-         <span class="label-input100" id="anombre"></span>
+         <b><span style="color:#FF0000" class="label-input100" id="anombre"></span></b>
 </div>
 
  <div class="wrap-input100 validate-input col-lg-12" data-validate="AppellidoM!">
         <input class="gfort-form-control gfort-mt-12  input100" type="text"  name="apellidos_usuario" id="apmat" placeholder="Apellidos" autocomplete="off">
         <span class="focus-input100" ></span>
-        <span class="label-input100"id="aapmat"></span>
+        <b><span style="color:#FF0000" class="label-input100"id="aapmat"></span></b>
 </div>
 
 
@@ -271,27 +229,27 @@
 <input class="gfort-form-control gfort-mt-0" type="range" min="1" max="2" value="1" id="tipo" name="tipo_usuario">
 </label>
 <span class="focus-input100"></span>
-<span class="label-input100"id="atipo"></span>
+<b><span style="color:#FF0000" class="label-input100"id="atipo"></span></b>
 </div>
 
 <div class="wrap-input100 validate-input col-lg-12" data-validate="Usuario!">
         <input class=" gfort-form-control gfort-mt-0 input100" type="text" name="curp_alumno" id="username" placeholder="Curp del alumno" autocomplete="off">
-        <small>*En dado caso de ser tutor proporsionar el curp de su hij@</small>
+        <small style="color:#FF0000">*En dado caso de ser tutor proporcionar el CURP de su hij@</small>
         <p><p>
         <span class="focus-input100"></span>
-        <span class="label-input100"id="ausername"></span>
+        <b><span style="color:#FF0000" class="label-input100"id="ausername"></span></b>
 </div>
 
 <div class="wrap-input100 validate-input col-lg-12" data-validate="Email valido requerido: ex@abc.xyz">
         <input class="gfort-form-control gfort-mt-0 input100" type="text" name="email_usuario" id="email" placeholder="Correo" autocomplete="off">
         <span class="focus-input100"></span>
-        <span class="label-input100"id="aemail"></span>
+        <b><span style="color:#FF0000" class="label-input100"id="aemail"></span></b>
 </div>
 
 <div class="wrap-input100 validate-input col-lg-12" data-validate="Contraseña!">
         <input class="gfort-form-control gfort-mt-0 input100" type="password" id="pas" name="contraseña_usuario" placeholder="Contraseña">
         <span class="focus-input100"></span>
-        <span class="label-input100"id="apas"></span>
+        <b><span style="color:#FF0000" class="label-input100"id="apas"></span></b>
       </div>
 <div class="container-contact100-form-btn col-lg-12">
         <div class="wrap-contact100-form-btn">
@@ -539,6 +497,43 @@ $(() => {
             success:function(data){
               if(data == true){
                   location.href ="/web"; 
+              }else{
+                  let x = document.getElementById("snackbar");
+                  x.innerText = data;
+                  x.className = "show";
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+              }
+            }
+        })
+    });
+    $("#form_reg").on("submit", (e) => { 
+        e.preventDefault();
+        $.ajax({
+            url: "/web/registrar",
+            method: 'POST',
+            data: {
+                "nombres_usuario": document.getElementById('nom').value,
+                "apellidos_usuario": document.getElementById('apmat').value,
+                "tipo_usuario": document.getElementById('tipo').value,
+                "curp_alumno": document.getElementById('username').value,
+                "email_usuario": document.getElementById('email').value,
+                "contraseña_usuario": document.getElementById('pas').value
+            },
+            success:function(data){
+              console.log(data)
+              if(data.process){
+                  let x = document.getElementById("snackbar");
+                  x.innerText = "Registrado exitosamente";
+                  x.className = "show";
+                  document.getElementById('nom').value="";
+                  document.getElementById('apmat').value="";
+                  document.getElementById('tipo').value="";
+                  document.getElementById('username').value="";
+                  document.getElementById('email').value="";
+                  document.getElementById('pas').value="";
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                  $('html, body').animate({scrollTop:0}, 'slow');
+		              return false; 
               }else{
                   let x = document.getElementById("snackbar");
                   x.innerText = data;

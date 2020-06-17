@@ -1,57 +1,7 @@
-<!--
-<div clas="row">
-    <div class="col s12">
-        <div class="container">
-            <div class="signup-box">
-                <div id="quizz" class="quizz">
-                    <h1>Agregar una pregunta</h1>
-                    <form name="questions" id="questions" class="form"
-                        method="POST" action="/Addquestion">
-                        Ingresa la pregunta: <input type='text'
-                            id='pregunta' name="pregunta">
-                        iniciso a: <input type='text' id='a' name="a">
-                        inciso b: <input type='text' id='b' name="b">
-                        inciso c: <input type='text' id='c' name="c">
-                        inciso d: <input type='text' id='d' name="d">
-                        Ingresa el tema:
-                        <div class="input-field col s12">
-                            <select name="tema" id="tema">
-                                <option value="" disabled selected>Escoge
-                                    una opción</option>
-                                {{#each temas}}
-                                <option value={{id_tem}}>{{nom_tem}}</option>
-                                {{/each}}
-                            </select>
-                            <label>Temas</label>
-                        </div>
-                        Ingresa la dificultad:
-                        <div class="input-field col s12">
-                            <select name="dificultad" id="dificultad">
-                                <option value="" disabled selected>Escoge
-                                    una opción</option>
-                                <option value="1">Fácil</option>
-                                <option value="2">Normal</option>
-                                <option value="1">Díficil</option>
-                            </select>
-                            <label>Dificultad</label>
-                        </div>
-                        <div>
-                            <button class="btn waves-effect waves-light"
-                                type="submit" name="action">Agregar
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </form>
-                    <p id="avisos"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
+
 
 <!-- Inicio chido -->
-
+<div class="div" onload="">
 <div class="hide">
   <a class="waves-effect waves-light btn modal-trigger" id="hidem2" href="#modal1" onclick="setTimeout(carga,2000);">Modal</a>
 </div>
@@ -102,12 +52,12 @@
                 <div class="row">
               <div class="input-field col s12" style="margin-bottom: 0px;">
                   <p>Pregunta: 
-                <span id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+                <span  id='math-field-pregunta' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
               </div>
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
-              <b><span class="label-input100" id="apre"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
                         <div class="collapsible-body text-reset">
@@ -131,12 +81,12 @@
             <div class="row">
               <div class="input-field col s12" style="margin-bottom: 0px;">
                   <p>Opción A: 
-                <span id='math-field-opcA' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
+                <span  id='math-field-opcA' style="width: 100%; min-height:40px; margin-bottom: 0px;"></span></p>
               </div>
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_a"></span></b>
+              <b><span style="color:#FF0000"class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -165,7 +115,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_b"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_b"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -194,7 +144,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_c"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -223,7 +173,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_d"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -253,7 +203,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly>
               </div>
-              <b><span class="label-input100" id="apre"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -283,7 +233,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_a"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -312,7 +262,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_b"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_b"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -341,7 +291,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_c"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -370,7 +320,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_d"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -400,7 +350,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-pregunta" type="text" name="pregunta" readonly="true">
               </div>
-              <b><span class="label-input100" id="apre"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="apre"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -430,7 +380,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcA" type="text" name="a" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_a"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_a"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -459,7 +409,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcB" type="text" name="b" readonly>
               </div>
-                <b><span class="label-input100" id="aopc_b"></span></b>
+                <b><span style="color:#FF0000" class="label-input100" id="aopc_b"></span></b>
 
               <ul class="collapsible">
                     <li>
@@ -489,7 +439,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcC" type="text" name="c" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_c"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_c"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -518,7 +468,7 @@
               <div class="input-field col s12" style="margin-top: 0px;">
                   <input id="latex-opcD" type="text" name="d" readonly>
               </div>
-              <b><span class="label-input100" id="aopc_d"></span></b>
+              <b><span style="color:#FF0000" class="label-input100" id="aopc_d"></span></b>
               <ul class="collapsible">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">keyboard</i></div>
@@ -551,7 +501,7 @@
                             </select>
               </div>
             </div>
-            <b><span class="label-input100" id="aresc"></span></b>
+            <b><span style="color:#FF0000" class="label-input100" id="aresc"></span></b>
             <div class="row">
               <div class="input-field col s12">
                 <select name="tema" id="tema">
@@ -560,7 +510,7 @@
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
                             </select>
-                            <b><span class="label-input100" id="atem"></span></b>
+                            <b><span style="color:#FF0000" class="label-input100" id="atem"></span></b>
               </div>
             </div>
             <div class="row">
@@ -571,7 +521,7 @@
                                 <option value="2">Normal</option>
                                 <option value="3">Díficil</option>
                 </select>
-                <b><span class="label-input100" id="adif"></span></b>
+                <b><span style="color:#FF0000" class="label-input100" id="adif"></span></b>
                 {{#if sesionP}}
                 
                        <button class="btn waves-effect waves-light  gradient-45deg-deep-orange-orange" name="action" id="sendprex">Agregar
@@ -795,7 +745,7 @@
                             </select>
               </div>
             </div>
-            <b><span class="label-input100" id="aresc-mod"></span></b>
+            <b><span style="color:#FF0000" class="label-input100" id="aresc-mod"></span></b>
             <div class="row">
               <div class="input-field col s12">
                 <select name="tema" id="tema-mod">
@@ -804,7 +754,7 @@
                                 <option value={{id_tem}}>{{nom_tem}}</option>
                                 {{/each}}
                             </select>
-                            <b><span class="label-input100" id="atem-mod"></span></b>
+                            <b><span style="color:#FF0000" class="label-input100" id="atem-mod"></span></b>
               </div>
             </div>
             <div class="row">
@@ -815,7 +765,7 @@
                                 <option value="2">Normal</option>
                                 <option value="3">Díficil</option>
                 </select>
-                <b><span class="label-input100" id="adif-mod"></span></b>
+                <b><span style="color:#FF0000" class="label-input100" id="adif-mod"></span></b>
                                             
                </div>
                             </div>
@@ -989,6 +939,8 @@
 
 
 
+</div>
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -1071,6 +1023,7 @@ for(let index = 0; index < contenidoPregunta.length; index++) {
     MQ.StaticMath(contenidoPregunta.item(index));
 }
 </script>
+
 <script>
 let enviar=document.getElementById('sendprex'); 
 
@@ -1150,8 +1103,8 @@ function retrono(){
     
 
 function validarPre(pre){
-    if(pre.length>150||pre.length<10){
-        return "*Nombre de la pregunta entre 10-150 caracteres"; 
+    if(pre.length>150||pre.length<1){
+        return "*Nombre de la pregunta entre 1-150 caracteres"; 
     }else{
         return true; 
     } 
@@ -1164,13 +1117,24 @@ function validarPreOPC(opc_pre){
     } 
 }
 function validarTem(tem){
-    if(tem!='1'&& tem!='2'&& tem!='3'&& tem!='4'){
-        return '*Tema invalido'; 
-    }else{
-        return true; 
-    } 
+   let bol=false;
+    var myOpts = document.getElementById('tema').options;
+        var array = [];
+        for (var i = 0; i < myOpts.length; i++) {
+            array.push(i);
+             if(parseInt(tem-1)!=array[i]){
+            }else{
+                bol=true;
+            }   
+        }
+        if(bol==true){
+            return true;
+        }else{
+            return "*Tema invalido";
+        }
 }
 function validarDif(dif){
+     
     if(dif!='1'&&dif!='2'&&dif!='3'){
         return '*Dificultad invalida'; 
     }else{
@@ -1211,4 +1175,3 @@ function carga2(){
 };
 
 </script>
-

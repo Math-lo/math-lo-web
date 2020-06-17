@@ -1,3 +1,7 @@
+ <style>
+    .profe { color: #8d0404; 
+    font-weight: bolder;}
+  </style>
 <div class="parallax-container">
     <div class="parallax"><img src="images_algebra/parallax11.jpg"></div>
 </div>
@@ -14,20 +18,29 @@
      <table class="responsive-table highlight">
                     <thead>
                         <tr>
-                            <td>Nombre del Usuario</td>
-                            <td>Tipo de Usuario</td>
+                            <td>Nombre</td>
+                            <td>Cargo</td>
                             
                         </tr>
                     </thead>
                     <tbody id="tabla_grupos">
                         {{#each grupoF}}
                         <tr>
-                            <td >{{nom_usu}}</td>
-                            <td>{{cat_tus}}</td>
-                           
+                            {{#if profe}}
+                            <td class="profe">{{nom_usu}}</td>
+                            <td class="profe">Profesor</td>
+                            {{/if}}
                         </tr>
                          {{/each}}
-
+                          {{#each grupoF}}
+                          <tr>
+                            {{#if profe}}
+                            {{else}}
+                              <td >{{nom_usu}}</td>
+                            <td>{{cat_tus}}</td>
+                             {{/if}}
+                            </tr>
+                         {{/each}}
                     </tbody>
                 </table>
                 </div>

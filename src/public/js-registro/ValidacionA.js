@@ -1,14 +1,14 @@
 let enviar=document.getElementById('send'); 
  
 function retrono(){
-    let nombre=document.getElementById('nom').value; 
-    let materno=document.getElementById('apmat').value; 
+    let nombre=document.getElementById('first_name').value; 
+    let materno=document.getElementById('last_name').value; 
     let sexo=1;
-    let tusuario=document.getElementById('tipo').value; 
-    console.log(tusuario+tusuario) 
-    let usuario=document.getElementById('username').value; 
+    let tusuario=document.getElementById('tip_usu').value; 
+    
+     
     let correo=document.getElementById('email').value; 
-    let contraseña=document.getElementById('pas').value; 
+    let contraseña=document.getElementById('password').value; 
     /*-----------------------------*/
     let vnombre=validarnombreapellido(nombre,"nombre"); 
     if(vnombre==true){
@@ -18,77 +18,40 @@ function retrono(){
                 document.getElementById('aapmat').innerHTML=""; 
                 if(sexo!="1"){ 
                     document.getElementById('asex').innerHTML="Sexo es inválido";
-                    let posicion = $("#init").offset().top;
-                    $("html, body").animate({
-                        scrollTop: posicion
-                    }, 2000); 
                     return false
                 }else{
-                   
-                    if(tusuario!="1" &&  tusuario!= "2"){
+                    if(tusuario!=3 &&  tusuario!= 5&&  tusuario!= 4){
                         console.log('f');
                         document.getElementById('atipo').innerHTML="Tipo de usuario inválido";
-                        let posicion = $("#init").offset().top;
-                        $("html, body").animate({
-                            scrollTop: posicion
-                        }, 2000); 
                         return false
                     }else{
                         document.getElementById('atipo').innerHTML="";
-
-                        let vusuario=validarnombreusuario(usuario); 
-                        if (vusuario==true){
-                            document.getElementById('ausername').innerHTML="";
                             let vemail=validarEmail(correo);
                             if(vemail==true){
                                 document.getElementById('aemail').innerHTML="";
                                 let vcontraseña=ValidarContraseña(contraseña);
                                 if(vcontraseña){
                                     document.getElementById('apas').innerHTML=""; 
-                                    return true;
+                                    AgregarUsuarioAjax(document.getElementById('first_name').value, document.getElementById('last_name').value,document.getElementById('tip_usu').value,document.getElementById('email').value,document.getElementById('password').value);
 
                                 }else{
                                     document.getElementById('apas').innerHTML="Entre 8-50 caracteres-Al menos una letra mayúscula-Al menos una letra minuscula-Al menos un dígito-No espacios en blanco-Al menos 1 caracter especial";
-                                    let posicion = $("#init").offset().top;
-                                    $("html, body").animate({
-                                        scrollTop: posicion
-                                    }, 2000); 
+                                    
                                     return false; 
                                 }
                             }else{
                                 document.getElementById('aemail').innerHTML=vemail;
-                                let posicion = $("#init").offset().top;
-                                $("html, body").animate({
-                                    scrollTop: posicion
-                                }, 2000); 
                                 return false; 
                             }
-                        }else{
-                            document.getElementById('ausername').innerHTML=vusuario;
-                            let posicion = $("#init").offset().top;
-                            $("html, body").animate({
-                                scrollTop: posicion
-                            }, 2000); 
-                            return false;
-                        }
                     }
                 }
             }else{
                 document.getElementById('aapmat').innerHTML=vmaterno; 
-                let posicion = $("#init").offset().top;
-                $("html, body").animate({
-                    scrollTop: posicion
-                }, 2000); 
                 return false;
-                
             }
 
     }else{
         document.getElementById('anombre').innerHTML=vnombre; 
-        let posicion = $("#init").offset().top;
-        $("html, body").animate({
-            scrollTop: posicion
-        }, 2000); 
         return false; 
     }
     
@@ -132,17 +95,7 @@ function validarnombreapellido(nombre, tipo){
 }
 
 
-function validarnombreusuario(username){
-    var reCurp= /[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/;
-    if(username.length<1){
-        return "Ingrese el Curp"; 
-    }
-    if (!reCurp.test(username)){
-        return "Curp Invalido"
-    }else{
-            return true; 
-    } 
-}
+
 function validarEmail(email) { 
     if(email.length<1){
         return "El correo no puede estar vacío"; 
